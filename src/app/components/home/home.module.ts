@@ -6,6 +6,8 @@ import { HomeComponent } from './home.component';
 import { NavbarModule } from './navbar/navbar.module';
 import { LeftSideModule } from './left-side/left-side.module';
 import { RightSideModule } from './right-side/right-side.module';
+import { EndSheetModule } from './end-sheet/end-sheet.module';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -14,9 +16,11 @@ import { RightSideModule } from './right-side/right-side.module';
   imports: [
     CommonModule,
     HomeRoutingModule,
+    MatSidenavModule,
     NavbarModule,
     LeftSideModule,
     RightSideModule,
+    EndSheetModule,
   ],
   exports: [HomeComponent]
 })
