@@ -1,1 +1,11 @@
+@use '../../../lib/button/variable';
 @import '../../../lib/button/base.scss';
+.button-base.button-secondary {
+    background-color: variable.$secondary-color;
+    border: 1px solid variable.$secondary-color;
+}
+
+.button-base.button-secondary span {
+    color: white;
+    font-size: 1.6em;
+}
