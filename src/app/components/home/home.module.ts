@@ -7,7 +7,6 @@ import { NavbarModule } from './navbar/navbar.module';
 import { LeftSideModule } from './left-side/left-side.module';
 import { RightSideModule } from './right-side/right-side.module';
 
-
 @NgModule({
   declarations: [
     HomeComponent,

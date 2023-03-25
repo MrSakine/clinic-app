@@ -1,9 +1,14 @@
 .button-base {
-    height: 5.8em;
-    width: auto;
+    width: 15.3em;
+    height: 4.4em;
     background: none;
     border: none;
     outline: none;
     text-transform: uppercase;
     border-radius: .8em;
+}
+
+.button-base span {
+    font-weight: 500;
+    line-height: 2em;
 }

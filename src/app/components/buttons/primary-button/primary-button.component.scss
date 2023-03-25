@@ -1,1 +1,22 @@
+@use '../../../lib/button/variable';
 @import '../../../lib/button/base.scss';
+.button-base.button-primary-1 {
+    width: 30em;
+    height: 4.4em;
+    background-color: variable.$primary-color;
+    border-radius: 4em;
+}
+
+.button-base.button-primary-2 {
+    background-color: variable.$primary-color-2;
+    border: 1px solid variable.$primary-color-2-border-color;
+}
+
+.button-base.button-primary-1 span {
+    font-size: 1.6em;
+    color: white;
+}
+
+.button-base.button-primary-2 span {
+    font-size: 1.6em;
+}
