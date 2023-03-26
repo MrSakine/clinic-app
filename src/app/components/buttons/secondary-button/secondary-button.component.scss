@@ -3,9 +3,21 @@
 .button-base.button-secondary {
     background-color: variable.$secondary-color;
     border: 1px solid variable.$secondary-color;
+    transition: .3s;
+}
+
+.button-base.button-secondary:hover {
+    background-color: variable.$secondary-color-hover;
+    border: 1px solid variable.$secondary-color-hover;
+    transition: .3s;
 }
 
 .button-base.button-secondary span {
     color: white;
     font-size: 1.6em;
+}
+
+.button-base.button-secondary:hover span {
+    color: black;
+    transition: .3s;
 }

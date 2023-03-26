@@ -1,0 +1,28 @@
+.flex-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    justify-content: center;
+}
+
+.flex-wrapper h1 {
+    position: absolute;
+    left: 0;
+}
+
+.flex-wrapper mat-icon {
+    position: absolute;
+    right: 0;
+    font-size: 2em;
+    margin: .1em .2em 0 0;
+}
+
+#app-right-sheet {
+    width: auto;
+}
+
+.app-right-sheet-header {
+    width: 100%;
+    height: 5em;
+}
