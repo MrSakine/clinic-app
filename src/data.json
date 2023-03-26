@@ -1,0 +1,10 @@
+{
+    "users": [{
+        "id": 1,
+        "firstname": "",
+        "lastname": ""
+    }],
+    "prestations": [],
+    "assurances": [],
+    "infos": []
+}
