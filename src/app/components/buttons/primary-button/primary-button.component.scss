@@ -8,6 +8,8 @@
 }
 
 .button-base.button-primary-2 {
+    width: fit-content;
+    padding: .5em .8em;
     background-color: variable.$primary-color-2;
     border: 1px solid variable.$primary-color-2;
     transition: .3s;

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDrawer, MatDrawerMode } from '@angular/material/sidenav';
+import { DatabaseService } from '../../core/_services/database.service';
 
 @Component({
   selector: 'app-home',
@@ -12,9 +13,13 @@ export class HomeComponent implements OnInit {
   mode: MatDrawerMode = "over";
   hasBackDrop: boolean = true;
 
-  constructor() { }
+  constructor(
+    private databaseService: DatabaseService,
+  ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.databaseService.getData();
+  }
 
   handleMenuClickEvent(event: any) {
     if (event) {

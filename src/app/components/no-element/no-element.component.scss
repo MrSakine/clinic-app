@@ -1,0 +1,50 @@
+@use '../../lib/button/variable';
+@import '../../lib/button/base.scss';
+#app-no-element {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    margin-top: 4em;
+}
+
+#app-no-element div.wrapper {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3em;
+}
+
+#app-no-element div.wrapper mat-icon {
+    font-size: 5em;
+    margin-bottom: .5em;
+}
+
+#app-no-element div.wrapper p {
+    font-size: 1.8em;
+    font-weight: bold;
+    text-align: center;
+}
+
+#app-no-element div.wrapper span {
+    font-size: 1.2em;
+    font-weight: 400;
+    text-align: center;
+    line-height: 1.5em;
+}
+
+#app-no-element div.wrapper button {
+    text-transform: none;
+    width: fit-content;
+    height: 3em;
+    padding: .5em .8em;
+    background-color: variable.$primary-color-2;
+    border: 1px solid variable.$primary-color-2;
+    color: white;
+    font-weight: 500;
+    font-size: 1.1em;
+    transition: .3s;
+}

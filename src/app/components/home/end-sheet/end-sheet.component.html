@@ -7,9 +7,15 @@
     </div>
     <div class="app-right-sheet-body">
         <mat-tab-group>
-            <mat-tab label="Profil"></mat-tab>
-            <mat-tab label="Prestations"></mat-tab>
-            <mat-tab label="Assurances"></mat-tab>
+            <mat-tab label="Prestations">
+                <app-no-element (addEvent)="onNoElementComponentAddClickEvent($event)" label="pres" mode="show" [icon]="prestationHelp.icon" [title]="prestationHelp.title" [content]="prestationHelp.content" [button]="prestationHelp.button"></app-no-element>
+            </mat-tab>
+            <mat-tab label="Prestataires">
+                <app-no-element (addEvent)="onNoElementComponentAddClickEvent($event)" label="prest" mode="show" [icon]="prestataireHelp.icon" [title]="prestataireHelp.title" [content]="prestataireHelp.content" [button]="prestataireHelp.button"></app-no-element>
+            </mat-tab>
+            <mat-tab label="Assurances">
+                <app-no-element (addEvent)="onNoElementComponentAddClickEvent($event)" label="ins" mode="show" [icon]="insuranceHelp.icon" [title]="insuranceHelp.title" [content]="insuranceHelp.content" [button]="insuranceHelp.button"></app-no-element>
+            </mat-tab>
         </mat-tab-group>
     </div>
 </div>

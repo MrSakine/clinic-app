@@ -10,9 +10,21 @@ export class NavbarComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    window.addEventListener('scroll', (e: any) => this.handleScroll(e));
+  }
 
   sendMenuClickEvent() {
     this.menuClicked.emit(true);
+  }
+
+  handleScroll(event: any) {
+    let navbar = document.getElementById('app-navbar') as HTMLElement;
+    let sticky = Number(navbar?.offsetTop);
+
+    if (window.scrollY >= sticky) {
+      let w = navbar.querySelector('.wrapper') as HTMLElement;
+      w.classList.add('navbar-bg');
+    }
   }
 }

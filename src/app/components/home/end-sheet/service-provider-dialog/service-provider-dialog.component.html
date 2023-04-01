@@ -1,0 +1,33 @@
+<ng-container>
+    <div class="modal-header">
+        <h2 mat-dialog-title>Ajouter un(e) prestataire</h2>
+        <button mat-button mat-dialog-close>X</button>
+    </div>
+    <hr>
+    <form action="#" method="POST" class="modal-form">
+        <mat-dialog-content class="modal-body">
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Nom de la personne</mat-label>
+                <input type="text" name="name" id="name" matInput required />
+                <mat-hint>Exemple: Sakine</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Pr&eacute;nom de la personne</mat-label>
+                <input type="text" name="given-name" id="given-name" matInput required />
+                <mat-hint>Exemple: Fily Mohamed</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Type de la prestation</mat-label>
+                <mat-select name="service-type" required>
+                    <mat-option>Aucune s&eacute;lection</mat-option>
+                </mat-select>
+                <mat-hint>Exemple: Radio</mat-hint>
+            </mat-form-field>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+            <button type="submit" class="button-base primary-w">
+                <span>Valider</span>
+            </button>
+        </mat-dialog-actions>
+    </form>
+</ng-container>

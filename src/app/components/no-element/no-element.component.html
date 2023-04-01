@@ -1,0 +1,14 @@
+<ng-container *ngIf="mode === 'show'">
+    <div id="app-no-element">
+        <div class="wrapper">
+            <mat-icon>{{icon}}</mat-icon>
+            <div>
+                <p>{{title}}</p>
+                <span>{{content}}</span>
+            </div>
+            <button class="button-base" (click)="onClick()">
+                <span>{{button}}</span>
+            </button>
+        </div>
+    </div>
+</ng-container>
