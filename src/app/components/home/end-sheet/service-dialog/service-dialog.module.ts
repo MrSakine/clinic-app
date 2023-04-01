@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ServiceDialogComponent } from './service-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import {MatButtonModule} from '@angular/material/button';
+import {MatInputModule} from '@angular/material/input';
+
+import { ServiceDialogComponent } from './service-dialog.component';
 
 @NgModule({
   declarations: [ServiceDialogComponent],
@@ -13,6 +17,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatIconModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatInputModule,
   ],
   exports: [ServiceDialogComponent]
 })

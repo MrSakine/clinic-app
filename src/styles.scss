@@ -1,3 +1,4 @@
+@import './assets//scss/buttons.scss';
 @import './assets/scss/theme.scss';
 * {
     box-sizing: border-box;
@@ -12,8 +13,46 @@ body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.mat-tooltip {
+    font-size: 1.2em;
+}
+
+.modal-header h2 {
+    width: fit-content;
+    display: inline;
+    font-size: 1.5em;
+}
+
+.modal-header button {
+    float: right;
+    background: none;
+    border-radius: 2.2em;
+}
+
+.modal-body {
+    height: auto;
+    overflow: hidden;
+}
+
+.modal-form {
+    margin: 1.5em 0;
+    width: 100%;
+}
+
+.modal-form mat-form-field {
+    font-size: 1.2em;
+}
+
+.full-width {
+    width: 100%;
+}
+
 .cur {
     cursor: pointer;
+}
+
+mat-form-field {
+    margin-bottom: 1em;
 }
 
 #app-root {
@@ -34,6 +73,7 @@ body {
     top: 0;
     height: 7em;
     border: 1px solid rgba($color: #000000, $alpha: 1.0);
+    z-index: 2;
 }
 
 .app-container {
@@ -42,6 +82,7 @@ body {
     min-height: 100%;
     height: 100%;
     margin-top: 7em;
+    z-index: 1;
 }
 
 .app-container-left {

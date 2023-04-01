@@ -69,24 +69,30 @@ export class EndSheetComponent implements OnInit {
   ngOnInit(): void { }
 
   openServiceDialog(service: IPrestation | null | undefined) {
-    let data = this.prepareDialogData("40%", null);
+    let data = this.prepareDialogData("30%", null);
     this.ref = this.matDialog.open(ServiceDialogComponent, data);
   }
 
   openServiceProviderDialog(serviceProvider: IPrestataire | null | undefined) {
-    let data = this.prepareDialogData("40%", null);
+    let data = this.prepareDialogData("30%", null);
     this.ref = this.matDialog.open(ServiceProviderDialogComponent, data);
   }
 
   openInsuranceDialog(insurance: IAssurance | null | undefined) {
-    let data = this.prepareDialogData("40%", null);
+    let data = this.prepareDialogData("30%", null);
     this.ref = this.matDialog.open(InsuranceDialogComponent, data);
   }
 
   prepareDialogData(width: string, obj: IPrestation | IAssurance | null | undefined): MatDialogConfig {
     let config = new MatDialogConfig();
     let elementRef = document.getElementById('app-right-sheet');
+    let rect = elementRef?.getBoundingClientRect();
     config.width = width;
+    config.position = {
+      top: String(Number(rect?.top) + 150) + 'px',
+      left: String(Number(rect?.left) + 120) + 'px',
+      right: String(rect?.right) + 'px',
+    }
 
     return config;
   }

@@ -1,1 +1,26 @@
-<p>insurance-dialog works!</p>
+<ng-container>
+    <div class="modal-header">
+        <h2 mat-dialog-title>Ajouter une assurance</h2>
+        <button mat-button mat-dialog-close>X</button>
+    </div>
+    <hr>
+    <form action="#" method="POST" class="modal-form">
+        <mat-dialog-content class="modal-body">
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Nom de l'assurance</mat-label>
+                <input type="text" name="name" id="name" matInput required />
+                <mat-hint>Exemple: AMO</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Pourcentage couverte par l'assurance</mat-label>
+                <input type="number" name="percentage" id="percentage" matInput required />
+                <mat-hint>Exemple: 25%</mat-hint>
+            </mat-form-field>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+            <button type="submit" class="button-base primary-w">
+                <span>Valider</span>
+            </button>
+        </mat-dialog-actions>
+    </form>
+</ng-container>
