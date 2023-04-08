@@ -8,6 +8,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 
 import { ServiceDialogComponent } from './service-dialog.component';
+import { LoaderModule } from 'src/app/components/loader/loader.module';
 
 @NgModule({
   declarations: [ServiceDialogComponent],
@@ -20,6 +21,7 @@ import { ServiceDialogComponent } from './service-dialog.component';
     MatSelectModule,
     MatButtonModule,
     MatInputModule,
+    LoaderModule,
   ],
   exports: [ServiceDialogComponent]
 })
