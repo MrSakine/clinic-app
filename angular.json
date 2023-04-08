@@ -28,9 +28,20 @@
                             "src/assets"
                         ],
                         "styles": [
-                            "src/styles.scss"
+                            "src/styles.scss",
+                            "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+                            "node_modules/sweetalert2/src/sweetalert2.scss"
                         ],
-                        "scripts": []
+                        "scripts": [
+                            "./node_modules/bootstrap/dist/js/bootstrap.min.js"
+                        ],
+                        "allowedCommonJsDependencies": [
+                            "immediate",
+                            "spark-md5",
+                            "vuvuzela",
+                            "lodash",
+                            "sweetalert2"
+                        ]
                     },
                     "configurations": {
                         "production": {
@@ -100,5 +111,8 @@
                 }
             }
         }
+    },
+    "cli": {
+      "analytics": false
     }
 }

@@ -8,13 +8,21 @@
     <div class="app-right-sheet-body">
         <mat-tab-group>
             <mat-tab label="Prestations">
-                <app-no-element (addEvent)="onNoElementComponentAddClickEvent($event)" label="pres" mode="show" [icon]="prestationHelp.icon" [title]="prestationHelp.title" [content]="prestationHelp.content" [button]="prestationHelp.button"></app-no-element>
+                <app-no-element *ngIf="services !== undefined && services.length <= 0"
+                    (addEvent)="onNoElementComponentAddClickEvent($event)" label="pres" mode="show"
+                    [icon]="prestationHelp.icon" [title]="prestationHelp.title" [content]="prestationHelp.content"
+                    [button]="prestationHelp.button"></app-no-element>
             </mat-tab>
             <mat-tab label="Prestataires">
-                <app-no-element (addEvent)="onNoElementComponentAddClickEvent($event)" label="prest" mode="show" [icon]="prestataireHelp.icon" [title]="prestataireHelp.title" [content]="prestataireHelp.content" [button]="prestataireHelp.button"></app-no-element>
+                <app-no-element *ngIf="serviceProviders !== undefined && serviceProviders.length <= 0"
+                    (addEvent)="onNoElementComponentAddClickEvent($event)" label="prest" mode="show"
+                    [icon]="prestataireHelp.icon" [title]="prestataireHelp.title" [content]="prestataireHelp.content"
+                    [button]="prestataireHelp.button"></app-no-element>
             </mat-tab>
             <mat-tab label="Assurances">
-                <app-no-element (addEvent)="onNoElementComponentAddClickEvent($event)" label="ins" mode="show" [icon]="insuranceHelp.icon" [title]="insuranceHelp.title" [content]="insuranceHelp.content" [button]="insuranceHelp.button"></app-no-element>
+                <app-no-element *ngIf="insurances !== undefined && insurances.length <= 0" (addEvent)="onNoElementComponentAddClickEvent($event)"
+                    label="ins" mode="show" [icon]="insuranceHelp.icon" [title]="insuranceHelp.title"
+                    [content]="insuranceHelp.content" [button]="insuranceHelp.button"></app-no-element>
             </mat-tab>
         </mat-tab-group>
     </div>
