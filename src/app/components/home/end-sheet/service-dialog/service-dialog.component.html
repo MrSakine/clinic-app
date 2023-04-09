@@ -1,6 +1,7 @@
-<ng-container>
+<ng-container *ngIf="currentData.add || currentData.edit">
     <div class="modal-header">
-        <h2 mat-dialog-title>Ajouter une prestation</h2>
+        <h2 *ngIf="currentData.add" mat-dialog-title>Ajouter une prestation</h2>
+        <h2 *ngIf="currentData.edit" mat-dialog-title>Modifier une prestation</h2>
         <button mat-button mat-dialog-close>X</button>
     </div>
     <hr>
@@ -13,7 +14,8 @@
             </mat-form-field>
             <mat-form-field appearance="fill" class="full-width">
                 <mat-label>Prix de la prestation</mat-label>
-                <input matInput type="number" minlength="1" maxlength="6" name="price" id="price" required formControlName="price" />
+                <input matInput type="number" minlength="1" maxlength="6" name="price" id="price" required
+                    formControlName="price" />
                 <mat-hint *ngIf="!showPriceError">Exemple: 45000 xof</mat-hint>
                 <mat-hint *ngIf="showPriceError" class="alert alert-danger">
                     <span>Veuillez entrer un prix valide</span>
@@ -28,4 +30,3 @@
         </mat-dialog-actions>
     </form>
 </ng-container>
-<ng-container></ng-container>

@@ -3,9 +3,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Service } from 'src/app/core/_classes/service';
 import { BaseDialogData } from 'src/app/core/_dialog-data/base-dialog-data';
+import { ServiceDialogData } from 'src/app/core/_dialog-data/service-dialog-data';
 import { EndSheetLabel } from 'src/app/core/_enums/end-sheet-label';
 import { DatabaseService } from 'src/app/core/_services/database.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-service-dialog',
@@ -16,7 +16,6 @@ import Swal from 'sweetalert2';
 export class ServiceDialogComponent implements OnInit {
   showSpinnerProgress: boolean = false;
   serviceFormGroup!: FormGroup;
-  matRef!: MatDialogRef<ServiceDialogComponent>;
   showPriceError: boolean = false;
   mode: string = "service";
   currentData!: BaseDialogData;
@@ -25,15 +24,25 @@ export class ServiceDialogComponent implements OnInit {
     private formBuilder: FormBuilder,
     private databaseService: DatabaseService,
     @Inject(MAT_DIALOG_DATA) data: BaseDialogData,
+    private matRef: MatDialogRef<ServiceDialogComponent>,
   ) {
-    this.serviceFormGroup = this.formBuilder.group(
-      {
-        type: new FormControl(null, [Validators.required]),
-        price: new FormControl(null, [Validators.required])
-      }
-    );
-
     this.currentData = data;
+    if (this.currentData.add) {
+      this.serviceFormGroup = this.formBuilder.group(
+        {
+          type: new FormControl(null, [Validators.required]),
+          price: new FormControl(null, [Validators.required])
+        }
+      );
+    } else {
+      let data = this.currentData as ServiceDialogData;
+      this.serviceFormGroup = formBuilder.group(
+        {
+          type: new FormControl(data.currentService?.type, [Validators.required]),
+          price: new FormControl(data.currentService?.price, [Validators.required])
+        }
+      );
+    }
   }
 
   ngOnInit(): void {
@@ -46,16 +55,20 @@ export class ServiceDialogComponent implements OnInit {
       return;
     }
 
-    this.showSpinnerProgress = true;
     let data = this.getData();
+    this.showSpinnerProgress = true;
 
     if (this.currentData.add) {
       this.databaseService.create(EndSheetLabel.SERVICE, data);
+      this.showSpinnerProgress = false;
     } else if (this.currentData.edit) {
-
+      this.databaseService.update(EndSheetLabel.SERVICE, data);
+      this.showSpinnerProgress = false;
     } else {
-      // pass;
+      this.showSpinnerProgress = false;
     }
+
+    this.matRef.close({ action: this.currentData.add ? 'add' : 'edit', label: 'pres', item: this.currentData });
   }
 
   handleUserInput(val: any, mode: string | undefined | null) {

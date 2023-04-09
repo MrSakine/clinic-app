@@ -55,23 +55,82 @@ export class DatabaseService {
     let table = this.getDocument();
 
     table
-    .then(
-      (val: IBase) => {
-        let tmp = val;
-        tmp._rev = val._rev;
+      .then(
+        (val: IBase) => {
+          let tmp = val;
+          tmp._rev = val._rev;
 
-        switch (mode) {
-          case EndSheetLabel.SERVICE:
-            break;
-          default: break;
+          switch (mode) {
+            case EndSheetLabel.SERVICE:
+              let obj: Service = value as unknown as Service;
+              tmp.services.push({ type: obj.type, price: obj.price });
+
+              this.database.put(tmp);
+              break;
+            case EndSheetLabel.SERVICE_PROVIDER:
+              let obj1: ServiceProvider = value as unknown as ServiceProvider;
+              tmp.serviceProviders.push({ name: obj1.firstname, surname: obj1.lastname, service: obj1.service });
+
+              this.database.put(tmp);
+              break;
+            case EndSheetLabel.INSURANCE: break;
+            default: break;
+          }
         }
-      }
-    )
-    .catch(err => console.log(err));
+      )
+      .catch(err => console.log(err));
   }
 
-  update() { }
+  update<T extends Base>(mode: string, value: T) {
+    let table = this.getDocument();
 
-  delete() { }
+    table
+      .then(
+        (val: IBase) => {
+          let tmp = val;
+          tmp._rev = val._rev;
+
+          switch (mode) {
+            case EndSheetLabel.SERVICE:
+              let obj: Service = value as unknown as Service;
+              let foundItem = tmp.services.findIndex(v => v.type === obj.type);
+              tmp.services[foundItem] = obj;
+
+              this.database.put(tmp);
+              break;
+            case EndSheetLabel.SERVICE_PROVIDER: break;
+            case EndSheetLabel.INSURANCE: break;
+            default: break;
+          }
+        }
+      )
+      .catch(err => console.error(err));
+  }
+
+  delete<T extends Base>(mode: string, value: T) {
+    let table = this.getDocument();
+
+    table
+      .then(
+        (val: IBase) => {
+          let tmp = val;
+          tmp._rev = val._rev;
+
+          switch (mode) {
+            case EndSheetLabel.SERVICE:
+              let obj: Service = value as unknown as Service;
+              let el = tmp.services.filter(v => v.type !== obj.type);
+              tmp.services = el;
+
+              this.database.put(tmp);
+              break;
+            case EndSheetLabel.SERVICE_PROVIDER: break;
+            case EndSheetLabel.INSURANCE: break;
+            default: break;
+          }
+        }
+      )
+      .catch(err => console.error(err));
+  }
 }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Type } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { IPrestation } from 'src/app/core/_interfaces/iprestation';
 import { IAssurance } from '../../../core/_interfaces/iassurance';
 import { NoElementEvent } from 'src/app/core/_events/no-element-event';
@@ -18,6 +18,13 @@ import { BaseDialogData } from 'src/app/core/_dialog-data/base-dialog-data';
 import { ServiceProviderDialogData } from 'src/app/core/_dialog-data/service-provider-dialog-data';
 import { InsuranceDialogData } from 'src/app/core/_dialog-data/insurance-dialog-data';
 import { EndSheetLabelAction } from 'src/app/core/_enums/end-sheet-label-action';
+import { ExistElementEvent } from 'src/app/core/_events/exist-element-event';
+import { MatBottomSheet, MatBottomSheetConfig, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { DeleteItemBottomSheetComponent } from './delete-item-bottom-sheet/delete-item-bottom-sheet.component';
+import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef } from '@angular/material/snack-bar';
+import { SuccessMessageService } from 'src/app/core/_services/success-message.service';
+import { SuccessMessage } from 'src/app/core/_interfaces/success-message';
+import { DeleteItemBottomSheetData } from 'src/app/core/_bottom-sheet/delete-item-bottom-sheet-data';
 
 interface Help {
   icon: string;
@@ -39,14 +46,21 @@ export class EndSheetComponent implements OnInit {
   insuranceHelp!: Help;
 
   ref!: MatDialogRef<ServiceDialogComponent | ServiceProviderDialogComponent | InsuranceDialogComponent>;
+  bottomSheetRef!: MatBottomSheetRef<DeleteItemBottomSheetComponent>;
   services!: IPrestation[];
   serviceProviders!: IPrestataire[];
   insurances!: IAssurance[];
+  successMessages: Observable<SuccessMessage[]> = this.successMessageService.getAll();
+
+  @ViewChild('ersh', { read: ViewContainerRef }) root!: ViewContainerRef;
 
   constructor(
     private helperService: HelperService,
     private matDialog: MatDialog,
     private databaseService: DatabaseService,
+    private bottomSheet: MatBottomSheet,
+    private snackBar: MatSnackBar,
+    private successMessageService: SuccessMessageService,
   ) {
     this.helpers.subscribe(
       val => {
@@ -76,6 +90,25 @@ export class EndSheetComponent implements OnInit {
     }
   }
 
+  onListViewEvent(event: ExistElementEvent) {
+    let action = event.action;
+    let label = event.label;
+    let whichLabel = this.findLabelByName(label);
+
+    switch (whichLabel) {
+      case 0x1:
+        this.openServiceDialog(event.item, whichLabel, action);
+        break;
+      case 0x2:
+        this.openServiceProviderDialog(event.item, whichLabel, action);
+        break;
+      case 0x3:
+        this.openInsuranceDialog(event.item, whichLabel, action);
+        break;
+      default: break;
+    }
+  }
+
   ngOnInit(): void {
     this.setupData();
   }
@@ -91,21 +124,67 @@ export class EndSheetComponent implements OnInit {
   }
 
   openServiceDialog(service: IPrestation | null | undefined, mode: number, action: string) {
-    let data = this.prepareDialogData("30%", null, mode, action);
-    this.ref = this.matDialog.open(ServiceDialogComponent, data);
+    if (action === EndSheetLabelAction.ADD || action === EndSheetLabelAction.EDIT) {
+      let data = this.prepareDialogData("30%", service === null || undefined ? null : service, mode, action);
+      this.ref = this.matDialog.open(ServiceDialogComponent, data);
+      this.ref.afterClosed().subscribe(val => this.handleResult(val));
+    } else {
+      let data = this.prepareBottomSheetData(service === null || undefined ? null : service, mode);
+      this.bottomSheetRef = this.bottomSheet.open(DeleteItemBottomSheetComponent, data);
+      this.bottomSheetRef.afterDismissed().subscribe(val => this.handleResult(val));
+    }
   }
 
   openServiceProviderDialog(serviceProvider: IPrestataire | null | undefined, mode: number, action: string) {
-    let data = this.prepareDialogData("30%", null, mode, action);
+    let data = this.prepareDialogData("30%", serviceProvider === null || undefined ? null : serviceProvider, mode, action);
     this.ref = this.matDialog.open(ServiceProviderDialogComponent, data);
+    this.ref.afterClosed().subscribe(val => this.handleResult(val));
   }
 
   openInsuranceDialog(insurance: IAssurance | null | undefined, mode: number, action: string) {
-    let data = this.prepareDialogData("30%", null, mode, action);
+    let data = this.prepareDialogData("30%", insurance === null || undefined ? null : insurance, mode, action);
     this.ref = this.matDialog.open(InsuranceDialogComponent, data);
+    this.ref.afterClosed().subscribe(val => this.handleResult(val));
   }
 
-  prepareDialogData(width: string, obj: IPrestation | IAssurance | null | undefined, mode: number, action: string): MatDialogConfig {
+  openSnackBar(action: string, message: string | undefined) {
+    let config = this.prepareSnackBarData();
+    let m = String(message);
+
+    switch (action) {
+      case EndSheetLabelAction.ADD:
+        this.snackBar.open(m, undefined, config);
+        break;
+      case EndSheetLabelAction.EDIT:
+        this.snackBar.open(m, undefined, config);
+        break;
+      case EndSheetLabelAction.DELETE:
+        this.snackBar.open(m, undefined, config);
+        break;
+      default: break;
+    }
+  }
+
+  prepareBottomSheetData(obj: any | null | undefined, mode: number): MatBottomSheetConfig {
+    let config = new MatBottomSheetConfig();
+    let d = new DeleteItemBottomSheetData();
+
+    config.viewContainerRef = this.root;
+    d.mode = mode;
+    d.item = obj;
+    config.data = d;
+
+    return config;
+  }
+
+  prepareSnackBarData(): MatSnackBarConfig {
+    let config = new MatSnackBarConfig();
+    config.duration = 5000;
+
+    return config;
+  }
+
+  prepareDialogData(width: string, obj: any | null | undefined, mode: number, action: string): MatDialogConfig {
     let config = new MatDialogConfig();
     let elementRef = document.getElementById('app-right-sheet');
     let rect = elementRef?.getBoundingClientRect();
@@ -116,23 +195,26 @@ export class EndSheetComponent implements OnInit {
       right: String(rect?.right) + 'px',
     };
 
-    const MODES = ["add", "edit", "delete"];
+    const ACTIONS = ["add", "edit", "delete"];
     let o = null;
 
     switch (mode) {
       case 0x1:
         o = this.getInstance(ServiceDialogData);
+        o.currentService = obj as IPrestation;
         break;
       case 0x2:
         o = this.getInstance(ServiceProviderDialogData);
+        o.currentServiceProvider = obj as IPrestataire;
         break;
       case 0x3:
         o = this.getInstance(InsuranceDialogData);
+        o.currentInsurance = obj as IAssurance;
         break;
       default: break;
     }
 
-    if (o && MODES.includes(action)) {
+    if (o && ACTIONS.includes(action)) {
       switch (action) {
         case EndSheetLabelAction.ADD:
           o.add = true;
@@ -151,8 +233,6 @@ export class EndSheetComponent implements OnInit {
 
     return config;
   }
-
-  findActionByName(action: string) { }
 
   findLabelByName(name: string): number {
     let n = 0x0;
@@ -175,5 +255,31 @@ export class EndSheetComponent implements OnInit {
 
   getInstance<A extends BaseDialogData>(c: new () => A): A {
     return new c();
+  }
+
+  handleResult(val: any) {
+    let t = val as ExistElementEvent;
+
+    if (t) {
+      this.setupData();
+      this.successMessages
+        .subscribe(
+          val => {
+            let m = val.find(v => v.relatedTo === 'service');
+            switch (t.action) {
+              case EndSheetLabelAction.ADD:
+                this.openSnackBar(t.action, m?.added);
+                break;
+              case EndSheetLabelAction.EDIT:
+                this.openSnackBar(t.action, m?.edited);
+                break;
+              case EndSheetLabelAction.DELETE:
+                this.openSnackBar(t.action, m?.deleted);
+                break;
+              default: break;
+            }
+          }
+        );
+    }
   }
 }

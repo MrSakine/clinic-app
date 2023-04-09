@@ -1,0 +1,34 @@
+@use '../../lib/button/variable';
+@import '../../lib/button/base.scss';
+
+.btn-p {
+    text-transform: none;
+    width: fit-content;
+    height: 2.5em;
+    padding: .2em 1em;
+    margin-bottom: 1em;
+    align-self: flex-end;
+    background-color: variable.$primary-color-2;
+    border: 1px solid variable.$primary-color-2;
+    color: white;
+    font-weight: 500;
+    font-size: 1.2em;
+    transition: .3s;
+    border-radius: .3em;
+}
+
+.app-service-listview {
+    width: 100%;
+    height: auto;
+    margin: 2em 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.wrapper {
+    width: 100%;
+    height: 8em;
+    background-color: #FFFFFF;
+    position: relative;
+    margin-bottom: 2em;
+}
