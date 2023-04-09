@@ -1,0 +1,17 @@
+<ng-container>
+    <div class="app-delete-item">
+        <div class="app-delete-item-body">
+            <mat-icon>delete_forever</mat-icon>
+            <p>Supprimer ?</p>
+            <span>&#202;tes-vous s&#251;r de cet &eacute;lement ?</span>
+        </div>
+        <div class="app-delete-item-footer">
+            <button (click)="close()">
+                <span>Annuler</span>
+            </button>
+            <button (click)="delete()">
+                <span>Confirmer</span>
+            </button>
+        </div>
+    </div>
+</ng-container>

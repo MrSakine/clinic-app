@@ -1,0 +1,16 @@
+<ng-container>
+    <div class="app-service-list-item-left">
+        <div *ngIf="label === 'pres'">
+            <div class="d-flex">
+                <span>{{currentItem.type}}</span><span class="badge bg-secondary">Type de la prestation</span>
+            </div>
+            <div class="d-flex">
+                <span>{{currentItem.price}}&nbsp;<span>FCFA</span></span><span class="badge bg-secondary">Prix de la prestation</span>
+            </div>
+        </div>
+    </div>
+    <div class="app-service-list-item-right">
+        <mat-icon matTooltip="Modifier" matTooltipShowDelay="200" matRipple (click)="handleClick(label, 'edit')">edit</mat-icon>
+        <mat-icon matTooltip="Supprimer" matTooltipShowDelay="200" matRipple (click)="handleClick(label, 'delete')">delete</mat-icon>
+    </div>
+</ng-container>

@@ -1,0 +1,71 @@
+@use '../../../../lib/button/variable';
+
+p {
+    margin: 0;
+}
+
+mat-icon {
+    font-size: 5em;
+    width: fit-content;
+    height: fit-content;
+    margin-top: .1em;
+}
+
+.app-delete-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4em;
+}
+
+.app-delete-item-body {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}
+
+.app-delete-item-body p {
+    font-weight: bold;
+    font-size: 2em;
+    margin: auto;
+}
+
+.app-delete-item-body span {
+    font-size: 1.5em;
+    font-weight: 400;
+}
+
+.app-delete-item-footer {
+    height: 5em;
+    margin: 0 2em;
+    display: flex;
+    flex-direction: row;
+    gap: 1.5em;
+}
+
+.app-delete-item-footer button {
+    width: 45%;
+    height: 4.4em;
+}
+
+.app-delete-item-footer button:nth-child(1) {
+    padding: .5em .8em;
+    background-color: variable.$secondary-color;
+    border: 1px solid variable.$secondary-color;
+    transition: .3s;
+}
+
+.app-delete-item-footer button:nth-child(2) {
+    background-color: variable.$primary-color-2;
+    border: 1px solid variable.$primary-color-2;
+    padding: .5em .8em;
+    border-radius: .3em;
+}
+
+.app-delete-item-footer button span {
+    font-size: 1.8em;
+    font-weight: 500;
+    color: white;
+}
