@@ -21,10 +21,12 @@ import { EndSheetLabelAction } from 'src/app/core/_enums/end-sheet-label-action'
 import { ExistElementEvent } from 'src/app/core/_events/exist-element-event';
 import { MatBottomSheet, MatBottomSheetConfig, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { DeleteItemBottomSheetComponent } from './delete-item-bottom-sheet/delete-item-bottom-sheet.component';
-import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { SuccessMessageService } from 'src/app/core/_services/success-message.service';
 import { SuccessMessage } from 'src/app/core/_interfaces/success-message';
 import { DeleteItemBottomSheetData } from 'src/app/core/_bottom-sheet/delete-item-bottom-sheet-data';
+import { ConstraintMessageService } from 'src/app/core/_services/constraint-message.service';
+import { IConstraintMessage } from 'src/app/core/_interfaces/iconstraint-message';
 
 interface Help {
   icon: string;
@@ -51,6 +53,7 @@ export class EndSheetComponent implements OnInit {
   serviceProviders!: IPrestataire[];
   insurances!: IAssurance[];
   successMessages: Observable<SuccessMessage[]> = this.successMessageService.getAll();
+  constraintMessages: Observable<IConstraintMessage[]> = this.constraintMessageService.getAll();
 
   @ViewChild('ersh', { read: ViewContainerRef }) root!: ViewContainerRef;
 
@@ -61,6 +64,7 @@ export class EndSheetComponent implements OnInit {
     private bottomSheet: MatBottomSheet,
     private snackBar: MatSnackBar,
     private successMessageService: SuccessMessageService,
+    private constraintMessageService: ConstraintMessageService,
   ) {
     this.helpers.subscribe(
       val => {
@@ -81,7 +85,16 @@ export class EndSheetComponent implements OnInit {
         this.openServiceDialog(null, whichLabel, action);
         break;
       case 0x2:
-        this.openServiceProviderDialog(null, whichLabel, action);
+        this.constraintMessages.subscribe(
+          val => {
+            if (this.services.length <= 0) {
+              let m = val.find(v => v.relatedTo === 'service-provider');
+              this.openConstraintSnackBar(m?.message);
+            } else {
+              this.openServiceProviderDialog(null, whichLabel, action);
+            }
+          }
+        );
         break;
       case 0x3:
         this.openInsuranceDialog(null, whichLabel, action);
@@ -136,15 +149,28 @@ export class EndSheetComponent implements OnInit {
   }
 
   openServiceProviderDialog(serviceProvider: IPrestataire | null | undefined, mode: number, action: string) {
-    let data = this.prepareDialogData("30%", serviceProvider === null || undefined ? null : serviceProvider, mode, action);
-    this.ref = this.matDialog.open(ServiceProviderDialogComponent, data);
-    this.ref.afterClosed().subscribe(val => this.handleResult(val));
+    if (action === EndSheetLabelAction.ADD || action === EndSheetLabelAction.EDIT) {
+      let data = this.prepareDialogData("30%", serviceProvider === null || undefined ? null : serviceProvider, mode, action);
+      this.ref = this.matDialog.open(ServiceProviderDialogComponent, data);
+      this.ref.afterClosed().subscribe(val => this.handleResult(val));
+    } else {
+      let data = this.prepareBottomSheetData(serviceProvider === null || undefined ? null : serviceProvider, mode);
+      this.bottomSheetRef = this.bottomSheet.open(DeleteItemBottomSheetComponent, data);
+      this.bottomSheetRef.afterDismissed().subscribe(val => this.handleResult(val));
+    }
   }
 
   openInsuranceDialog(insurance: IAssurance | null | undefined, mode: number, action: string) {
     let data = this.prepareDialogData("30%", insurance === null || undefined ? null : insurance, mode, action);
     this.ref = this.matDialog.open(InsuranceDialogComponent, data);
     this.ref.afterClosed().subscribe(val => this.handleResult(val));
+  }
+
+  openConstraintSnackBar(message: string | undefined) {
+    let config = this.prepareSnackBarData();
+    let m = String(message);
+
+    this.snackBar.open(m, undefined, config);
   }
 
   openSnackBar(action: string, message: string | undefined) {
@@ -206,6 +232,7 @@ export class EndSheetComponent implements OnInit {
       case 0x2:
         o = this.getInstance(ServiceProviderDialogData);
         o.currentServiceProvider = obj as IPrestataire;
+        o.services = this.services;
         break;
       case 0x3:
         o = this.getInstance(InsuranceDialogData);
@@ -259,23 +286,57 @@ export class EndSheetComponent implements OnInit {
 
   handleResult(val: any) {
     let t = val as ExistElementEvent;
+    let m = null;
+    let item = null;
 
     if (t) {
       this.setupData();
       this.successMessages
         .subscribe(
           val => {
-            let m = val.find(v => v.relatedTo === 'service');
-            switch (t.action) {
-              case EndSheetLabelAction.ADD:
-                this.openSnackBar(t.action, m?.added);
+            switch (t.label) {
+              case EndSheetLabel.SERVICE:
+                m = val.find(v => v.relatedTo === 'service');
+                item = t.item as any;
+
+                switch (t.action) {
+                  case EndSheetLabelAction.ADD:
+                    this.openSnackBar(t.action, m?.added);
+                    break;
+                  case EndSheetLabelAction.EDIT:
+                    this.openSnackBar(t.action, m?.edited?.replace('%1$', String(item.currentService?.type)));
+                    break;
+                  case EndSheetLabelAction.DELETE:
+                    this.openSnackBar(t.action, m?.deleted?.replace('%1$', String(item.type)));
+                    break;
+                  default: break;
+                }
+
                 break;
-              case EndSheetLabelAction.EDIT:
-                this.openSnackBar(t.action, m?.edited);
+              case EndSheetLabel.SERVICE_PROVIDER:
+                m = val.find(v => v.relatedTo === 'service-provider');
+                item = t.item as any;
+                let text = null;
+                let sc = null;
+
+                switch (t.action) {
+                  case EndSheetLabelAction.ADD:
+                    this.openSnackBar(t.action, m?.added);
+                    break;
+                  case EndSheetLabelAction.EDIT:
+                    sc = (item as ServiceProviderDialogData);
+                    text = String(sc.currentServiceProvider?.surname) + ' ' + String(sc.currentServiceProvider?.name);
+                    this.openSnackBar(t.action, m?.edited?.replace('%1$', text));
+                    break;
+                  case EndSheetLabelAction.DELETE:
+                    sc = (item as IPrestataire);
+                    text = String(sc.surname) + ' ' + String(sc.name);
+                    this.openSnackBar(t.action, m?.deleted?.replace('%1$', text));
+                    break;
+                  default: break;
+                }
                 break;
-              case EndSheetLabelAction.DELETE:
-                this.openSnackBar(t.action, m?.deleted);
-                break;
+              case EndSheetLabel.INSURANCE: break;
               default: break;
             }
           }

@@ -29,16 +29,8 @@ export class DeleteItemBottomSheetComponent implements OnInit {
   }
 
   delete() {
-    switch (this.currentData.mode) {
-      case 0x1:
-        this.databaseService.delete(String(this.getCurrentMode(this.currentData.mode)), this.currentData.item);
-        break;
-      case 0x2: break;
-      case 0x3: break;
-      default: break;
-    }
-
-    this.bottomSheetRef.dismiss({ action: 'delete', label: this.currentData.mode, item: this.currentData.item });
+    this.databaseService.delete(String(this.getCurrentMode(this.currentData.mode)), this.currentData.item);
+    this.bottomSheetRef.dismiss({ action: 'delete', label: this.getCurrentMode(this.currentData.mode), item: this.currentData.item });
   }
 
   getCurrentMode(mode: number) {

@@ -8,7 +8,10 @@ export const SUCCESS_MESSAGES: SuccessMessage[] = [
         deleted: 'La prestation (%1$) a été supprimée avec succès'
     },
     {
-        relatedTo: 'service-provider'
+        relatedTo: 'service-provider',
+        added: 'Une nouvelle personne (prestatire) a été ajoutée avec succès',
+        edited: 'Le prestatire (%1$) a été modifié avec succès',
+        deleted: 'Le prestatire (%1$) a été supprimée avec succès'
     },
     {
         relatedTo: 'insurance'

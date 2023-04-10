@@ -21,9 +21,9 @@
                     (addEvent)="onNoElementComponentAddClickEvent($event)" label="prest" mode="show"
                     [icon]="prestataireHelp.icon" [title]="prestataireHelp.title" [content]="prestataireHelp.content"
                     [button]="prestataireHelp.button"></app-no-element>
-                <!-- <app-service-list-view *ngIf="serviceProviders !== undefined && serviceProviders.length > 0"
-                    (addEvent)="onNoElementComponentAddClickEvent($event)" label="prest"
-                    [data]="serviceProviders"></app-service-list-view> -->
+                <app-service-list-view *ngIf="serviceProviders !== undefined && serviceProviders.length > 0"
+                    (addEvent)="onNoElementComponentAddClickEvent($event)" label="prest" [data]="serviceProviders"
+                    (event)="onListViewEvent($event)"></app-service-list-view>
             </mat-tab>
             <mat-tab label="Assurances">
                 <app-no-element *ngIf="insurances !== undefined && insurances.length <= 0"

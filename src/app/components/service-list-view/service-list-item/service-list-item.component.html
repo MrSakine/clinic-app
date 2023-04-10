@@ -5,12 +5,24 @@
                 <span>{{currentItem.type}}</span><span class="badge bg-secondary">Type de la prestation</span>
             </div>
             <div class="d-flex">
-                <span>{{currentItem.price}}&nbsp;<span>FCFA</span></span><span class="badge bg-secondary">Prix de la prestation</span>
+                <span>{{currentItem.price}}&nbsp;<span>FCFA</span></span><span class="badge bg-secondary">Prix de la
+                    prestation</span>
+            </div>
+        </div>
+        <div *ngIf="label === 'prest'">
+            <div class="d-flex">
+                <span>{{currentItem.surname + ' ' + currentItem.name}}</span><span class="badge bg-secondary">Nom complet
+                    de la personne</span>
+            </div>
+            <div class="d-flex">
+                <span>{{currentItem.service}}&nbsp;</span><span class="badge bg-secondary">Service de la personne</span>
             </div>
         </div>
     </div>
     <div class="app-service-list-item-right">
-        <mat-icon matTooltip="Modifier" matTooltipShowDelay="200" matRipple (click)="handleClick(label, 'edit')">edit</mat-icon>
-        <mat-icon matTooltip="Supprimer" matTooltipShowDelay="200" matRipple (click)="handleClick(label, 'delete')">delete</mat-icon>
+        <mat-icon matTooltip="Modifier" matTooltipShowDelay="200" matRipple
+            (click)="handleClick(label, 'edit')">edit</mat-icon>
+        <mat-icon matTooltip="Supprimer" matTooltipShowDelay="200" matRipple
+            (click)="handleClick(label, 'delete')">delete</mat-icon>
     </div>
 </ng-container>
