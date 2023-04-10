@@ -53,6 +53,7 @@ export class DatabaseService {
 
   create<T extends Base>(mode: string, value: T) {
     let table = this.getDocument();
+    let id = 1;
 
     table
       .then(
@@ -63,13 +64,15 @@ export class DatabaseService {
           switch (mode) {
             case EndSheetLabel.SERVICE:
               let obj: Service = value as unknown as Service;
-              tmp.services.push({ type: obj.type, price: obj.price });
+              id = this.getID(id, tmp.services);
+              tmp.services.push({ id: id, type: obj.type, price: obj.price });
 
               this.database.put(tmp);
               break;
             case EndSheetLabel.SERVICE_PROVIDER:
               let obj1: ServiceProvider = value as unknown as ServiceProvider;
-              tmp.serviceProviders.push({ name: obj1.firstname, surname: obj1.lastname, service: obj1.service });
+              id = this.getID(id, tmp.serviceProviders);
+              tmp.serviceProviders.push({ id: id, name: obj1.lastname, surname: obj1.firstname, service: obj1.service });
 
               this.database.put(tmp);
               break;
@@ -93,12 +96,18 @@ export class DatabaseService {
           switch (mode) {
             case EndSheetLabel.SERVICE:
               let obj: Service = value as unknown as Service;
-              let foundItem = tmp.services.findIndex(v => v.type === obj.type);
+              let foundItem = tmp.services.findIndex(v => v.id === obj.id);
               tmp.services[foundItem] = obj;
 
               this.database.put(tmp);
               break;
-            case EndSheetLabel.SERVICE_PROVIDER: break;
+            case EndSheetLabel.SERVICE_PROVIDER:
+              let obj1: ServiceProvider = value as unknown as ServiceProvider;
+              let foundItem1 = tmp.serviceProviders.findIndex(v => v.id === obj1.id);
+              tmp.serviceProviders[foundItem1] = { id: obj1.id, name: obj1.lastname, surname: obj1.firstname, service: obj1.service };
+
+              this.database.put(tmp);
+              break;
             case EndSheetLabel.INSURANCE: break;
             default: break;
           }
@@ -119,18 +128,35 @@ export class DatabaseService {
           switch (mode) {
             case EndSheetLabel.SERVICE:
               let obj: Service = value as unknown as Service;
-              let el = tmp.services.filter(v => v.type !== obj.type);
+              let el = tmp.services.filter(v => v.id !== obj.id);
               tmp.services = el;
 
               this.database.put(tmp);
               break;
-            case EndSheetLabel.SERVICE_PROVIDER: break;
+            case EndSheetLabel.SERVICE_PROVIDER:
+              let ob1: ServiceProvider = value as unknown as ServiceProvider;
+              let el1 = tmp.serviceProviders.filter(v => v.id !== ob1.id);
+              tmp.serviceProviders = el1;
+
+              this.database.put(tmp);
+              break;
             case EndSheetLabel.INSURANCE: break;
             default: break;
           }
         }
       )
       .catch(err => console.error(err));
+  }
+
+  getID(start: number, arr: any[]) {
+    let id = start;
+
+    if (arr.length > 0) {
+      let lastEl = arr[arr.length - 1];
+      id += lastEl.id;
+    }
+
+    return id;
   }
 }
 

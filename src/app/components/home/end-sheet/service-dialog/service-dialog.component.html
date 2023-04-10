@@ -10,7 +10,10 @@
             <mat-form-field appearance="fill" class="full-width">
                 <mat-label>Type de la prestation</mat-label>
                 <input type="text" name="type" id="type" matInput required formControlName="type" />
-                <mat-hint>Exemple: Radio</mat-hint>
+                <mat-hint *ngIf="!showTypeError">Exemple: Radio</mat-hint>
+                <mat-hint *ngIf="showTypeError" class="text-danger">
+                    <span>Vous avez d&eacute;j&agrave; une prestation de ce genre</span>
+                </mat-hint>
             </mat-form-field>
             <mat-form-field appearance="fill" class="full-width">
                 <mat-label>Prix de la prestation</mat-label>

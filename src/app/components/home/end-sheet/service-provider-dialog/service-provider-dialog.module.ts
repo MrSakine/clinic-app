@@ -7,6 +7,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { LoaderModule } from 'src/app/components/loader/loader.module';
 
 @NgModule({
   declarations: [ServiceProviderDialogComponent],
@@ -19,6 +21,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatSelectModule,
     MatButtonModule,
     MatInputModule,
+    MatSnackBarModule,
+    LoaderModule,
   ],
   exports: [ServiceProviderDialogComponent]
 })
