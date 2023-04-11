@@ -161,9 +161,15 @@ export class EndSheetComponent implements OnInit {
   }
 
   openInsuranceDialog(insurance: IAssurance | null | undefined, mode: number, action: string) {
-    let data = this.prepareDialogData("30%", insurance === null || undefined ? null : insurance, mode, action);
-    this.ref = this.matDialog.open(InsuranceDialogComponent, data);
-    this.ref.afterClosed().subscribe(val => this.handleResult(val));
+    if (action === EndSheetLabelAction.ADD || action === EndSheetLabelAction.EDIT) {
+      let data = this.prepareDialogData("30%", insurance === null || undefined ? null : insurance, mode, action);
+      this.ref = this.matDialog.open(InsuranceDialogComponent, data);
+      this.ref.afterClosed().subscribe(val => this.handleResult(val));
+    } else {
+      let data = this.prepareBottomSheetData(insurance === null || undefined ? null : insurance, mode);
+      this.bottomSheetRef = this.bottomSheet.open(DeleteItemBottomSheetComponent, data);
+      this.bottomSheetRef.afterDismissed().subscribe(val => this.handleResult(val));
+    }
   }
 
   openConstraintSnackBar(message: string | undefined) {
@@ -336,7 +342,29 @@ export class EndSheetComponent implements OnInit {
                   default: break;
                 }
                 break;
-              case EndSheetLabel.INSURANCE: break;
+              case EndSheetLabel.INSURANCE:
+                m = val.find(v => v.relatedTo === 'insurance');
+                item = t.item as any;
+                let name = null;
+                let ins = null;
+
+                switch (t.action) {
+                  case EndSheetLabelAction.ADD:
+                    this.openSnackBar(t.action, m?.added);
+                    break;
+                  case EndSheetLabelAction.EDIT:
+                    ins = (item as InsuranceDialogData);
+                    name = String(ins.currentInsurance?.name);
+                    this.openSnackBar(t.action, m?.edited?.replace('%1$', name));
+                    break;
+                  case EndSheetLabelAction.DELETE:
+                    ins = (item as IAssurance);
+                    name = String(ins.name);
+                    this.openSnackBar(t.action, m?.deleted?.replace('%1$', name));
+                    break;
+                  default: break;
+                }
+                break;
               default: break;
             }
           }

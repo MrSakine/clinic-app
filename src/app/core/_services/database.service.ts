@@ -76,7 +76,13 @@ export class DatabaseService {
 
               this.database.put(tmp);
               break;
-            case EndSheetLabel.INSURANCE: break;
+            case EndSheetLabel.INSURANCE:
+              let obj2: Insurance = value as unknown as Insurance;
+              id = this.getID(id, tmp.insurances);
+              tmp.insurances.push({ id: id, name: obj2.name, percentage: obj2.percentage });
+
+              this.database.put(tmp);
+              break;
             default: break;
           }
         }
@@ -108,7 +114,13 @@ export class DatabaseService {
 
               this.database.put(tmp);
               break;
-            case EndSheetLabel.INSURANCE: break;
+            case EndSheetLabel.INSURANCE:
+              let obj2: Insurance = value as unknown as Insurance;
+              let foundItem2 = tmp.insurances.findIndex(v => v.id === obj2.id);
+              tmp.insurances[foundItem2] = { id: obj2.id, name: obj2.name, percentage: obj2.percentage };
+
+              this.database.put(tmp);
+              break;
             default: break;
           }
         }
@@ -140,7 +152,13 @@ export class DatabaseService {
 
               this.database.put(tmp);
               break;
-            case EndSheetLabel.INSURANCE: break;
+            case EndSheetLabel.INSURANCE:
+              let ob2: Insurance = value as unknown as Insurance;
+              let el2 = tmp.insurances.filter(v => v.id !== ob2.id);
+              tmp.insurances = el2;
+
+              this.database.put(tmp);
+              break;
             default: break;
           }
         }
