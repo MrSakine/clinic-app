@@ -30,6 +30,9 @@
                     (addEvent)="onNoElementComponentAddClickEvent($event)" label="ins" mode="show"
                     [icon]="insuranceHelp.icon" [title]="insuranceHelp.title" [content]="insuranceHelp.content"
                     [button]="insuranceHelp.button"></app-no-element>
+                <app-service-list-view *ngIf="insurances !== undefined && insurances.length > 0"
+                    (addEvent)="onNoElementComponentAddClickEvent($event)" label="ins" [data]="insurances"
+                    (event)="onListViewEvent($event)"></app-service-list-view>
             </mat-tab>
         </mat-tab-group>
     </div>

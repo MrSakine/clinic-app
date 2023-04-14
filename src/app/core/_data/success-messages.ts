@@ -14,6 +14,9 @@ export const SUCCESS_MESSAGES: SuccessMessage[] = [
         deleted: 'Le prestatire (%1$) a été supprimée avec succès'
     },
     {
-        relatedTo: 'insurance'
+        relatedTo: 'insurance',
+        added: 'Une nouvelle assurance a été ajoutée avec succès',
+        edited: 'L\'assurance (%1$) a été modifiée avec succès',
+        deleted: 'L\'assurance (%1$) a été supprimée avec succès'
     }
 ];
