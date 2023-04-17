@@ -1,6 +1,9 @@
 <div id="app-left-side">
-    <div class="app-left-side-container"></div>
-    <div class="app-left-side-footer">
+    <div class="app-left-side-container">
+        <app-switcher *ngIf="showSwitcher"></app-switcher>
+        <app-startup-step *ngIf="!showSwitcher" (buttonClick)="startupMenuEvent($event)"></app-startup-step>
+    </div>
+    <div class="app-left-side-footer" *ngIf="showSwitcher">
         <div class="flex-wrapper">
             <app-secondary-button [text]="'Annuler'"></app-secondary-button>
             <app-primary-button text="Suivant" type="text"></app-primary-button>

@@ -14,6 +14,8 @@ import { ServiceProvider } from '../_classes/service-provider';
 import { Insurance } from '../_classes/insurance';
 import { Base } from '../_classes/base';
 import { EndSheetLabel } from '../_enums/end-sheet-label';
+import { Cashier } from '../_classes/cashier';
+import { ICashier } from '../_interfaces/icashier';
 
 const PATH = "/assets/data.json";
 
@@ -36,7 +38,8 @@ export class DatabaseService {
           "_id": "cla",
           "services": [],
           "serviceProviders": [],
-          "insurances": []
+          "insurances": [],
+          "cashiers": []
         };
 
         this.database.put(doc);
@@ -83,6 +86,13 @@ export class DatabaseService {
 
               this.database.put(tmp);
               break;
+            case EndSheetLabel.CASHIER:
+              let obj3: Cashier = value as unknown as Cashier;
+              id = this.getID(id, tmp.cashiers);
+              tmp.cashiers.push(obj3);
+
+              this.database.put(tmp);
+              break;
             default: break;
           }
         }
@@ -121,6 +131,13 @@ export class DatabaseService {
 
               this.database.put(tmp);
               break;
+            case EndSheetLabel.CASHIER:
+              let obj3 : Cashier = value as unknown as Cashier;
+              let foundItem3 = tmp.cashiers.findIndex(v => v.id === obj3.id);
+              tmp.cashiers[foundItem3] = obj3;
+
+              this.database.put(tmp);
+              break;
             default: break;
           }
         }
@@ -156,6 +173,13 @@ export class DatabaseService {
               let ob2: Insurance = value as unknown as Insurance;
               let el2 = tmp.insurances.filter(v => v.id !== ob2.id);
               tmp.insurances = el2;
+
+              this.database.put(tmp);
+              break;
+            case EndSheetLabel.CASHIER:
+              let ob3: Cashier = value as unknown as Cashier;
+              let el3 = tmp.cashiers.filter(v => v.id !== ob3.id);
+              tmp.cashiers = el3;
 
               this.database.put(tmp);
               break;

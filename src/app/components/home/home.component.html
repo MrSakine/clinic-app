@@ -1,6 +1,6 @@
 <mat-drawer-container [hasBackdrop]="hasBackDrop">
     <mat-drawer #drawer [mode]="mode" position="end">
-        <app-end-sheet></app-end-sheet>
+        <app-end-sheet (refreshData)="handleRefreshEvent($event)"></app-end-sheet>
     </mat-drawer>
     <mat-drawer-content>
         <div class="app-home">
@@ -9,7 +9,7 @@
             </div>
             <div class="app-container">
                 <div class="app-container-left">
-                    <app-left-side></app-left-side>
+                    <app-left-side (showMenu)="handleMenuClickEvent($event)"></app-left-side>
                 </div>
                 <div class="app-container-right">
                     <app-right-side></app-right-side>

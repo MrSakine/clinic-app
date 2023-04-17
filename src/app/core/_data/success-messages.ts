@@ -18,5 +18,11 @@ export const SUCCESS_MESSAGES: SuccessMessage[] = [
         added: 'Une nouvelle assurance a été ajoutée avec succès',
         edited: 'L\'assurance (%1$) a été modifiée avec succès',
         deleted: 'L\'assurance (%1$) a été supprimée avec succès'
+    },
+    {
+        relatedTo: 'cashier',
+        added: 'Un nouveeau cassier a été ajouté avec succès',
+        edited: 'Le cassier (%1$) a été modifié avec succès',
+        deleted: 'Le cassier (%1$) a été supprimé avec succès'
     }
 ];

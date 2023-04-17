@@ -59,6 +59,8 @@ export class ServiceDialogComponent implements OnInit {
     if (this.serviceFormGroup.invalid || this.showPriceError || this.showTypeError) {
       this.showSpinnerProgress = false;
       return;
+    } else if (this.showPriceError || this.showTypeError) {
+      return;
     } else {
       if (this.currentData.add) {
         this.databaseService.create(EndSheetLabel.SERVICE, data);

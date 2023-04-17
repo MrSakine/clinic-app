@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { EndSheetLabel } from 'src/app/core/_enums/end-sheet-label';
 import { ExistElementEvent } from 'src/app/core/_events/exist-element-event';
 import { IAssurance } from 'src/app/core/_interfaces/iassurance';
+import { ICashier } from 'src/app/core/_interfaces/icashier';
 import { IPrestataire } from 'src/app/core/_interfaces/iprestataire';
 import { IPrestation } from 'src/app/core/_interfaces/iprestation';
 
@@ -48,6 +49,9 @@ export class ServiceListItemComponent implements OnInit, OnChanges {
         break;
       case EndSheetLabel.INSURANCE:
         this.currentItem = this.currentItem as IAssurance;
+        break;
+      case EndSheetLabel.CASHIER:
+        this.currentItem = this.currentItem as ICashier;
         break;
       default: break;
     }

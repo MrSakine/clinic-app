@@ -41,6 +41,8 @@ export class DeleteItemBottomSheetComponent implements OnInit {
         return EndSheetLabel.SERVICE_PROVIDER;
       case 0x3:
         return EndSheetLabel.INSURANCE;
+      case 0x4:
+        return EndSheetLabel.CASHIER;
       default:
         return null;
     }

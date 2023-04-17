@@ -3,6 +3,7 @@ import { EndSheetLabel } from 'src/app/core/_enums/end-sheet-label';
 import { ExistElementEvent } from 'src/app/core/_events/exist-element-event';
 import { NoElementEvent } from 'src/app/core/_events/no-element-event';
 import { IAssurance } from 'src/app/core/_interfaces/iassurance';
+import { ICashier } from 'src/app/core/_interfaces/icashier';
 import { IPrestataire } from 'src/app/core/_interfaces/iprestataire';
 import { IPrestation } from 'src/app/core/_interfaces/iprestation';
 
@@ -50,6 +51,9 @@ export class ServiceListViewComponent implements OnInit, OnChanges {
         break;
       case EndSheetLabel.INSURANCE:
         this.currentItems = this.currentItems as IAssurance[];
+        break;
+      case EndSheetLabel.CASHIER:
+        this.currentItems = this.currentItems as ICashier[];
         break;
       default: break;
     }

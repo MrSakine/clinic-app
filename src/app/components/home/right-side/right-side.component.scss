@@ -1,9 +1,121 @@
+div {
+    background-color: #DBE1E8;
+    width: 100%;
+    height: auto;
+}
+
 #app-right-side {
     background-color: #FFFFFF;
     border: 1px solid rgba($color: #000000, $alpha: 1.0);
     width: 95%;
     height: 100em;
     margin: 2em 0;
+    padding: 2em;
     box-shadow: 0px 0px 7px 4px rgba(0, 0, 0, 0.75);
     -webkit-box-shadow: 0px 0px 7px 4px rgba(0, 0, 0, 0.75);
+}
+
+div.app-right-side-body {
+    width: 100%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    margin: 2em 0;
+    background: none;
+
+    div.app-page-number {
+        height: 3em;
+        background: none;
+
+        span {
+            display: flex;
+            flex-direction: row-reverse;
+            font-size: 1.5em;
+            font-weight: 400;
+            color: #000000;
+        }
+    }
+
+    div.app-logo {
+        height: 5em;
+        background: none;
+
+        div.app-logo-wrapper {
+            width: 5em;
+            height: 5em;
+            background: none;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+
+    div.app-main-title {
+        height: 4em;
+        background: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        p {
+            font-size: 2em;
+            font-weight: bold;
+            color: #000000;
+        }
+    }
+
+    div.app-patient-info {
+        height: 12em;
+        font-size: 1.2em;
+        background: none;
+
+        div.app-patient-info-item {
+            width: 100%;
+            height: 2.5em;
+            background: none;
+
+            div.app-patient-info-wrapper {
+                display: flex;
+                position: relative;
+                background: none;
+
+                div.app-patient-info-wrapper-key {
+                    position: absolute;
+                    left: 0;
+                    display: flex;
+                    flex-grow: 1;
+                    background: none;
+
+                    span:nth-child(1) {
+                        text-decoration: underline;
+                    }
+                }
+
+                div.app-patient-info-wrapper-value {
+                    position: absolute;
+                    right: 0;
+                    width: fit-content;
+                    background: none;
+
+                    span:nth-child(1) {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+
+    div.app-table-container {
+        background: none;
+    }
+}
+
+div.app-right-side-footer {
+    width: 100%;
+    height: calc(25%);
+    // background: none;
 }

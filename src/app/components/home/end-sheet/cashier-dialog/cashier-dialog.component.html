@@ -1,0 +1,32 @@
+<ng-container *ngIf="currentData.add || currentData.edit">
+    <div class="modal-header">
+        <h2 *ngIf="currentData.add" mat-dialog-title>Ajouter un cassier</h2>
+        <h2 *ngIf="currentData.edit" mat-dialog-title>Modifier un cassier</h2>
+        <button mat-button mat-dialog-close>X</button>
+    </div>
+    <hr>
+    <form action="#" method="POST" class="modal-form" [formGroup]="cashierFormGroup" (ngSubmit)="saveData()">
+        <mat-dialog-content class="modal-body">
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Pr&eacute;nom de la personne</mat-label>
+                <input type="text" name="given-name" id="given-name" maxlength="50" matInput required formControlName="firstname" />
+                <mat-hint>Exemple: Fily Mohamed</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Nom de la personne</mat-label>
+                <input type="text" name="name" id="name" matInput maxlength="50" required formControlName="lastname" />
+                <mat-hint>Exemple: Sakine</mat-hint>
+            </mat-form-field>
+        </mat-dialog-content>
+        <mat-dialog-actions align="start" *ngIf="showExistence">
+            <span class="alert alert-danger">Cette personne a d&eacute;j&agrave; &eacute;t&eacute;
+                enregistr&eacute;</span>
+        </mat-dialog-actions>
+        <mat-dialog-actions align="end">
+            <button type="submit" class="button-base primary-w">
+                <app-loader [showSpinnerProgress]="showSpinnerProgress"></app-loader>
+                <span>Valider</span>
+            </button>
+        </mat-dialog-actions>
+    </form>
+</ng-container>
