@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { IPrestation } from 'src/app/core/_interfaces/iprestation';
 import { IAssurance } from '../../../core/_interfaces/iassurance';
 import { NoElementEvent } from 'src/app/core/_events/no-element-event';
@@ -27,6 +27,9 @@ import { SuccessMessage } from 'src/app/core/_interfaces/success-message';
 import { DeleteItemBottomSheetData } from 'src/app/core/_bottom-sheet/delete-item-bottom-sheet-data';
 import { ConstraintMessageService } from 'src/app/core/_services/constraint-message.service';
 import { IConstraintMessage } from 'src/app/core/_interfaces/iconstraint-message';
+import { ICashier } from 'src/app/core/_interfaces/icashier';
+import { CashierDialogData } from 'src/app/core/_dialog-data/cashier-dialog-data';
+import { CashierDialogComponent } from './cashier-dialog/cashier-dialog.component';
 
 interface Help {
   icon: string;
@@ -46,16 +49,19 @@ export class EndSheetComponent implements OnInit {
   prestationHelp!: Help;
   prestataireHelp!: Help;
   insuranceHelp!: Help;
+  cashierHelp!: Help;
 
-  ref!: MatDialogRef<ServiceDialogComponent | ServiceProviderDialogComponent | InsuranceDialogComponent>;
+  ref!: MatDialogRef<any>;
   bottomSheetRef!: MatBottomSheetRef<DeleteItemBottomSheetComponent>;
   services!: IPrestation[];
   serviceProviders!: IPrestataire[];
   insurances!: IAssurance[];
+  cashiers!: any[];
   successMessages: Observable<SuccessMessage[]> = this.successMessageService.getAll();
   constraintMessages: Observable<IConstraintMessage[]> = this.constraintMessageService.getAll();
 
   @ViewChild('ersh', { read: ViewContainerRef }) root!: ViewContainerRef;
+  @Output() refreshData: EventEmitter<any> = new EventEmitter();
 
   constructor(
     private helperService: HelperService,
@@ -71,6 +77,7 @@ export class EndSheetComponent implements OnInit {
         this.prestationHelp = val.find(v => v.icon === HelperIcon.SERVICE) as Help;
         this.prestataireHelp = val.find(v => v.icon === HelperIcon.SERVICE_PROVIDER) as Help;
         this.insuranceHelp = val.find(v => v.icon === HelperIcon.INSURANCE) as Help;
+        this.cashierHelp = val.find(v => v.icon === HelperIcon.CASHIER) as Help;
       }
     );
   }
@@ -99,6 +106,9 @@ export class EndSheetComponent implements OnInit {
       case 0x3:
         this.openInsuranceDialog(null, whichLabel, action);
         break;
+      case 0x4:
+        this.openCashierDialog(null, whichLabel, action);
+        break;
       default: break;
     }
   }
@@ -118,6 +128,9 @@ export class EndSheetComponent implements OnInit {
       case 0x3:
         this.openInsuranceDialog(event.item, whichLabel, action);
         break;
+      case 0x4:
+        this.openCashierDialog(event.item, whichLabel, action);
+        break;
       default: break;
     }
   }
@@ -132,6 +145,7 @@ export class EndSheetComponent implements OnInit {
         this.services = doc.services;
         this.serviceProviders = doc.serviceProviders;
         this.insurances = doc.insurances;
+        this.cashiers = doc.cashiers;
       })
       .catch(err => console.error(err));
   }
@@ -167,6 +181,18 @@ export class EndSheetComponent implements OnInit {
       this.ref.afterClosed().subscribe(val => this.handleResult(val));
     } else {
       let data = this.prepareBottomSheetData(insurance === null || undefined ? null : insurance, mode);
+      this.bottomSheetRef = this.bottomSheet.open(DeleteItemBottomSheetComponent, data);
+      this.bottomSheetRef.afterDismissed().subscribe(val => this.handleResult(val));
+    }
+  }
+
+  openCashierDialog(cashier: ICashier | null | undefined, mode: number, action: string) {
+    if (action === EndSheetLabelAction.ADD || action === EndSheetLabelAction.EDIT) {
+      let data = this.prepareDialogData("30%", cashier === null || undefined ? null : cashier, mode, action);
+      this.ref = this.matDialog.open(CashierDialogComponent, data);
+      this.ref.afterClosed().subscribe(val => this.handleResult(val));
+    } else {
+      let data = this.prepareBottomSheetData(cashier === null || undefined ? null : cashier, mode);
       this.bottomSheetRef = this.bottomSheet.open(DeleteItemBottomSheetComponent, data);
       this.bottomSheetRef.afterDismissed().subscribe(val => this.handleResult(val));
     }
@@ -244,6 +270,10 @@ export class EndSheetComponent implements OnInit {
         o = this.getInstance(InsuranceDialogData);
         o.currentInsurance = obj as IAssurance;
         break;
+      case 0x4:
+        o = this.getInstance(CashierDialogData);
+        o.currentCashier = obj as ICashier;
+        break;
       default: break;
     }
 
@@ -279,6 +309,9 @@ export class EndSheetComponent implements OnInit {
         break;
       case EndSheetLabel.INSURANCE:
         n = 0x3;
+        break;
+      case EndSheetLabel.CASHIER:
+        n = 0x4;
         break;
       default: break;
     }
@@ -365,10 +398,35 @@ export class EndSheetComponent implements OnInit {
                   default: break;
                 }
                 break;
+              case EndSheetLabel.CASHIER:
+                m = val.find(v => v.relatedTo === 'cashier');
+                item = t.item as any;
+                let fullname = null;
+                let cashier = null;
+
+                switch (t.action) {
+                  case EndSheetLabelAction.ADD:
+                    this.openSnackBar(t.action, m?.added);
+                    break;
+                  case EndSheetLabelAction.EDIT:
+                    cashier = (item as CashierDialogData);
+                    fullname = String(cashier.currentCashier?.firstname) + ' ' + String(cashier.currentCashier?.lastname);
+                    this.openSnackBar(t.action, m?.edited?.replace('%1$', fullname));
+                    break;
+                  case EndSheetLabelAction.DELETE:
+                    cashier = (item as ICashier);
+                    fullname = String(cashier.firstname) + ' ' + String(cashier.lastname);
+                    this.openSnackBar(t.action, m?.deleted?.replace('%1$', fullname));
+                    break;
+                  default: break;
+                }
+                break;
               default: break;
             }
           }
         );
+
+      this.refreshData.emit(true);
     }
   }
 }

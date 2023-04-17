@@ -18,5 +18,11 @@ export const RIGHT_SHEET_HELPERS: Help[] = [
         title: 'Gérer vos assurances',
         content: 'Commencez à ajouter les assurances supportées par votre clinique',
         button: 'Ajouter une assurance'
+    },
+    {
+        icon: 'inventory_2',
+        title: 'Gérer vos caissiers',
+        content: 'Commencez à ajouter les caissiers de votre clinique',
+        button: 'Ajouter un cassier'
     }
 ];

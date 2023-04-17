@@ -12,6 +12,7 @@ import { ServiceProviderDialogModule } from './service-provider-dialog/service-p
 import { InsuranceDialogModule } from './insurance-dialog/insurance-dialog.module';
 import { ServiceListViewModule } from '../../service-list-view/service-list-view.module';
 import { DeleteItemBottomSheetModule } from './delete-item-bottom-sheet/delete-item-bottom-sheet.module';
+import { CashierDialogModule } from './cashier-dialog/cashier-dialog.module';
 
 @NgModule({
   declarations: [EndSheetComponent],
@@ -25,6 +26,7 @@ import { DeleteItemBottomSheetModule } from './delete-item-bottom-sheet/delete-i
     ServiceDialogModule,
     ServiceProviderDialogModule,
     InsuranceDialogModule,
+    CashierDialogModule,
     ServiceListViewModule,
     DeleteItemBottomSheetModule,
   ],

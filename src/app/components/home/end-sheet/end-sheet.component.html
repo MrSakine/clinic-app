@@ -34,6 +34,15 @@
                     (addEvent)="onNoElementComponentAddClickEvent($event)" label="ins" [data]="insurances"
                     (event)="onListViewEvent($event)"></app-service-list-view>
             </mat-tab>
+            <mat-tab label="Caissiers">
+                <app-no-element *ngIf="cashiers !== undefined && cashiers.length <= 0"
+                    (addEvent)="onNoElementComponentAddClickEvent($event)" label="cashier" mode="show"
+                    [icon]="cashierHelp.icon" [title]="cashierHelp.title" [content]="cashierHelp.content"
+                    [button]="cashierHelp.button"></app-no-element>
+                <app-service-list-view *ngIf="cashiers !== undefined && cashiers.length > 0"
+                    (addEvent)="onNoElementComponentAddClickEvent($event)" label="cashier" [data]="cashiers"
+                    (event)="onListViewEvent($event)"></app-service-list-view>
+            </mat-tab>
         </mat-tab-group>
     </div>
 </div>

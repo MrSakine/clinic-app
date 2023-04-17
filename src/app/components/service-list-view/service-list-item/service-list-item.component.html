@@ -28,6 +28,15 @@
                     couverte par l'assurance</span>
             </div>
         </div>
+        <div *ngIf="label === 'cashier'">
+            <div class="d-flex">
+                <span>{{currentItem.firstname}}</span><span class="badge bg-secondary">Pr&eacute;nom de la
+                    personne</span>
+            </div>
+            <div class="d-flex">
+                <span>{{currentItem.lastname}}</span><span class="badge bg-secondary">Nom de la personne</span>
+            </div>
+        </div>
     </div>
     <div class="app-service-list-item-right">
         <mat-icon matTooltip="Modifier" matTooltipShowDelay="200" matRipple
