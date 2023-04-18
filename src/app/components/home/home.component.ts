@@ -46,5 +46,9 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  handleRefreshEvent(e: any) { }
+  handleRefreshEvent(e: any) {
+    if (e) {
+      this.setupData();
+    }
+  }
 }

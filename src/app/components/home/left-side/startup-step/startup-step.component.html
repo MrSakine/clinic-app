@@ -2,8 +2,31 @@
     <img src="../../../../../assets/svg/info-circle-svgrepo-com.svg" alt="Info">
     <h1>Information avant utilisation</h1>
     <div class="ass-body">
-        <span>Avant de commencer &agrave; utiliser ce syst&egrave;me,&nbsp;</span>
-        <span>veuillez ajouter au moins une prestation, un prestatire et un caissier</span>
+        <p>Avant de commencer &agrave; utiliser ce syst&egrave;me,&nbsp;</p>
+        <p>veuillez ajouter au moins une <span
+                [ngClass]="{'st': services !== undefined && services.length > 0}">prestation</span>, un
+            <span [ngClass]="{'st': serviceProviders !== undefined && serviceProviders.length > 0}">prestatire</span> et
+            un
+            <span [ngClass]="{'st': cashiers !== undefined && cashiers.length > 0}">caissier</span>
+        </p>
     </div>
-    <button type="button" class="btn btn-secondary btn-lg" (click)="onButtonClick()">Commencer</button>
+    <div class="ass-body" *ngIf="
+    (services !== undefined && services.length > 0) &&
+    (serviceProviders !== undefined && serviceProviders.length > 0) &&
+    (cashiers !== undefined && cashiers.length > 0)">
+        <p>Merci d'avoir mis en place le minimum pour l'utilisation de ce syst&egrave;me</p>
+    </div>
+    <button type="button" class="btn btn-secondary btn-lg" (click)="onButtonClick()" *ngIf="
+    (services !== undefined && services.length <= 0) &&
+    (serviceProviders !== undefined && serviceProviders.length <= 0) &&
+    (cashiers !== undefined && cashiers.length <= 0) ||
+    (this.services !== undefined && this.services.length <= 0) ||
+    (this.serviceProviders !== undefined && this.serviceProviders.length <= 0) ||
+    (this.cashiers !== undefined && this.cashiers.length <= 0)">Commencer</button>
+    <button type="button" class="btn btn-secondary btn-lg" *ngIf="
+    (services !== undefined && services.length > 0) &&
+    (serviceProviders !== undefined && serviceProviders.length > 0) &&
+    (cashiers !== undefined && cashiers.length > 0)" (click)="startUsing()">
+        <span>Commencez &agrave; utiliser</span>
+    </button>
 </div>
