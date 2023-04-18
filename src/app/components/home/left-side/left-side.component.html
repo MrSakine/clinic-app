@@ -1,7 +1,8 @@
 <div id="app-left-side">
     <div class="app-left-side-container">
         <app-switcher *ngIf="showSwitcher"></app-switcher>
-        <app-startup-step *ngIf="!showSwitcher" (buttonClick)="startupMenuEvent($event)"></app-startup-step>
+        <app-startup-step *ngIf="!showSwitcher" (buttonClick)="startupMenuEvent($event)" (startUse)="handleSwitcher()"
+            [services]="services" [serviceProviders]="serviceProviders" [cashiers]="cashiers"></app-startup-step>
     </div>
     <div class="app-left-side-footer" *ngIf="showSwitcher">
         <div class="flex-wrapper">
