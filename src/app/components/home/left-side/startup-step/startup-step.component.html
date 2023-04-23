@@ -16,17 +16,5 @@
     (cashiers !== undefined && cashiers.length > 0)">
         <p>Merci d'avoir mis en place le minimum pour l'utilisation de ce syst&egrave;me</p>
     </div>
-    <button type="button" class="btn btn-secondary btn-lg" (click)="onButtonClick()" *ngIf="
-    (services !== undefined && services.length <= 0) &&
-    (serviceProviders !== undefined && serviceProviders.length <= 0) &&
-    (cashiers !== undefined && cashiers.length <= 0) ||
-    (this.services !== undefined && this.services.length <= 0) ||
-    (this.serviceProviders !== undefined && this.serviceProviders.length <= 0) ||
-    (this.cashiers !== undefined && this.cashiers.length <= 0)">Commencer</button>
-    <button type="button" class="btn btn-secondary btn-lg" *ngIf="
-    (services !== undefined && services.length > 0) &&
-    (serviceProviders !== undefined && serviceProviders.length > 0) &&
-    (cashiers !== undefined && cashiers.length > 0)" (click)="startUsing()">
-        <span>Commencez &agrave; utiliser</span>
-    </button>
+    <button type="button" class="btn btn-secondary btn-lg" (click)="onButtonClick()">Commencer</button>
 </div>
