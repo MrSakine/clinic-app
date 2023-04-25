@@ -18,6 +18,8 @@ export class SwitcherComponent implements OnInit, OnChanges {
   @Input() cashiers!: ICashier[];
   @Input() switcher!: SwitcherAction;
 
+  constructor() { }
+
   ngOnInit(): void { }
 
   ngOnChanges(changes: SimpleChanges): void {

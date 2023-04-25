@@ -1,0 +1,41 @@
+mat-icon {
+    font-size: 2.5em;
+    cursor: pointer;
+    width: 1em;
+    height: 1em;
+}
+
+.checkbox-text {
+    font-size: 1.2em;
+}
+
+.prest-header {
+    display: flex;
+}
+
+.prest-header>.prest-title {
+    font-size: 1.5em;
+}
+
+.prest-body {
+    height: auto;
+    margin-bottom: 2em;
+}
+
+.prest-footer {
+    width: 100%;
+    height: 5em;
+    margin-top: 1em;
+    display: flex;
+    align-items: center;
+    padding: 1em;
+    gap: 1em;
+
+    .prest-footer-insurance,
+    .prest-footer-cashier {
+        width: 45%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+}

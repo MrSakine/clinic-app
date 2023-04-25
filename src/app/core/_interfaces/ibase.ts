@@ -1,4 +1,3 @@
-import { IUser } from './iuser';
 import { IPrestation } from './iprestation';
 import { IAssurance } from './iassurance';
 import { IInfo } from './iinfo';

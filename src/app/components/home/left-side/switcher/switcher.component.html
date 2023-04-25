@@ -1,5 +1,5 @@
 <ng-container>
-    <div>
+    <div class="mb-4">
         <div class="d-flex">
             <div class="flex-grow-1">
                 <h1>
@@ -18,7 +18,8 @@
             </div>
         </div>
     </div>
-    <app-service-step *ngIf="switcher.current === 'service'"></app-service-step>
+    <app-service-step [services]="services" [serviceProviders]="serviceProviders"
+        *ngIf="switcher.current === 'service'" [cashiers]="cashiers"></app-service-step>
     <app-insurance-step *ngIf="switcher.current === 'insurance'"></app-insurance-step>
     <app-person-step *ngIf="switcher.current === 'person'"></app-person-step>
     <app-cash-step *ngIf="switcher.current === 'cash'"></app-cash-step>
