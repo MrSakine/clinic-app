@@ -1,6 +1,25 @@
 <ng-container>
-    <app-service-step></app-service-step>
-    <app-insurance-step></app-insurance-step>
-    <app-person-step></app-person-step>
-    <app-cash-step></app-cash-step>
+    <div>
+        <div class="d-flex">
+            <div class="flex-grow-1">
+                <h1>
+                    {{
+                    switcher.current === 'service' ? 'Prestation'
+                    : switcher.current === 'insurance' ? 'Assurance'
+                    : switcher.current === 'person' ? 'Patient' : 'Montant'
+                    }}
+                </h1>
+            </div>
+            <div class="switcher-page">
+                <span [ngClass]="{'active': switcher.current === 'service'}">1</span>
+                <span [ngClass]="{'active': switcher.current === 'insurance'}">2</span>
+                <span [ngClass]="{'active': switcher.current === 'person'}">3</span>
+                <span [ngClass]="{'active': switcher.current === 'cash'}">4</span>
+            </div>
+        </div>
+    </div>
+    <app-service-step *ngIf="switcher.current === 'service'"></app-service-step>
+    <app-insurance-step *ngIf="switcher.current === 'insurance'"></app-insurance-step>
+    <app-person-step *ngIf="switcher.current === 'person'"></app-person-step>
+    <app-cash-step *ngIf="switcher.current === 'cash'"></app-cash-step>
 </ng-container>
