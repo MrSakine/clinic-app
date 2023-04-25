@@ -5,6 +5,7 @@ import { IPrestataire } from 'src/app/core/_interfaces/iprestataire';
 import { IPrestation } from 'src/app/core/_interfaces/iprestation';
 import { ICashier } from 'src/app/core/_interfaces/icashier';
 import { IBase } from 'src/app/core/_interfaces/ibase';
+import { IAssurance } from 'src/app/core/_interfaces/iassurance';
 
 @Component({
   selector: 'app-home',
@@ -18,6 +19,7 @@ export class HomeComponent implements OnInit {
   hasBackDrop: boolean = true;
   services!: IPrestation[];
   serviceProviders!: IPrestataire[];
+  insurances!: IAssurance[];
   cashiers!: ICashier[];
 
   constructor(
@@ -34,6 +36,7 @@ export class HomeComponent implements OnInit {
         (val: IBase) => {
           this.services = val.services;
           this.serviceProviders = val.serviceProviders;
+          this.insurances = val.insurances;
           this.cashiers = val.cashiers;
         }
       )
