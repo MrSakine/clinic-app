@@ -5,6 +5,9 @@ import { ICashier } from 'src/app/core/_interfaces/icashier';
 import { IPrestataire } from 'src/app/core/_interfaces/iprestataire';
 import { IPrestation } from 'src/app/core/_interfaces/iprestation';
 import { ChooseServiceDialogComponent } from './choose-service-dialog/choose-service-dialog.component';
+import { ISsp } from 'src/app/core/_interfaces/issp';
+import { DatabaseService } from 'src/app/core/_services/database.service';
+import { ITicket } from 'src/app/core/_interfaces/iticket';
 
 @Component({
   selector: 'app-service-step',
@@ -18,11 +21,37 @@ export class ServiceStepComponent implements OnInit {
   @Input() serviceProviders!: IPrestataire[];
   @Input() cashiers!: ICashier[];
 
-  constructor(
-    private matDialog: MatDialog
-  ) { }
+  ssp!: ISsp;
 
-  ngOnInit(): void { }
+  constructor(
+    private matDialog: MatDialog,
+    private databaseService: DatabaseService,
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.databaseService
+      .getTicketDocument()
+      .then(
+        (val: ITicket) => {
+          this.ssp = val.ssp;
+          this.getServiceAndServiceProviders(this.ssp.data ? [] : this.ssp.data);
+        }
+      )
+      .catch(err => console.error(err));
+  }
+
+  getServiceAndServiceProviders(data: Array<Record<string, IPrestataire>>) {
+    let tmp = [[]];
+
+    if (data) {
+      data.forEach(d => {
+        Object.keys(d).forEach((key: string) => {
+          console.log(key, d[key]);
+        });
+      });
+    }
+  }
 
   openChooseServiceDialog() {
     let data = this.prepareDialogData("35%");

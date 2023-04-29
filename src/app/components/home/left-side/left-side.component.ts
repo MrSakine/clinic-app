@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { SwitcherStepLabel } from 'src/app/core/_enums/switcher-step-label';
 import { IAssurance } from 'src/app/core/_interfaces/iassurance';
 import { ICashier } from 'src/app/core/_interfaces/icashier';
 import { IPrestataire } from 'src/app/core/_interfaces/iprestataire';
@@ -65,6 +66,14 @@ export class LeftSideComponent implements OnInit, OnChanges {
     let next = this.getNextStep(step, false);
 
     if (next !== undefined) {
+      switch (step) {
+        case SwitcherStepLabel.SERVICE: break;
+        case SwitcherStepLabel.INSURANCE: break;
+        case SwitcherStepLabel.PERSON: break;
+        case SwitcherStepLabel.CASH: break;
+        default: break;
+      }
+
       this.switcher = { previous: step, current: next, go_next: true };
     }
   }
@@ -74,6 +83,14 @@ export class LeftSideComponent implements OnInit, OnChanges {
     let prev = this.getNextStep(step, true);
 
     if (prev !== undefined) {
+      switch (step) {
+        case SwitcherStepLabel.SERVICE: break;
+        case SwitcherStepLabel.INSURANCE: break;
+        case SwitcherStepLabel.PERSON: break;
+        case SwitcherStepLabel.CASH: break;
+        default: break;
+      }
+
       this.switcher = { previous: step, current: prev, go_next: true };
     }
   }

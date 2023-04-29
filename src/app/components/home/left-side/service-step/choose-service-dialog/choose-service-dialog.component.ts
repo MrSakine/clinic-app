@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ChooseServiceDialogData } from 'src/app/core/_dialog-data/choose-service-dialog-data';
 
 @Component({
@@ -16,6 +16,7 @@ export class ChooseServiceDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) data: ChooseServiceDialogData,
     private formBuilder: FormBuilder,
+    private matRef: MatDialogRef<ChooseServiceDialogComponent>,
   ) {
     this.currentData = data;
   }
@@ -29,6 +30,8 @@ export class ChooseServiceDialogComponent implements OnInit {
     );
   }
 
-  onSubmit() { }
+  onSubmit() {
+    this.matRef.close(true);
+  }
 
 }
