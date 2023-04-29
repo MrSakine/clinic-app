@@ -19,8 +19,8 @@
         </div>
     </div>
     <app-service-step [services]="services" [serviceProviders]="serviceProviders"
-        *ngIf="switcher.current === 'service'" [cashiers]="cashiers"></app-service-step>
-    <app-insurance-step *ngIf="switcher.current === 'insurance'"></app-insurance-step>
-    <app-person-step *ngIf="switcher.current === 'person'"></app-person-step>
-    <app-cash-step *ngIf="switcher.current === 'cash'"></app-cash-step>
+        *ngIf="switcher.current === 'service'" [cashiers]="cashiers" @fadeSlideInOut></app-service-step>
+    <app-insurance-step *ngIf="switcher.current === 'insurance'" @fadeSlideInOut></app-insurance-step>
+    <app-person-step *ngIf="switcher.current === 'person'" @fadeSlideInOut></app-person-step>
+    <app-cash-step *ngIf="switcher.current === 'cash'" @fadeSlideInOut></app-cash-step>
 </ng-container>
