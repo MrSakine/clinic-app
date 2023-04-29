@@ -27,7 +27,7 @@ import { ChooseServiceDialogModule } from './choose-service-dialog/choose-servic
     ChooseServiceDialogModule,
   ],
   exports: [ServiceStepComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 
 export class ServiceStepModule { }
