@@ -1,0 +1,23 @@
+.mat-form-field {
+    font-size: 1.15em;
+}
+
+.app-cash-step-df-3 {
+    width: 100%;
+    display: flex;
+    gap: 1em;
+
+    .app-cash-step-df-item {
+        width: 33%;
+    }
+}
+
+.app-cash-step-df-2 {
+    width: 100%;
+    display: flex;
+    gap: 1em;
+
+    .app-cash-step-df-item {
+        width: 49%;
+    }
+}
