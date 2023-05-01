@@ -1,6 +1,7 @@
-<ng-container>
+<ng-container *ngIf="currentData.add || currentData.edit">
     <div class="modal-header">
-        <h2 mat-dialog-title>Ajouter une prestation</h2>
+        <h2 mat-dialog-title *ngIf="currentData.add">Ajouter une prestation</h2>
+        <h2 mat-dialog-title *ngIf="currentData.edit">Modifier une prestation</h2>
         <button mat-button mat-dialog-close>X</button>
     </div>
     <hr>
@@ -8,7 +9,7 @@
         <mat-dialog-content>
             <mat-form-field appearance="fill" class="full-width">
                 <mat-label>Type de la prestation</mat-label>
-                <mat-select name="service-type" required formControlName="service">
+                <mat-select name="service-type" required formControlName="service" (valueChange)="onServiceChange($event)">
                     <mat-option *ngFor="let d of currentData.services" [value]="d.type">
                         <span>{{d.type}}</span>
                     </mat-option>
@@ -18,12 +19,45 @@
             <mat-form-field appearance="fill" class="full-width">
                 <mat-label>Prestataire</mat-label>
                 <mat-select name="service-type" required formControlName="serviceProvider">
-                    <mat-option *ngFor="let d of currentData.serviceProviders" [value]="d.id">
+                    <mat-option *ngFor="let d of filteredProviders" [value]="d.id">
                         <span>{{d.surname + ' ' + d.name}}</span>
                     </mat-option>
                 </mat-select>
-                <mat-hint>Exemple: Oumar Diallo</mat-hint>
+                <mat-hint *ngIf="!addProvider">Exemple: Oumar Diallo</mat-hint>
+                <mat-hint *ngIf="addProvider" class="text text-warning">
+                    <span>Veuillez ajouter un prestataire pour cette prestation</span>
+                </mat-hint>
             </mat-form-field>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+            <button type="submit" class="button-base primary-w">
+                <span>Valider</span>
+            </button>
+        </mat-dialog-actions>
+        <div class="alert alert-danger mt-4" *ngIf="isExist">
+            <span>Cette prestation a d&eacute;j&agrave; &eacute;t&eacute; ajout&eacute;e</span>
+        </div>
+    </form>
+</ng-container>
+<ng-container *ngIf="currentData.delete">
+    <div class="modal-header">
+        <h2 mat-dialog-title>Supprimer une prestation</h2>
+        <button mat-button mat-dialog-close>X</button>
+    </div>
+    <hr>
+    <form action="#" method="POST" (ngSubmit)="onSubmit()">
+        <mat-dialog-content>
+            <p>
+                <span>Vous sur le point de supprimer la prestation
+                    <strong>{{currentData.currentSSP.service.type}}</strong></span>
+                <span>&nbsp;</span>
+                <span>dont le prix est <strong>{{currentData.currentSSP.service.price + ' ' + 'XOF'}}</strong></span>
+                <span>&nbsp;</span>
+                <span>et qui a <strong>{{currentData.currentSSP.serviceProvider.surname + ' ' +
+                        currentData.currentSSP.serviceProvider.name}}</strong></span>
+                <span>&nbsp;</span>
+                <span>comme prestatire</span>
+            </p>
         </mat-dialog-content>
         <mat-dialog-actions align="end">
             <button type="submit" class="button-base primary-w">

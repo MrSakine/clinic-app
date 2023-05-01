@@ -5,6 +5,10 @@ mat-icon {
     height: 1em;
 }
 
+.error {
+    border: 1px solid red;
+}
+
 .checkbox-text {
     font-size: 1.2em;
 }
@@ -20,6 +24,38 @@ mat-icon {
 .prest-body {
     height: auto;
     margin-bottom: 2em;
+
+    .prest-item {
+        width: 100%;
+        height: auto;
+        border: 1px solid black;
+        border-radius: .3em;
+        padding: .5em;
+        margin-top: 1em;
+        display: flex;
+
+        .prest-item-left {
+            width: 90%;
+            margin-left: 1em;
+
+            p {
+                width: auto;
+                font-size: 1.5em;
+
+                span {
+                    margin-left: .3em;
+                }
+            }
+        }
+
+        .prest-item-right {
+            width: 10%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: auto;
+        }
+    }
 }
 
 .prest-footer {

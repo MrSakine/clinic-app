@@ -2,7 +2,7 @@
     <div class="mb-4">
         <div class="d-flex">
             <div class="flex-grow-1">
-                <h1>
+                <h1 class="fs-4 fw-bold">
                     {{
                     switcher.current === 'service' ? 'Prestation'
                     : switcher.current === 'insurance' ? 'Assurance'
@@ -18,8 +18,9 @@
             </div>
         </div>
     </div>
-    <app-service-step [services]="services" [serviceProviders]="serviceProviders"
-        *ngIf="switcher.current === 'service'" [cashiers]="cashiers" @fadeSlideInOut></app-service-step>
+    <app-service-step [services]="services" [serviceProviders]="serviceProviders" *ngIf="switcher.current === 'service'"
+        [cashiers]="cashiers" @fadeSlideInOut [formChange]="serviceStepChange"
+        (itemAction)="handleServiceStepActionItemEvent($event)"></app-service-step>
     <app-insurance-step *ngIf="switcher.current === 'insurance'" @fadeSlideInOut></app-insurance-step>
     <app-person-step *ngIf="switcher.current === 'person'" @fadeSlideInOut></app-person-step>
     <app-cash-step *ngIf="switcher.current === 'cash'" @fadeSlideInOut></app-cash-step>

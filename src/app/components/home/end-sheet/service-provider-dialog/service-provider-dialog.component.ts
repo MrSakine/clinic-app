@@ -62,20 +62,22 @@ export class ServiceProviderDialogComponent implements OnInit {
     this.showSpinnerProgress = true;
     this.checkExistence(data);
 
-    if (this.showExistError) {
-      this.showSpinnerProgress = false;
-      setTimeout(() => { this.showExistError = false }, 3000);
-      return;
-    } else {
-      if (this.currentData.add) {
-        this.databaseService.create(EndSheetLabel.SERVICE_PROVIDER, data);
+    setTimeout(() => {
+      if (this.showExistError) {
+        this.showSpinnerProgress = false;
+        return;
       } else {
-        this.databaseService.update(EndSheetLabel.SERVICE_PROVIDER, data);
-      }
+        if (this.currentData.add) {
+          this.databaseService.create(EndSheetLabel.SERVICE_PROVIDER, data);
+        } else {
+          this.databaseService.update(EndSheetLabel.SERVICE_PROVIDER, data);
+        }
 
-      this.showSpinnerProgress = false;
-      this.matRef.close({ action: this.currentData.add ? 'add' : 'edit', label: 'prest', item: this.currentData });
-    }
+        setTimeout(() => { this.showExistError = false }, 3000);
+        this.showSpinnerProgress = false;
+        this.matRef.close({ action: this.currentData.add ? 'add' : 'edit', label: 'prest', item: this.currentData });
+      }
+    }, 100);
   }
 
   handleUserInput(val: any, mode: string | undefined | null): void { }
@@ -98,9 +100,9 @@ export class ServiceProviderDialogComponent implements OnInit {
       .then(
         (val: IBase) => {
           let found = val.serviceProviders.find(
-            v => v.name === value.lastname || v.name === value.firstname &&
-              v.surname === value.firstname || v.surname === value.lastname &&
-              v.service === value.service
+            v => (v.name === value.lastname || v.name === value.firstname) &&
+              (v.surname === value.firstname || v.surname === value.lastname) &&
+              (v.service === value.service)
           );
 
           if (found) this.showExistError = true;

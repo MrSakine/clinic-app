@@ -2,6 +2,14 @@ p {
     margin: 0;
 }
 
+span:nth-child(1) {
+    font-size: 1.2em;
+}
+
+span.badge {
+    font-size: 1em;
+}
+
 mat-icon {
     font-size: 2.5em;
     cursor: pointer;

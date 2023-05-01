@@ -1,5 +1,5 @@
 import { trigger, transition, style, animate } from '@angular/animations';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { IAssurance } from 'src/app/core/_interfaces/iassurance';
 import { ICashier } from 'src/app/core/_interfaces/icashier';
 import { IPrestataire } from 'src/app/core/_interfaces/iprestataire';
@@ -29,12 +29,26 @@ export class SwitcherComponent implements OnInit, OnChanges {
   @Input() insurances!: IAssurance[];
   @Input() cashiers!: ICashier[];
   @Input() switcher!: SwitcherAction;
+  @Output() itemAction: EventEmitter<any> = new EventEmitter();
+  @Input() serviceStepChange?: string;
+  @Input() insuranceStepChange?: string;
+  @Input() personStepChange?: string;
+  @Input() cashStepChange?: string;
 
   constructor() { }
 
   ngOnInit(): void { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.switcher = changes['switcher'].currentValue;
+    if (changes['switcher']) {
+      this.switcher = changes['switcher'].currentValue;
+      this.serviceStepChange = changes['switcher'] ? changes['switcher'].currentValue : '';
+    }
+  }
+
+  handleServiceStepActionItemEvent(val: any) {
+    if (val) {
+      this.itemAction.emit(true);
+    }
   }
 }

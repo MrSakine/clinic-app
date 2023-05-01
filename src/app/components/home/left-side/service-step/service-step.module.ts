@@ -7,9 +7,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatRippleModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 import { ChooseServiceDialogModule } from './choose-service-dialog/choose-service-dialog.module';
 
 @NgModule({
@@ -25,6 +27,9 @@ import { ChooseServiceDialogModule } from './choose-service-dialog/choose-servic
     MatSelectModule,
     MatDialogModule,
     ChooseServiceDialogModule,
+    MatSnackBarModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   exports: [ServiceStepComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

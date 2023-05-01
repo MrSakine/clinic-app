@@ -14,6 +14,8 @@ import { Ins } from '../_classes/ins';
 import { Pat } from '../_classes/pat';
 import { Cash } from '../_classes/cash';
 import { ITicket } from '../_interfaces/iticket';
+import { CustomSSP } from '../_interfaces/custom-ssp';
+import { ICashier } from '../_interfaces/icashier';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +46,11 @@ export class DatabaseService {
       .catch(() => {
         let doc = {
           "_id": "ticket",
-          "ssp": [],
+          "ssp": {
+            "data": [],
+            "hasInsurance": false,
+            "cashier": {},
+          },
           "ins": [],
           "pat": [],
           "cash": []
@@ -74,6 +80,85 @@ export class DatabaseService {
           let tmp = val;
           tmp._rev = val._rev;
           tmp.ssp.data.push(x.data);
+
+          this.database.put(tmp);
+        }
+      )
+      .catch(err => console.error(err));
+  }
+
+  insertCashier(cashier: ICashier) {
+    let table = this.getTicketDocument();
+    table
+      .then(
+        (val: ITicket) => {
+          let tmp = val;
+          tmp._rev = val._rev;
+          tmp.ssp.cashier = cashier;
+
+          this.database.put(tmp);
+        }
+      )
+      .catch(err => console.error(err));
+  }
+
+  insertHasInsurance(insurance: boolean) {
+    let table = this.getTicketDocument();
+    table
+      .then(
+        (val: ITicket) => {
+          let tmp = val;
+          tmp._rev = val._rev;
+          tmp.ssp.hasInsurance = insurance;
+
+          this.database.put(tmp);
+        }
+      )
+      .catch(err => console.error(err));
+  }
+
+  updateSSP(x: Ssp, old: CustomSSP | undefined, mode: number) {
+    let table = this.getTicketDocument();
+    table
+      .then(
+        (val: ITicket) => {
+          let tmp = val;
+          tmp._rev = val._rev;
+
+          switch (mode) {
+            case 0x0:
+              let u: any[] = [];
+
+              tmp.ssp.data.forEach(d => {
+                Object.keys(d).forEach(y => {
+                  let j = d[y].id;
+                  let j2 = old?.serviceProvider.id;
+
+                  if (j !== j2) {
+                    u.push(d);
+                  }
+                })
+              });
+
+              u.push(x.data);
+              tmp.ssp.data = u;
+              break;
+            case 0x1:
+              let g: any[] = [];
+
+              tmp.ssp.data.forEach(d => {
+                let j = JSON.stringify(d);
+                let j2 = JSON.stringify(x.data);
+
+                if (j !== j2) {
+                  g.push(d);
+                }
+              });
+
+              tmp.ssp.data = g;
+              break;
+            default: break;
+          }
 
           this.database.put(tmp);
         }

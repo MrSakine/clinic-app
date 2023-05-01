@@ -21,7 +21,7 @@ export const SUCCESS_MESSAGES: SuccessMessage[] = [
     },
     {
         relatedTo: 'cashier',
-        added: 'Un nouveeau cassier a été ajouté avec succès',
+        added: 'Un nouveau cassier a été ajouté avec succès',
         edited: 'Le cassier (%1$) a été modifié avec succès',
         deleted: 'Le cassier (%1$) a été supprimé avec succès'
     }

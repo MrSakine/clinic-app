@@ -17,12 +17,12 @@
                     <div class="app-patient-info-wrapper-key">
                         <span>ID Patient&#58;</span>
                         <span>&nbsp;</span>
-                        <span>N/A</span>
+                        <span>{{randomPatientID}}</span>
                     </div>
                     <div class="app-patient-info-wrapper-value">
                         <span>ID Ticket&#58;</span>
                         <span>&nbsp;</span>
-                        <span>N/A</span>
+                        <span>{{randomTicketID}}</span>
                     </div>
                 </div>
             </div>
@@ -64,12 +64,33 @@
                     <div class="app-patient-info-wrapper-value">
                         <span>Cassier&#58;</span>
                         <span>&nbsp;</span>
-                        <span>N/A</span>
+                        <span>{{!isCashier ? 'N/A' : currentCashier?.firstname + ' ' + currentCashier?.lastname}}</span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="app-table-container"></div>
+        <div class="app-table-container">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Prestation</th>
+                        <th>Prestataire</th>
+                        <th>Quantit&eacute;</th>
+                        <th>Prix unitaire</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let p of currentSSPs">
+                        <td>{{p.service.type}}</td>
+                        <td>{{p.serviceProvider.surname + ' ' + p.serviceProvider.name}}</td>
+                        <td>0</td>
+                        <td>{{p.service.price + ' ' + 'FCFA'}}</td>
+                        <td>0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="app-right-side-footer">
         <div class="app-footer-info"></div>
