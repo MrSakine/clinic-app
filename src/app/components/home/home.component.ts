@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit {
   serviceProviders!: IPrestataire[];
   insurances!: IAssurance[];
   cashiers!: ICashier[];
+  change!: string;
 
   constructor(
     private databaseService: DatabaseService,
@@ -52,6 +53,20 @@ export class HomeComponent implements OnInit {
   handleRefreshEvent(e: any) {
     if (e) {
       this.setupData();
+    }
+  }
+
+  makeChangeToRightSide() {
+    let p = new Date().getTime();
+    let sp = String(p);
+    let sps = sp.slice(6);
+
+    return sps;
+  }
+
+  handleLeftSideEvent(val: any) {
+    if (val) {
+      this.change = this.makeChangeToRightSide();
     }
   }
 }

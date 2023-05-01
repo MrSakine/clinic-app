@@ -56,21 +56,23 @@ export class ServiceDialogComponent implements OnInit {
     this.showSpinnerProgress = true;
     this.checkExistence(data.type);
 
-    if (this.serviceFormGroup.invalid || this.showPriceError || this.showTypeError) {
-      this.showSpinnerProgress = false;
-      return;
-    } else if (this.showPriceError || this.showTypeError) {
-      return;
-    } else {
-      if (this.currentData.add) {
-        this.databaseService.create(EndSheetLabel.SERVICE, data);
+    setTimeout(() => {
+      if (this.serviceFormGroup.invalid || this.showPriceError || this.showTypeError) {
+        this.showSpinnerProgress = false;
+        return;
+      } else if (this.showPriceError || this.showTypeError) {
+        return;
       } else {
-        this.databaseService.update(EndSheetLabel.SERVICE, data);
-      }
+        if (this.currentData.add) {
+          this.databaseService.create(EndSheetLabel.SERVICE, data);
+        } else {
+          this.databaseService.update(EndSheetLabel.SERVICE, data);
+        }
 
-      this.showSpinnerProgress = false;
-      this.matRef.close({ action: this.currentData.add ? 'add' : 'edit', label: 'pres', item: this.currentData });
-    }
+        this.showSpinnerProgress = false;
+        this.matRef.close({ action: this.currentData.add ? 'add' : 'edit', label: 'pres', item: this.currentData });
+      }
+    }, 100);
   }
 
   handleUserInput(val: any, mode: string | undefined | null) {

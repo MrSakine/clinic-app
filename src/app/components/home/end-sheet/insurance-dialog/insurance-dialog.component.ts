@@ -56,20 +56,22 @@ export class InsuranceDialogComponent implements OnInit {
     this.showSpinnerProgress = true;
     this.checkExistence(String(data.name));
 
-    if (this.showNameError || this.showPercentageError || this.insuranceFormGroup.invalid) {
-      return;
-    } else if (this.insuranceFormGroup.valid && this.showNameError || this.showPercentageError) {
-      return;
-    } else {
-      if (this.currentData.add) {
-        this.databaseService.create(EndSheetLabel.INSURANCE, data);
+    setTimeout(() => {
+      if (this.showNameError || this.showPercentageError || this.insuranceFormGroup.invalid) {
+        return;
+      } else if (this.insuranceFormGroup.valid && this.showNameError || this.showPercentageError) {
+        return;
       } else {
-        this.databaseService.update(EndSheetLabel.INSURANCE, data);
-      }
+        if (this.currentData.add) {
+          this.databaseService.create(EndSheetLabel.INSURANCE, data);
+        } else {
+          this.databaseService.update(EndSheetLabel.INSURANCE, data);
+        }
 
-      this.showSpinnerProgress = false;
-      this.matRef.close({ action: this.currentData.add ? 'add' : 'edit', label: 'ins', item: this.currentData });
-    }
+        this.showSpinnerProgress = false;
+        this.matRef.close({ action: this.currentData.add ? 'add' : 'edit', label: 'ins', item: this.currentData });
+      }
+    }, 100);
   }
 
   handleUserInput(val: any, mode: string | undefined | null) {

@@ -1,6 +1,13 @@
+import { ICash } from "./icash";
+import { IIns } from "./iins";
+import { IPat } from "./ipat";
+import { ISsp } from "./issp";
+
 export interface ITicket {
-    ssp: any;
-    ins?: any;
-    pat: any;
-    cash: any;
+    _id: string;
+    _rev: string;
+    ssp: ISsp;
+    ins?: IIns;
+    pat: IPat;
+    cash: ICash;
 }

@@ -1,23 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IBase } from '../_interfaces/ibase';
-import { Observable, of } from 'rxjs';
-
-import { IAssurance } from '../_interfaces/iassurance';
-import { IPrestation } from '../_interfaces/iprestation';
-import { IPrestataire } from '../_interfaces/iprestataire';
-
 import PouchDB from 'pouchdb';
 
+import { IBase } from '../_interfaces/ibase';
 import { Service } from '../_classes/service';
 import { ServiceProvider } from '../_classes/service-provider';
 import { Insurance } from '../_classes/insurance';
 import { Base } from '../_classes/base';
 import { EndSheetLabel } from '../_enums/end-sheet-label';
 import { Cashier } from '../_classes/cashier';
+import { Ssp } from '../_classes/ssp';
+import { Ins } from '../_classes/ins';
+import { Pat } from '../_classes/pat';
+import { Cash } from '../_classes/cash';
+import { ITicket } from '../_interfaces/iticket';
+import { CustomSSP } from '../_interfaces/custom-ssp';
 import { ICashier } from '../_interfaces/icashier';
-
-const PATH = "/assets/data.json";
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +42,22 @@ export class DatabaseService {
 
         this.database.put(doc);
       });
+    this.database.get("ticket")
+      .catch(() => {
+        let doc = {
+          "_id": "ticket",
+          "ssp": {
+            "data": [],
+            "hasInsurance": false,
+            "cashier": {},
+          },
+          "ins": [],
+          "pat": [],
+          "cash": []
+        }
+
+        this.database.put(doc);
+      });
   }
 
   getData() {
@@ -52,6 +66,149 @@ export class DatabaseService {
 
   getDocument(): Promise<any> {
     return this.database.get("cla");
+  }
+
+  getTicketDocument(): Promise<any> {
+    return this.database.get("ticket");
+  }
+
+  createSSP(x: Ssp) {
+    let table = this.getTicketDocument();
+    table
+      .then(
+        (val: ITicket) => {
+          let tmp = val;
+          tmp._rev = val._rev;
+          tmp.ssp.data.push(x.data);
+
+          this.database.put(tmp);
+        }
+      )
+      .catch(err => console.error(err));
+  }
+
+  insertCashier(cashier: ICashier) {
+    let table = this.getTicketDocument();
+    table
+      .then(
+        (val: ITicket) => {
+          let tmp = val;
+          tmp._rev = val._rev;
+          tmp.ssp.cashier = cashier;
+
+          this.database.put(tmp);
+        }
+      )
+      .catch(err => console.error(err));
+  }
+
+  insertHasInsurance(insurance: boolean) {
+    let table = this.getTicketDocument();
+    table
+      .then(
+        (val: ITicket) => {
+          let tmp = val;
+          tmp._rev = val._rev;
+          tmp.ssp.hasInsurance = insurance;
+
+          this.database.put(tmp);
+        }
+      )
+      .catch(err => console.error(err));
+  }
+
+  updateSSP(x: Ssp, old: CustomSSP | undefined, mode: number) {
+    let table = this.getTicketDocument();
+    table
+      .then(
+        (val: ITicket) => {
+          let tmp = val;
+          tmp._rev = val._rev;
+
+          switch (mode) {
+            case 0x0:
+              let u: any[] = [];
+
+              tmp.ssp.data.forEach(d => {
+                Object.keys(d).forEach(y => {
+                  let j = d[y].id;
+                  let j2 = old?.serviceProvider.id;
+
+                  if (j !== j2) {
+                    u.push(d);
+                  }
+                })
+              });
+
+              u.push(x.data);
+              tmp.ssp.data = u;
+              break;
+            case 0x1:
+              let g: any[] = [];
+
+              tmp.ssp.data.forEach(d => {
+                let j = JSON.stringify(d);
+                let j2 = JSON.stringify(x.data);
+
+                if (j !== j2) {
+                  g.push(d);
+                }
+              });
+
+              tmp.ssp.data = g;
+              break;
+            default: break;
+          }
+
+          this.database.put(tmp);
+        }
+      )
+      .catch(err => console.error(err));
+  }
+
+  createIns(y: Ins) {
+    let table = this.getTicketDocument();
+    table
+      .then(
+        (val: ITicket) => {
+          let tmp = val;
+          tmp._rev = val._rev;
+          tmp.ins?.insurance.push(y.data);
+
+          this.database.put(tmp);
+        }
+      )
+      .catch(err => console.error(err));
+  }
+
+  createPat(z: Pat) {
+    let table = this.getTicketDocument();
+    table
+      .then(
+        (val: ITicket) => {
+          let tmp = val;
+          tmp._rev = val._rev;
+          tmp.pat = z;
+
+          this.database.put(tmp);
+        }
+      )
+      .catch(err => console.error(err));
+  }
+
+  createCash(t: Cash) {
+    let table = this.getTicketDocument();
+    table
+      .then(
+        (val: ITicket) => {
+          let tmp = val;
+          tmp._rev = val._rev;
+          tmp.cash = t;
+
+          this.database.put(tmp);
+        }
+      )
+      .catch(err => console.error(err));
   }
 
   create<T extends Base>(mode: string, value: T) {
@@ -132,7 +289,7 @@ export class DatabaseService {
               this.database.put(tmp);
               break;
             case EndSheetLabel.CASHIER:
-              let obj3 : Cashier = value as unknown as Cashier;
+              let obj3: Cashier = value as unknown as Cashier;
               let foundItem3 = tmp.cashiers.findIndex(v => v.id === obj3.id);
               tmp.cashiers[foundItem3] = obj3;
 

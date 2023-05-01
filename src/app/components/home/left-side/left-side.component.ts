@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import moment from 'moment';
+import { SwitcherStepLabel } from 'src/app/core/_enums/switcher-step-label';
 import { IAssurance } from 'src/app/core/_interfaces/iassurance';
 import { ICashier } from 'src/app/core/_interfaces/icashier';
 import { IPrestataire } from 'src/app/core/_interfaces/iprestataire';
@@ -18,8 +20,14 @@ export class LeftSideComponent implements OnInit, OnChanges {
   @Input() insurances!: IAssurance[];
   @Input() cashiers!: ICashier[];
   @Output() showMenu: EventEmitter<any> = new EventEmitter();
+  @Output() switcherServiceStepEmitter: EventEmitter<any> = new EventEmitter();
+
   switcher: SwitcherAction;
   steps: string[] = [];
+  serviceStepChange?: string;
+  insuranceStepChange?: string;
+  personStepChange?: string;
+  cashStepChange?: string;
 
   constructor() {
     this.switcher = { previous: null, current: "service", go_next: false };
@@ -65,6 +73,22 @@ export class LeftSideComponent implements OnInit, OnChanges {
     let next = this.getNextStep(step, false);
 
     if (next !== undefined) {
+      switch (step) {
+        case SwitcherStepLabel.SERVICE:
+          this.serviceStepChange = this.stepChange(1);
+          break;
+        case SwitcherStepLabel.INSURANCE:
+          this.serviceStepChange = this.stepChange(2);
+          break;
+        case SwitcherStepLabel.PERSON:
+          this.serviceStepChange = this.stepChange(3);
+          break;
+        case SwitcherStepLabel.CASH:
+          this.serviceStepChange = this.stepChange(4);
+          break;
+        default: break;
+      }
+
       this.switcher = { previous: step, current: next, go_next: true };
     }
   }
@@ -74,6 +98,16 @@ export class LeftSideComponent implements OnInit, OnChanges {
     let prev = this.getNextStep(step, true);
 
     if (prev !== undefined) {
+      switch (step) {
+        case SwitcherStepLabel.SERVICE:
+          this.serviceStepChange = this.stepChange(1);
+          break;
+        case SwitcherStepLabel.INSURANCE: break;
+        case SwitcherStepLabel.PERSON: break;
+        case SwitcherStepLabel.CASH: break;
+        default: break;
+      }
+
       this.switcher = { previous: step, current: prev, go_next: true };
     }
   }
@@ -106,5 +140,19 @@ export class LeftSideComponent implements OnInit, OnChanges {
     this.cashiers = changes['cashiers'].currentValue;
 
     this.handleSwitcher();
+  }
+
+  onSwitcherServiceStepEvent(val: any) {
+    if (val) {
+      this.switcherServiceStepEmitter.emit(true);
+    }
+  }
+
+  stepChange(day: number) {
+    let p = moment().add(day, 'days').valueOf();
+    let sp = String(p);
+    let sps = sp.slice(6);
+
+    return sps;
   }
 }
