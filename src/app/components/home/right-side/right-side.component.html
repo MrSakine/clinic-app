@@ -31,12 +31,12 @@
                     <div class="app-patient-info-wrapper-key">
                         <span>Nom complet&#58;</span>
                         <span>&nbsp;</span>
-                        <span>N/A</span>
+                        <span>{{currentPat.fullname === '' ? 'N/A' : currentPat.fullname}}</span>
                     </div>
                     <div class="app-patient-info-wrapper-value">
                         <span>&Acirc;ge&#58;</span>
                         <span>&nbsp;</span>
-                        <span>N/A</span>
+                        <span>{{currentPat.dob === 0 ? 'N/A' : currentPat.dob + ' ' + 'ans'}}</span>
                     </div>
                 </div>
             </div>
@@ -45,12 +45,12 @@
                     <div class="app-patient-info-wrapper-key">
                         <span>Adresse&#58;</span>
                         <span>&nbsp;</span>
-                        <span>N/A</span>
+                        <span>{{currentPat.address === '' ? 'N/A' : currentPat.address}}</span>
                     </div>
                     <div class="app-patient-info-wrapper-value">
                         <span>T&eacute;l&eacute;phone&#58;</span>
                         <span>&nbsp;</span>
-                        <span>N/A</span>
+                        <span>{{currentPat.phone_number === '' ? 'N/A' : currentPat.phone_number}}</span>
                     </div>
                 </div>
             </div>

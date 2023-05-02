@@ -1,50 +1,54 @@
 <ng-container>
-    <form action="#" method="POST">
+    <form action="#" method="POST" [formGroup]="cashStepFormGroup">
         <mat-form-field appearance="fill" class="full-width">
             <mat-label>Total</mat-label>
-            <input type="text" name="total" id="total" matInput />
+            <input type="text" name="total" id="total" matInput formControlName="total" />
             <mat-icon matPrefix>attach_money</mat-icon>
         </mat-form-field>
         <div class="app-cash-step-df-2">
             <div class="app-cash-step-df-item">
                 <mat-form-field appearance="fill" class="full-width">
-                    <mat-label>Montant %s</mat-label>
-                    <input type="text" name="insurance_amount" id="insurance_amount" matInput />
+                    <mat-label>Montant %s {{insurance_name}}</mat-label>
+                    <input type="text" name="insurance_amount" id="insurance_amount" matInput
+                        formControlName="insurance_amount" />
                     <mat-icon matPrefix>attach_money</mat-icon>
                 </mat-form-field>
             </div>
             <div class="app-cash-step-df-item">
                 <mat-form-field appearance="fill" class="full-width">
                     <mat-label>Reste &agrave; par le tiers payant (%s / %s)</mat-label>
-                    <input type="text" name="insurance_due" id="insurance_due" matInput />
+                    <input type="text" name="insurance_due" id="insurance_due" matInput
+                        formControlName="insurance_due" />
                     <mat-icon matPrefix>attach_money</mat-icon>
                 </mat-form-field>
             </div>
         </div>
         <mat-form-field appearance="fill" class="full-width">
             <mat-label>Total &agrave; payer par le patient</mat-label>
-            <input type="text" name="patient_due" id="patient_due" matInput />
+            <input type="text" name="patient_due" id="patient_due" matInput formControlName="patient_due" />
             <mat-icon matPrefix>attach_money</mat-icon>
         </mat-form-field>
         <div class="app-cash-step-df-3">
             <div class="app-cash-step-df-item">
                 <mat-form-field appearance="fill" class="full-width">
                     <mat-label>Montant D&ucirc;</mat-label>
-                    <input type="text" name="amount_due" id="amount_due" matInput />
+                    <input type="text" name="amount_due" id="amount_due" matInput formControlName="amount_due" />
                     <mat-icon matPrefix>attach_money</mat-icon>
                 </mat-form-field>
             </div>
             <div class="app-cash-step-df-item">
                 <mat-form-field appearance="fill" class="full-width">
                     <mat-label>Montant Re&ccedil;u</mat-label>
-                    <input type="text" name="amount_received" id="amount_received" matInput />
+                    <input type="text" name="amount_received" id="amount_received" matInput
+                        formControlName="amount_received" />
                     <mat-icon matPrefix>attach_money</mat-icon>
                 </mat-form-field>
             </div>
             <div class="app-cash-step-df-item">
                 <mat-form-field appearance="fill" class="full-width">
                     <mat-label>Montant &agrave; retourner</mat-label>
-                    <input type="text" name="amount_refund" id="amount_refund" matInput />
+                    <input type="text" name="amount_refund" id="amount_refund" matInput
+                        formControlName="amount_refund" />
                     <mat-icon matPrefix>attach_money</mat-icon>
                 </mat-form-field>
             </div>
