@@ -22,6 +22,7 @@
         [cashiers]="cashiers" @fadeSlideInOut [formChange]="serviceStepChange"
         (itemAction)="handleServiceStepActionItemEvent($event)"></app-service-step>
     <app-insurance-step *ngIf="switcher.current === 'insurance'" @fadeSlideInOut></app-insurance-step>
-    <app-person-step *ngIf="switcher.current === 'person'" @fadeSlideInOut></app-person-step>
-    <app-cash-step *ngIf="switcher.current === 'cash'" @fadeSlideInOut></app-cash-step>
+    <app-person-step *ngIf="switcher.current === 'person'" (shareFormData)="handlePersonStepFormEvent($event)"
+        @fadeSlideInOut></app-person-step>
+    <app-cash-step *ngIf="switcher.current === 'cash'" [services]="services" @fadeSlideInOut></app-cash-step>
 </ng-container>

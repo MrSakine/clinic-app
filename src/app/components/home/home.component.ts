@@ -6,6 +6,7 @@ import { IPrestation } from 'src/app/core/_interfaces/iprestation';
 import { ICashier } from 'src/app/core/_interfaces/icashier';
 import { IBase } from 'src/app/core/_interfaces/ibase';
 import { IAssurance } from 'src/app/core/_interfaces/iassurance';
+import { IPat } from 'src/app/core/_interfaces/ipat';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +23,7 @@ export class HomeComponent implements OnInit {
   insurances!: IAssurance[];
   cashiers!: ICashier[];
   change!: string;
+  personChange!: IPat;
 
   constructor(
     private databaseService: DatabaseService,
@@ -68,5 +70,9 @@ export class HomeComponent implements OnInit {
     if (val) {
       this.change = this.makeChangeToRightSide();
     }
+  }
+
+  onSwitcherPersonStepEmitter(val: IPat) {
+    this.personChange = val;
   }
 }

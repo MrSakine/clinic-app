@@ -11,10 +11,12 @@
                 <div class="app-container-left">
                     <app-left-side (showMenu)="handleMenuClickEvent($event)" [services]="services"
                         [serviceProviders]="serviceProviders" [cashiers]="cashiers" [insurances]="insurances"
-                        (switcherServiceStepEmitter)="handleLeftSideEvent($event)"></app-left-side>
+                        (switcherServiceStepEmitter)="handleLeftSideEvent($event)"
+                        (switcherPersonStepEmitter)="onSwitcherPersonStepEmitter($event)"></app-left-side>
                 </div>
                 <div class="app-container-right">
-                    <app-right-side [services]="services" [change]="change"></app-right-side>
+                    <app-right-side [services]="services" [change]="change"
+                        [personChange]="personChange"></app-right-side>
                 </div>
             </div>
         </div>

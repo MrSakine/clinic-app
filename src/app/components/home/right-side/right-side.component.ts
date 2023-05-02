@@ -1,11 +1,14 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import moment from 'moment';
+import { Subscription } from 'rxjs';
 import { CustomSSP } from 'src/app/core/_interfaces/custom-ssp';
 import { ICashier } from 'src/app/core/_interfaces/icashier';
+import { IPat } from 'src/app/core/_interfaces/ipat';
 import { IPrestataire } from 'src/app/core/_interfaces/iprestataire';
 import { IPrestation } from 'src/app/core/_interfaces/iprestation';
 import { ITicket } from 'src/app/core/_interfaces/iticket';
 import { DatabaseService } from 'src/app/core/_services/database.service';
+import { SharePatDataSubscriptionService } from 'src/app/core/_subscriptions/share-pat-data-subscription.service';
 
 @Component({
   selector: 'app-right-side',
@@ -13,30 +16,46 @@ import { DatabaseService } from 'src/app/core/_services/database.service';
   styleUrls: ['./right-side.component.scss']
 })
 
-export class RightSideComponent implements OnInit, OnChanges {
+export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
   randomPatientID!: string;
   randomTicketID!: string;
   currentData!: ITicket;
   currentSSPs?: CustomSSP[];
   currentCashier?: ICashier;
   isCashier: boolean = false;
+  currentPat!: IPat;
 
   @Input() services!: IPrestation[];
   @Input() change?: string;
+  @Input() personChange?: IPat;
+
+  userDataSubscription!: Subscription;
 
   constructor(
     private databaseService: DatabaseService,
+    private sharePatSubscriptionService: SharePatDataSubscriptionService,
   ) {
   }
 
+  ngOnDestroy(): void {
+    this.userDataSubscription.unsubscribe();
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
-    this.setupData();
+    if (changes['change'] && changes['change'].previousValue !== undefined) {
+      this.setupData();
+    } else {
+      if (changes['personChange'] && changes['personChange'].previousValue !== undefined) {
+        this.setupPatData();
+      }
+    }
   }
 
   ngOnInit(): void {
     this.generatePatientID();
     this.generateTicketID();
     this.setupData();
+    this.setupPatData();
   }
 
   generatePatientID() {
@@ -69,6 +88,17 @@ export class RightSideComponent implements OnInit, OnChanges {
         }
       )
       .catch(err => console.error(err));
+  }
+
+  setupPatData() {
+    this.userDataSubscription = this.sharePatSubscriptionService.getCurrent()
+      .subscribe(
+        val => {
+          this.currentPat = val;
+
+          console.log(this.currentPat);
+        }
+      );
   }
 
   getServiceAndServiceProviders(data: Array<Record<string, IPrestataire>>) {

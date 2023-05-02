@@ -81,6 +81,7 @@ export class ServiceStepComponent implements OnInit, OnChanges {
         (val: ITicket) => {
           this.currentCashier = val.ssp.cashier;
           this.serviceStepFormGroup.controls['cashier'].setValue(this.currentCashier.firstname);
+          this.serviceStepFormGroup.controls['hasInsurance'].setValue(val.ssp.hasInsurance);
         }
       )
       .catch(err => console.error(err));

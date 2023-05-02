@@ -3,6 +3,7 @@ import moment from 'moment';
 import { SwitcherStepLabel } from 'src/app/core/_enums/switcher-step-label';
 import { IAssurance } from 'src/app/core/_interfaces/iassurance';
 import { ICashier } from 'src/app/core/_interfaces/icashier';
+import { IPat } from 'src/app/core/_interfaces/ipat';
 import { IPrestataire } from 'src/app/core/_interfaces/iprestataire';
 import { IPrestation } from 'src/app/core/_interfaces/iprestation';
 import { SwitcherAction } from 'src/app/core/_interfaces/switcher-action';
@@ -21,6 +22,7 @@ export class LeftSideComponent implements OnInit, OnChanges {
   @Input() cashiers!: ICashier[];
   @Output() showMenu: EventEmitter<any> = new EventEmitter();
   @Output() switcherServiceStepEmitter: EventEmitter<any> = new EventEmitter();
+  @Output() switcherPersonStepEmitter: EventEmitter<IPat> = new EventEmitter();
 
   switcher: SwitcherAction;
   steps: string[] = [];
@@ -30,7 +32,8 @@ export class LeftSideComponent implements OnInit, OnChanges {
   cashStepChange?: string;
 
   constructor() {
-    this.switcher = { previous: null, current: "service", go_next: false };
+    // this.switcher = { previous: null, current: "service", go_next: false };
+    this.switcher = { previous: "insurance", current: "person", go_next: false };
     this.steps = ["service", "insurance", "person", "cash"];
   }
 
@@ -146,6 +149,10 @@ export class LeftSideComponent implements OnInit, OnChanges {
     if (val) {
       this.switcherServiceStepEmitter.emit(true);
     }
+  }
+
+  onShareFormDataFromPersonStepEvent(val: IPat) {
+    this.switcherPersonStepEmitter.emit(val);
   }
 
   stepChange(day: number) {

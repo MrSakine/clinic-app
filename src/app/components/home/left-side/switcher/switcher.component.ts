@@ -2,6 +2,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { IAssurance } from 'src/app/core/_interfaces/iassurance';
 import { ICashier } from 'src/app/core/_interfaces/icashier';
+import { IPat } from 'src/app/core/_interfaces/ipat';
 import { IPrestataire } from 'src/app/core/_interfaces/iprestataire';
 import { IPrestation } from 'src/app/core/_interfaces/iprestation';
 import { SwitcherAction } from 'src/app/core/_interfaces/switcher-action';
@@ -34,6 +35,7 @@ export class SwitcherComponent implements OnInit, OnChanges {
   @Input() insuranceStepChange?: string;
   @Input() personStepChange?: string;
   @Input() cashStepChange?: string;
+  @Output() shareFormDataFromPersonStep: EventEmitter<IPat> = new EventEmitter();
 
   constructor() { }
 
@@ -50,5 +52,9 @@ export class SwitcherComponent implements OnInit, OnChanges {
     if (val) {
       this.itemAction.emit(true);
     }
+  }
+
+  handlePersonStepFormEvent(val: IPat) {
+    this.shareFormDataFromPersonStep.emit(val);
   }
 }
