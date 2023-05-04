@@ -61,15 +61,15 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
   generatePatientID() {
     let p = new Date().getTime();
     let sp = String(p);
-    let sps = sp.slice(6);
+    let sps = sp.slice(7);
 
     this.randomPatientID = sps;
   }
 
   generateTicketID() {
-    let p = moment().add(1, 'days').valueOf();
+    let p = moment().add(1, 'months').valueOf();
     let sp = String(p);
-    let sps = sp.slice(6);
+    let sps = sp.slice(7);
 
     this.randomTicketID = sps;
   }
@@ -95,8 +95,6 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(
         val => {
           this.currentPat = val;
-
-          console.log(this.currentPat);
         }
       );
   }

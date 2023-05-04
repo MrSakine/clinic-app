@@ -33,6 +33,7 @@ export class LeftSideComponent implements OnInit, OnChanges {
 
   constructor() {
     this.switcher = { previous: null, current: "service", go_next: false };
+    // this.switcher = { previous: "service", current: "insurance", go_next: false };
     this.steps = ["service", "insurance", "person", "cash"];
   }
 
