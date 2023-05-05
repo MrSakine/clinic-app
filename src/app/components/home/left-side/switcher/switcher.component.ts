@@ -36,6 +36,7 @@ export class SwitcherComponent implements OnInit, OnChanges {
   @Input() personStepChange?: string;
   @Input() cashStepChange?: string;
   @Output() shareFormDataFromPersonStep: EventEmitter<IPat> = new EventEmitter();
+  @Output() serviceStepFormComplete: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 
@@ -46,6 +47,8 @@ export class SwitcherComponent implements OnInit, OnChanges {
       this.switcher = changes['switcher'].currentValue;
       this.serviceStepChange = changes['switcher'] ? changes['switcher'].currentValue : '';
     }
+
+    this.insurances = changes['insurances'] ? changes['insurances'].currentValue : [];
   }
 
   handleServiceStepActionItemEvent(val: any) {
@@ -56,5 +59,9 @@ export class SwitcherComponent implements OnInit, OnChanges {
 
   handlePersonStepFormEvent(val: IPat) {
     this.shareFormDataFromPersonStep.emit(val);
+  }
+
+  handleServiceStepFormCompleteEvent(val: any) {
+    this.serviceStepFormComplete.emit(val)
   }
 }

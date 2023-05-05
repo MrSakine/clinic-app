@@ -30,10 +30,11 @@ export class LeftSideComponent implements OnInit, OnChanges {
   insuranceStepChange?: string;
   personStepChange?: string;
   cashStepChange?: string;
+  currentStep?: string | null;
+  currentNextStep?: string | null;
 
   constructor() {
     this.switcher = { previous: null, current: "service", go_next: false };
-    // this.switcher = { previous: "service", current: "insurance", go_next: false };
     this.steps = ["service", "insurance", "person", "cash"];
   }
 
@@ -81,13 +82,13 @@ export class LeftSideComponent implements OnInit, OnChanges {
           this.serviceStepChange = this.stepChange(1);
           break;
         case SwitcherStepLabel.INSURANCE:
-          this.serviceStepChange = this.stepChange(2);
+          this.insuranceStepChange = this.stepChange(2);
           break;
         case SwitcherStepLabel.PERSON:
-          this.serviceStepChange = this.stepChange(3);
+          this.personStepChange = this.stepChange(3);
           break;
         case SwitcherStepLabel.CASH:
-          this.serviceStepChange = this.stepChange(4);
+          this.cashStepChange = this.stepChange(4);
           break;
         default: break;
       }
@@ -105,9 +106,15 @@ export class LeftSideComponent implements OnInit, OnChanges {
         case SwitcherStepLabel.SERVICE:
           this.serviceStepChange = this.stepChange(1);
           break;
-        case SwitcherStepLabel.INSURANCE: break;
-        case SwitcherStepLabel.PERSON: break;
-        case SwitcherStepLabel.CASH: break;
+        case SwitcherStepLabel.INSURANCE:
+          this.insuranceStepChange = this.stepChange(2);
+          break;
+        case SwitcherStepLabel.PERSON:
+          this.personStepChange = this.stepChange(3);
+          break;
+        case SwitcherStepLabel.CASH:
+          this.cashStepChange = this.stepChange(4);
+          break;
         default: break;
       }
 
@@ -141,6 +148,7 @@ export class LeftSideComponent implements OnInit, OnChanges {
     this.services = changes['services'].currentValue;
     this.serviceProviders = changes['serviceProviders'].currentValue;
     this.cashiers = changes['cashiers'].currentValue;
+    this.insurances = changes['insurances'] ? changes['insurances'].currentValue : [];
 
     this.handleSwitcher();
   }
@@ -153,6 +161,12 @@ export class LeftSideComponent implements OnInit, OnChanges {
 
   onShareFormDataFromPersonStepEvent(val: IPat) {
     this.switcherPersonStepEmitter.emit(val);
+  }
+
+  onServiceStepFormCompleteEvent(val: any) {
+    if (val) {
+      // this.switcher = { previous: this.currentStep, current: this.currentNextStep, go_next: true };
+    }
   }
 
   stepChange(day: number) {

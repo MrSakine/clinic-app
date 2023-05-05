@@ -54,6 +54,10 @@ export class ServiceStepComponent implements OnInit, OnChanges {
     if (changes['formChange'].previousValue) {
       if (this.serviceStepFormGroup.controls['cashier'].invalid) {
         this.serviceStepFormGroup.controls['cashier'].markAsTouched({ onlySelf: true });
+      } else if (this.currentSSPs.length < 0) {
+        return;
+      } else {
+        this.formComplete.emit(true);
       }
     }
   }
