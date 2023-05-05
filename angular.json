@@ -39,7 +39,7 @@
                             "spark-md5",
                             "vuvuzela",
                             "lodash",
-                            "sweetalert2"
+                            "moment"
                         ]
                     },
                     "configurations": {
