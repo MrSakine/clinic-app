@@ -37,18 +37,17 @@ export class SwitcherComponent implements OnInit, OnChanges {
   @Input() cashStepChange?: string;
   @Output() shareFormDataFromPersonStep: EventEmitter<IPat> = new EventEmitter();
   @Output() serviceStepFormComplete: EventEmitter<any> = new EventEmitter();
+  @Output() personStepFormComplete: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit(): void { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['switcher']) {
-      this.switcher = changes['switcher'].currentValue;
-      this.serviceStepChange = changes['switcher'] ? changes['switcher'].currentValue : '';
-    }
-
-    this.insurances = changes['insurances'] ? changes['insurances'].currentValue : [];
+    this.switcher = changes['switcher'] ? changes['switcher'].currentValue : this.switcher;
+    this.serviceStepChange = changes['serviceStepChange'] ? changes['serviceStepChange'].currentValue : this.serviceStepChange;
+    this.personStepChange = changes['personStepChange'] ? changes['personStepChange'].currentValue : this.personStepChange;
+    this.insurances = changes['insurances'] ? changes['insurances'].currentValue : this.insurances;
   }
 
   handleServiceStepActionItemEvent(val: any) {
@@ -63,5 +62,9 @@ export class SwitcherComponent implements OnInit, OnChanges {
 
   handleServiceStepFormCompleteEvent(val: any) {
     this.serviceStepFormComplete.emit(val)
+  }
+
+  handlePersonStepFormCompleteEvent(val: any) {
+    this.personStepFormComplete.emit(val);
   }
 }

@@ -6,7 +6,9 @@ import { ICashier } from 'src/app/core/_interfaces/icashier';
 import { IPat } from 'src/app/core/_interfaces/ipat';
 import { IPrestataire } from 'src/app/core/_interfaces/iprestataire';
 import { IPrestation } from 'src/app/core/_interfaces/iprestation';
+import { ITicket } from 'src/app/core/_interfaces/iticket';
 import { SwitcherAction } from 'src/app/core/_interfaces/switcher-action';
+import { DatabaseService } from 'src/app/core/_services/database.service';
 
 @Component({
   selector: 'app-left-side',
@@ -33,9 +35,13 @@ export class LeftSideComponent implements OnInit, OnChanges {
   currentStep?: string | null;
   currentNextStep?: string | null;
 
-  constructor() {
+  hasInsurance: boolean = false;
+
+  constructor(
+    private databaseService: DatabaseService,
+  ) {
     this.switcher = { previous: null, current: "service", go_next: false };
-    this.steps = ["service", "insurance", "person", "cash"];
+    this.setupDefaultSteps();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -44,6 +50,15 @@ export class LeftSideComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.handleSwitcher();
+    this.changeStepValue();
+  }
+
+  setupDefaultSteps() {
+    this.steps = ["service", "insurance", "person", "cash"];
+  }
+
+  setupStepsWithoutInsurance() {
+    this.steps = ["service", "person", "cash"];
   }
 
   startupMenuEvent(e: any) {
@@ -72,54 +87,37 @@ export class LeftSideComponent implements OnInit, OnChanges {
     }
   }
 
+  changeStepValue() {
+    this.serviceStepChange = this.stepChange(10);
+    this.insuranceStepChange = this.stepChange(20);
+    this.personStepChange = this.stepChange(30);
+    this.cashStepChange = this.stepChange(40);
+  }
+
   moveSwitcherForward() {
-    let step = this.getCurrentStep();
-    let next = this.getNextStep(step, false);
+    this.changeStepValue();
 
-    if (next !== undefined) {
-      switch (step) {
-        case SwitcherStepLabel.SERVICE:
-          this.serviceStepChange = this.stepChange(1);
-          break;
-        case SwitcherStepLabel.INSURANCE:
-          this.insuranceStepChange = this.stepChange(2);
-          break;
-        case SwitcherStepLabel.PERSON:
-          this.personStepChange = this.stepChange(3);
-          break;
-        case SwitcherStepLabel.CASH:
-          this.cashStepChange = this.stepChange(4);
-          break;
-        default: break;
+    setTimeout(() => {
+      let step = this.getCurrentStep();
+      let next = this.getNextStep(step, false);
+
+      if (next !== undefined && this.switcher.go_next) {
+        this.switcher = { previous: step, current: next, go_next: true };
       }
-
-      this.switcher = { previous: step, current: next, go_next: true };
-    }
+    }, 200);
   }
 
   moveSwitcherBackward() {
-    let step = this.getCurrentStep();
-    let prev = this.getNextStep(step, true);
+    this.changeStepValue();
 
-    if (prev !== undefined) {
-      switch (step) {
-        case SwitcherStepLabel.SERVICE:
-          this.serviceStepChange = this.stepChange(1);
-          break;
-        case SwitcherStepLabel.INSURANCE:
-          this.insuranceStepChange = this.stepChange(2);
-          break;
-        case SwitcherStepLabel.PERSON:
-          this.personStepChange = this.stepChange(3);
-          break;
-        case SwitcherStepLabel.CASH:
-          this.cashStepChange = this.stepChange(4);
-          break;
-        default: break;
+    setTimeout(() => {
+      let step = this.getCurrentStep();
+      let prev = this.getNextStep(step, true);
+
+      if (prev !== undefined && this.switcher.go_next) {
+        this.switcher = { previous: step, current: prev, go_next: true };
       }
-
-      this.switcher = { previous: step, current: prev, go_next: true };
-    }
+    }, 200);
   }
 
   getCurrentStep(): string | undefined {
@@ -148,7 +146,7 @@ export class LeftSideComponent implements OnInit, OnChanges {
     this.services = changes['services'].currentValue;
     this.serviceProviders = changes['serviceProviders'].currentValue;
     this.cashiers = changes['cashiers'].currentValue;
-    this.insurances = changes['insurances'] ? changes['insurances'].currentValue : [];
+    this.insurances = changes['insurances'].currentValue;
 
     this.handleSwitcher();
   }
@@ -165,8 +163,35 @@ export class LeftSideComponent implements OnInit, OnChanges {
 
   onServiceStepFormCompleteEvent(val: any) {
     if (val) {
-      // this.switcher = { previous: this.currentStep, current: this.currentNextStep, go_next: true };
+      this.checkAssurance();
+      this.switcher.go_next = true;
+    } else {
+      this.switcher.go_next = false;
     }
+  }
+
+  onPersonStepFormCompleteEvent(val: any) {
+    if (val) {
+      this.switcher.go_next = true;
+    } else {
+      this.switcher.go_next = false;
+    }
+  }
+
+  checkAssurance() {
+    this.databaseService.getTicketDocument()
+      .then(
+        (val: ITicket) => {
+          this.hasInsurance = val.ssp.hasInsurance;
+
+          if (!this.hasInsurance) {
+            this.setupStepsWithoutInsurance();
+          } else {
+            this.setupDefaultSteps();
+          }
+        }
+      )
+      .catch(err => console.error(err));
   }
 
   stepChange(day: number) {
