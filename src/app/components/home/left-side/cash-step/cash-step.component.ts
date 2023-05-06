@@ -21,6 +21,7 @@ import { ShareCashDataSubscriptionService } from 'src/app/core/_subscriptions/sh
 
 export class CashStepComponent implements OnInit, OnChanges, OnDestroy {
   @Input() services!: IPrestation[];
+  @Input() cashStepChange?: string;
 
   cashStepFormGroup!: FormGroup;
   currentData!: ICash;
@@ -51,6 +52,10 @@ export class CashStepComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes['cashStepChange']) {
+
+    }
+
     this.setupData();
   }
 
@@ -164,12 +169,17 @@ export class CashStepComponent implements OnInit, OnChanges, OnDestroy {
       case CashStepInputLabel.AMOUNT_RECEIVED:
         this.currentData.amount_received = !Number.isNaN(v) ? v : this.currentData.amount_received;
         this.currentData.amount_due = this.currentData.patient_due - this.currentData.amount_received;
+        this.currentData.amount_due = this.currentData.amount_due < 0 ? 0 : this.currentData.amount_due;
+
+        let n = this.currentData.patient_due - this.currentData.amount_received;
+        let m = String(n);
+        let o = m.split('-');
+
+        this.currentData.amount_to_refund = o[1] === undefined ? 0 : Number(o[1]);
         break;
       case CashStepInputLabel.AMOUNT_DUE:
-        // this.currentData.amount_due = !Number.isNaN(v) ? v : this.currentData.amount_due;
         break;
       case CashStepInputLabel.AMOUNT_TO_REFUND:
-        this.currentData.amount_to_refund = !Number.isNaN(v) ? v : this.currentData.amount_to_refund;
         break;
       default: break;
     }
