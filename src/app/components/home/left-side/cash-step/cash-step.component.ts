@@ -1,6 +1,9 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { CashStepInputLabel } from 'src/app/core/_enums/cash-step-input-label';
 import { CustomSSP } from 'src/app/core/_interfaces/custom-ssp';
+import { IAssurance } from 'src/app/core/_interfaces/iassurance';
 import { ICash } from 'src/app/core/_interfaces/icash';
 import { IIns } from 'src/app/core/_interfaces/iins';
 import { IPrestataire } from 'src/app/core/_interfaces/iprestataire';
@@ -8,6 +11,7 @@ import { IPrestation } from 'src/app/core/_interfaces/iprestation';
 import { ISsp } from 'src/app/core/_interfaces/issp';
 import { ITicket } from 'src/app/core/_interfaces/iticket';
 import { DatabaseService } from 'src/app/core/_services/database.service';
+import { ShareCashDataSubscriptionService } from 'src/app/core/_subscriptions/share-cash-data-subscription.service';
 
 @Component({
   selector: 'app-cash-step',
@@ -15,8 +19,9 @@ import { DatabaseService } from 'src/app/core/_services/database.service';
   styleUrls: ['./cash-step.component.scss']
 })
 
-export class CashStepComponent implements OnInit, OnChanges {
+export class CashStepComponent implements OnInit, OnChanges, OnDestroy {
   @Input() services!: IPrestation[];
+  @Input() cashStepChange?: string;
 
   cashStepFormGroup!: FormGroup;
   currentData!: ICash;
@@ -25,17 +30,38 @@ export class CashStepComponent implements OnInit, OnChanges {
   ssp!: ISsp;
   insurance_name!: string;
   insurance_percentage!: string;
+  insurance_amount_text!: string;
+  default_insurance_amount_text: string = 'Montant assurance';
+  var_insurance_amount_text: string = 'Montant %s';
+  insurance_amount_due_text!: string;
+  var_insurance_amount_due_text: string = 'Rester à payer par le tiers payant (%s / %s %)';
+  default_insurance_amount_due_text: string = 'Rester à payer par le tiers payant';
+
+  shareCashSubscription!: Subscription;
 
   constructor(
     private databaseService: DatabaseService,
     private formBuilder: FormBuilder,
+    private shareCashSubscriptionService: ShareCashDataSubscriptionService,
   ) {
     this.setupData();
   }
 
-  ngOnChanges(changes: SimpleChanges): void { }
+  ngOnDestroy(): void {
+    this.shareCashSubscription.unsubscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['cashStepChange']) {
+
+    }
+
+    this.setupData();
+  }
 
   ngOnInit(): void {
+    this.shareCashSubscriptionService.init();
+
     this.cashStepFormGroup = this.formBuilder.group(
       {
         total: [null, [Validators.required]],
@@ -47,21 +73,36 @@ export class CashStepComponent implements OnInit, OnChanges {
         amount_refund: [null, [Validators.required]]
       }
     );
+
+    this.shareCashSubscription = this.shareCashSubscriptionService.getCurrent().subscribe(() => { });
   }
 
   setupData() {
-    let table = this.databaseService.getTicketDocument();
-    table
-      .then(
-        (val: ITicket) => {
-          this.currentData = val.cash;
-          this.currentInsurance = val.ins;
-          this.getServiceAndServiceProviders(val.ssp.data);
-          this.calculateAmount();
-          this.setupFormGroupData();
-        }
-      )
-      .catch(err => console.error(err));
+    this.setupCashData();
+
+    setTimeout(() => {
+      let table = this.databaseService.getTicketDocument();
+      table
+        .then(
+          (val: ITicket) => {
+            this.currentInsurance = val.ins;
+            this.ssp = val.ssp;
+            this.setupInsuranceAmount(val.ssp, this.currentInsurance?.insurance[0]);
+            this.getServiceAndServiceProviders(val.ssp.data);
+            this.calculateAmount();
+            this.disableInput();
+            this.setupFormGroupData();
+          }
+        )
+        .catch(err => console.error(err));
+    }, 100);
+  }
+
+  setupCashData() {
+    this.shareCashSubscriptionService.getCurrent()
+      .subscribe(val => {
+        this.currentData = val;
+      });
   }
 
   calculateAmount() {
@@ -77,11 +118,17 @@ export class CashStepComponent implements OnInit, OnChanges {
     this.currentData.amount_received = 0;
     this.currentData.amount_to_refund = 0;
 
-    if (Array.isArray(this.currentInsurance) && this.currentInsurance?.insurance && this.currentInsurance?.insurance.length > 0) {
-      let x = this.currentInsurance.insurance[0].percentage;
+    if (this.currentInsurance !== undefined && this.ssp.hasInsurance && this.currentInsurance?.insurance.length > 0) {
+      let x = Number(this.currentInsurance.insurance[0].percentage);
       let y = x / 100;
       let z = this.currentData.total * y;
       j = this.currentData.total - z;
+
+      this.currentData.insurance_due = j;
+      this.currentData.patient_due = this.currentData.total - j;
+    } else {
+      this.currentData.insurance_due = 0;
+      this.currentData.patient_due = this.currentData.total;
     }
   }
 
@@ -93,6 +140,53 @@ export class CashStepComponent implements OnInit, OnChanges {
     this.cashStepFormGroup.controls['amount_due'].setValue(this.currentData.amount_due.toString());
     this.cashStepFormGroup.controls['amount_received'].setValue(this.currentData.amount_received.toString());
     this.cashStepFormGroup.controls['amount_refund'].setValue(this.currentData.amount_to_refund.toString());
+  }
+
+  disableInput() {
+    this.cashStepFormGroup.controls['total'].disable({ onlySelf: true });
+    this.cashStepFormGroup.controls['insurance_due'].disable({ onlySelf: true });
+    this.cashStepFormGroup.controls['patient_due'].disable({ onlySelf: true });
+  }
+
+  setupInsuranceAmount(s: ISsp, i: IAssurance | undefined) {
+    if (s.hasInsurance) {
+      this.insurance_amount_text = this.var_insurance_amount_text.replace('%s', String(i?.name));
+      this.insurance_amount_due_text = this.var_insurance_amount_due_text
+        .replace('%s', String(i?.name)).replace('%s', String(i?.percentage));
+    } else {
+      this.insurance_amount_text = this.default_insurance_amount_text;
+      this.insurance_amount_due_text = this.default_insurance_amount_due_text;
+    }
+  }
+
+  onValueChange(val: any, el: string) {
+    let v = Number(val.target.value);
+
+    switch (el) {
+      case CashStepInputLabel.INSURANCE_AMOUNT:
+        this.currentData.insurance_amount = !Number.isNaN(v) ? v : this.currentData.insurance_amount;
+        break;
+      case CashStepInputLabel.AMOUNT_RECEIVED:
+        this.currentData.amount_received = !Number.isNaN(v) ? v : this.currentData.amount_received;
+        this.currentData.amount_due = this.currentData.patient_due - this.currentData.amount_received;
+        this.currentData.amount_due = this.currentData.amount_due < 0 ? 0 : this.currentData.amount_due;
+
+        let n = this.currentData.patient_due - this.currentData.amount_received;
+        let m = String(n);
+        let o = m.split('-');
+
+        this.currentData.amount_to_refund = o[1] === undefined ? 0 : Number(o[1]);
+        break;
+      case CashStepInputLabel.AMOUNT_DUE:
+        break;
+      case CashStepInputLabel.AMOUNT_TO_REFUND:
+        break;
+      default: break;
+    }
+
+    this.shareCashSubscriptionService.changeCurrent(this.currentData);
+    this.setupCashData();
+    this.setupFormGroupData();
   }
 
   getServiceAndServiceProviders(data: Array<Record<string, IPrestataire>>) {

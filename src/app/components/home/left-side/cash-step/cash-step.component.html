@@ -8,15 +8,15 @@
         <div class="app-cash-step-df-2">
             <div class="app-cash-step-df-item">
                 <mat-form-field appearance="fill" class="full-width">
-                    <mat-label>Montant %s {{insurance_name}}</mat-label>
+                    <mat-label>{{insurance_amount_text}}</mat-label>
                     <input type="text" name="insurance_amount" id="insurance_amount" matInput
-                        formControlName="insurance_amount" />
+                        formControlName="insurance_amount" (input)="onValueChange($event, 'iam')" />
                     <mat-icon matPrefix>attach_money</mat-icon>
                 </mat-form-field>
             </div>
             <div class="app-cash-step-df-item">
                 <mat-form-field appearance="fill" class="full-width">
-                    <mat-label>Reste &agrave; par le tiers payant (%s / %s)</mat-label>
+                    <mat-label>{{insurance_amount_due_text}}</mat-label>
                     <input type="text" name="insurance_due" id="insurance_due" matInput
                         formControlName="insurance_due" />
                     <mat-icon matPrefix>attach_money</mat-icon>
@@ -31,24 +31,25 @@
         <div class="app-cash-step-df-3">
             <div class="app-cash-step-df-item">
                 <mat-form-field appearance="fill" class="full-width">
-                    <mat-label>Montant D&ucirc;</mat-label>
-                    <input type="text" name="amount_due" id="amount_due" matInput formControlName="amount_due" />
+                    <mat-label>Montant Re&ccedil;u</mat-label>
+                    <input type="text" name="amount_received" id="amount_received" matInput
+                        formControlName="amount_received" (input)="onValueChange($event, 'amr')" />
                     <mat-icon matPrefix>attach_money</mat-icon>
                 </mat-form-field>
             </div>
             <div class="app-cash-step-df-item">
                 <mat-form-field appearance="fill" class="full-width">
-                    <mat-label>Montant Re&ccedil;u</mat-label>
-                    <input type="text" name="amount_received" id="amount_received" matInput
-                        formControlName="amount_received" />
+                    <mat-label>Montant D&ucirc;</mat-label>
+                    <input type="text" name="amount_due" id="amount_due" matInput formControlName="amount_due"
+                        (input)="onValueChange($event, 'amd')" />
                     <mat-icon matPrefix>attach_money</mat-icon>
                 </mat-form-field>
             </div>
             <div class="app-cash-step-df-item">
                 <mat-form-field appearance="fill" class="full-width">
                     <mat-label>Montant &agrave; retourner</mat-label>
-                    <input type="text" name="amount_refund" id="amount_refund" matInput
-                        formControlName="amount_refund" />
+                    <input type="text" name="amount_refund" id="amount_refund" matInput formControlName="amount_refund"
+                        (input)="onValueChange($event, 'amdtr')" />
                     <mat-icon matPrefix>attach_money</mat-icon>
                 </mat-form-field>
             </div>

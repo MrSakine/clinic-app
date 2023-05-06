@@ -2,8 +2,8 @@
     <div class="app-left-side-container">
         <app-switcher *ngIf="showSwitcher" [services]="services" [serviceProviders]="serviceProviders"
             [serviceStepChange]="serviceStepChange" [personStepChange]="personStepChange"
-            [insuranceStepChange]="insuranceStepChange" [cashiers]="cashiers" [switcher]="switcher"
-            [insurances]="insurances" (itemAction)="onSwitcherServiceStepEvent($event)"
+            [insuranceStepChange]="insuranceStepChange" [cashStepChange]="cashStepChange" [cashiers]="cashiers"
+            [switcher]="switcher" [insurances]="insurances" (itemAction)="onSwitcherServiceStepEvent($event)"
             (shareFormDataFromPersonStep)="onShareFormDataFromPersonStepEvent($event)"
             (serviceStepFormComplete)="onServiceStepFormCompleteEvent($event)"
             (personStepFormComplete)="onPersonStepFormCompleteEvent($event)"

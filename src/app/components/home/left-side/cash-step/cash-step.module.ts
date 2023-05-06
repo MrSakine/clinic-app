@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CashStepComponent } from './cash-step.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,7 +14,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule,
   ],
-  exports: [CashStepComponent]
+  exports: [CashStepComponent],
+  providers: [
+    {
+      provide: DEFAULT_CURRENCY_CODE, useValue: 'XOF',
+    }
+  ]
 })
 
 export class CashStepModule { }
