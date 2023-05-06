@@ -108,16 +108,12 @@ export class LeftSideComponent implements OnInit, OnChanges {
   }
 
   moveSwitcherBackward() {
-    this.changeStepValue();
+    let step = this.getCurrentStep();
+    let prev = this.getNextStep(step, true);
 
-    setTimeout(() => {
-      let step = this.getCurrentStep();
-      let prev = this.getNextStep(step, true);
-
-      if (prev !== undefined && this.switcher.go_next) {
-        this.switcher = { previous: step, current: prev, go_next: true };
-      }
-    }, 200);
+    if (prev !== undefined) {
+      this.switcher = { previous: step, current: prev, go_next: true };
+    }
   }
 
   getCurrentStep(): string | undefined {
@@ -176,6 +172,16 @@ export class LeftSideComponent implements OnInit, OnChanges {
     } else {
       this.switcher.go_next = false;
     }
+  }
+
+  onInsuranceStepFormComplete(val: any) {
+    if (val) {
+      this.switcher.go_next = true;
+    } else {
+      this.switcher.go_next = false;
+    }
+
+    this.onSwitcherServiceStepEvent(true);
   }
 
   checkAssurance() {

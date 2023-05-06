@@ -9,18 +9,22 @@
                     <span>{{ins.name + ' ' + '(' + ins.percentage + '%' + ')'}}</span>
                 </mat-option>
             </mat-select>
+            <mat-hint *ngIf="showWarning" class="text-warning">
+                <span>Veuillez ajouter au moins une assurance</span>
+            </mat-hint>
         </mat-form-field>
     </form>
     <div class="ins-item">
         <p>
             <span>Nom de l'assurance:</span>
             <span>&nbsp;</span>
-            <span>{{currentInsurance.name ? currentInsurance.name : 'N/A'}}</span>
+            <span>{{currentInsurance?.name ? currentInsurance?.name : 'N/A'}}</span>
         </p>
         <p>
             <span>Pourcentage couverte par l'assurance:</span>
             <span>&nbsp;</span>
-            <span>{{currentInsurance.percentage ? currentInsurance.percentage !== 0 ? currentInsurance.percentage + '%' : 0 : 'N/A'}}</span>
+            <span>{{currentInsurance?.percentage ? currentInsurance?.percentage !== 0 ? currentInsurance?.percentage + '%'
+                : 0 : 'N/A'}}</span>
         </p>
     </div>
 </ng-container>

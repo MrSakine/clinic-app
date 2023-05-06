@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@
 import moment from 'moment';
 import { Subscription } from 'rxjs';
 import { CustomSSP } from 'src/app/core/_interfaces/custom-ssp';
+import { IAssurance } from 'src/app/core/_interfaces/iassurance';
 import { ICashier } from 'src/app/core/_interfaces/icashier';
 import { IPat } from 'src/app/core/_interfaces/ipat';
 import { IPrestataire } from 'src/app/core/_interfaces/iprestataire';
@@ -22,6 +23,7 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
   currentData!: ITicket;
   currentSSPs?: CustomSSP[];
   currentCashier?: ICashier;
+  currentInsurance?: IAssurance;
   isCashier: boolean = false;
   currentPat!: IPat;
 
@@ -87,6 +89,7 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
           if (this.currentCashier) {
             this.isCashier = Object.keys(this.currentCashier).length > 0 ? true : false;
           }
+          this.currentInsurance = this.currentData.ins?.insurance[0];
         }
       )
       .catch(err => console.error(err));

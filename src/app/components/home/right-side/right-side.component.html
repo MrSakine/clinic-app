@@ -31,7 +31,8 @@
                     <div class="app-patient-info-wrapper-key">
                         <span>Nom complet&#58;</span>
                         <span>&nbsp;</span>
-                        <span>{{currentPat.fullname === '' ? 'N/A' : currentPat.fullname}}</span>
+                        <span>{{currentPat.fullname === undefined || currentPat.fullname === '' ? 'N/A' :
+                            currentPat.fullname}}</span>
                     </div>
                     <div class="app-patient-info-wrapper-value">
                         <span>&Acirc;ge&#58;</span>
@@ -45,12 +46,14 @@
                     <div class="app-patient-info-wrapper-key">
                         <span>Adresse&#58;</span>
                         <span>&nbsp;</span>
-                        <span>{{currentPat.address === '' ? 'N/A' : currentPat.address}}</span>
+                        <span>{{currentPat.address === undefined || currentPat.address === '' ? 'N/A' :
+                            currentPat.address}}</span>
                     </div>
                     <div class="app-patient-info-wrapper-value">
                         <span>T&eacute;l&eacute;phone&#58;</span>
                         <span>&nbsp;</span>
-                        <span>{{currentPat.phone_number === '' ? 'N/A' : currentPat.phone_number}}</span>
+                        <span>{{currentPat.phone_number === undefined || currentPat.phone_number === '' ? 'N/A' :
+                            currentPat.phone_number}}</span>
                     </div>
                 </div>
             </div>
@@ -59,7 +62,7 @@
                     <div class="app-patient-info-wrapper-key">
                         <span>Type d&apos;assurance&#58;</span>
                         <span>&nbsp;</span>
-                        <span>N/A</span>
+                        <span>{{!currentData.ssp.hasInsurance ? 'N/A' : currentInsurance?.name}}</span>
                     </div>
                     <div class="app-patient-info-wrapper-value">
                         <span>Cassier&#58;</span>
