@@ -12,6 +12,7 @@ import { IPrestation } from 'src/app/core/_interfaces/iprestation';
 import { ISsp } from 'src/app/core/_interfaces/issp';
 import { ITicket } from 'src/app/core/_interfaces/iticket';
 import { DatabaseService } from 'src/app/core/_services/database.service';
+import { ShareCashDataSubscriptionService } from 'src/app/core/_subscriptions/share-cash-data-subscription.service';
 import { SharePatDataSubscriptionService } from 'src/app/core/_subscriptions/share-pat-data-subscription.service';
 
 @Component({
@@ -36,6 +37,7 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
   @Input() personChange?: IPat;
 
   userDataSubscription!: Subscription;
+  cashDataSubscription!: Subscription;
   insurance_amount_text!: string;
   default_insurance_amount_text: string = 'Montant assurance';
   var_insurance_amount_text: string = 'Montant %s';
@@ -46,11 +48,13 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private databaseService: DatabaseService,
     private sharePatSubscriptionService: SharePatDataSubscriptionService,
+    private shareCashSubscriptionService: ShareCashDataSubscriptionService,
   ) {
   }
 
   ngOnDestroy(): void {
     this.userDataSubscription.unsubscribe();
+    this.cashDataSubscription.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -64,6 +68,7 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
     this.generateTicketID();
     this.setupData();
     this.setupPatData();
+    this.setupCashData();
   }
 
   generatePatientID() {
@@ -88,7 +93,6 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
       .then(
         (val: ITicket) => {
           this.currentData = val;
-          this.currentCash = this.currentData.cash;
           this.currentSSPs = this.getServiceAndServiceProviders(this.currentData.ssp.data);
           this.currentCashier = this.currentData.ssp.cashier;
           if (this.currentCashier) {
@@ -119,6 +123,15 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(
         val => {
           this.currentPat = val;
+        }
+      );
+  }
+
+  setupCashData() {
+    this.cashDataSubscription = this.shareCashSubscriptionService.getCurrent()
+      .subscribe(
+        val => {
+          this.currentCash = val;
         }
       );
   }

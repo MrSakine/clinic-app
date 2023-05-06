@@ -1,5 +1,7 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { CashStepInputLabel } from 'src/app/core/_enums/cash-step-input-label';
 import { CustomSSP } from 'src/app/core/_interfaces/custom-ssp';
 import { IAssurance } from 'src/app/core/_interfaces/iassurance';
 import { ICash } from 'src/app/core/_interfaces/icash';
@@ -9,6 +11,7 @@ import { IPrestation } from 'src/app/core/_interfaces/iprestation';
 import { ISsp } from 'src/app/core/_interfaces/issp';
 import { ITicket } from 'src/app/core/_interfaces/iticket';
 import { DatabaseService } from 'src/app/core/_services/database.service';
+import { ShareCashDataSubscriptionService } from 'src/app/core/_subscriptions/share-cash-data-subscription.service';
 
 @Component({
   selector: 'app-cash-step',
@@ -16,7 +19,7 @@ import { DatabaseService } from 'src/app/core/_services/database.service';
   styleUrls: ['./cash-step.component.scss']
 })
 
-export class CashStepComponent implements OnInit, OnChanges {
+export class CashStepComponent implements OnInit, OnChanges, OnDestroy {
   @Input() services!: IPrestation[];
 
   cashStepFormGroup!: FormGroup;
@@ -33,11 +36,18 @@ export class CashStepComponent implements OnInit, OnChanges {
   var_insurance_amount_due_text: string = 'Rester à payer par le tiers payant (%s / %s %)';
   default_insurance_amount_due_text: string = 'Rester à payer par le tiers payant';
 
+  shareCashSubscription!: Subscription;
+
   constructor(
     private databaseService: DatabaseService,
     private formBuilder: FormBuilder,
+    private shareCashSubscriptionService: ShareCashDataSubscriptionService,
   ) {
     this.setupData();
+  }
+
+  ngOnDestroy(): void {
+    this.shareCashSubscription.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -45,6 +55,8 @@ export class CashStepComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    this.shareCashSubscriptionService.init();
+
     this.cashStepFormGroup = this.formBuilder.group(
       {
         total: [null, [Validators.required]],
@@ -56,23 +68,36 @@ export class CashStepComponent implements OnInit, OnChanges {
         amount_refund: [null, [Validators.required]]
       }
     );
+
+    this.shareCashSubscription = this.shareCashSubscriptionService.getCurrent().subscribe(() => { });
   }
 
   setupData() {
-    let table = this.databaseService.getTicketDocument();
-    table
-      .then(
-        (val: ITicket) => {
-          this.currentData = val.cash;
-          this.currentInsurance = val.ins;
-          this.ssp = val.ssp;
-          this.setupInsuranceAmount(val.ssp, this.currentInsurance?.insurance[0]);
-          this.getServiceAndServiceProviders(val.ssp.data);
-          this.calculateAmount();
-          this.setupFormGroupData();
-        }
-      )
-      .catch(err => console.error(err));
+    this.setupCashData();
+
+    setTimeout(() => {
+      let table = this.databaseService.getTicketDocument();
+      table
+        .then(
+          (val: ITicket) => {
+            this.currentInsurance = val.ins;
+            this.ssp = val.ssp;
+            this.setupInsuranceAmount(val.ssp, this.currentInsurance?.insurance[0]);
+            this.getServiceAndServiceProviders(val.ssp.data);
+            this.calculateAmount();
+            this.disableInput();
+            this.setupFormGroupData();
+          }
+        )
+        .catch(err => console.error(err));
+    }, 100);
+  }
+
+  setupCashData() {
+    this.shareCashSubscriptionService.getCurrent()
+      .subscribe(val => {
+        this.currentData = val;
+      });
   }
 
   calculateAmount() {
@@ -114,12 +139,8 @@ export class CashStepComponent implements OnInit, OnChanges {
 
   disableInput() {
     this.cashStepFormGroup.controls['total'].disable({ onlySelf: true });
-    this.cashStepFormGroup.controls['insurance_amount'].disable({ onlySelf: true });
     this.cashStepFormGroup.controls['insurance_due'].disable({ onlySelf: true });
     this.cashStepFormGroup.controls['patient_due'].disable({ onlySelf: true });
-    this.cashStepFormGroup.controls['amount_due'].disable({ onlySelf: true });
-    this.cashStepFormGroup.controls['amount_received'].disable({ onlySelf: true });
-    this.cashStepFormGroup.controls['amount_refund'].disable({ onlySelf: true });
   }
 
   setupInsuranceAmount(s: ISsp, i: IAssurance | undefined) {
@@ -131,6 +152,31 @@ export class CashStepComponent implements OnInit, OnChanges {
       this.insurance_amount_text = this.default_insurance_amount_text;
       this.insurance_amount_due_text = this.default_insurance_amount_due_text;
     }
+  }
+
+  onValueChange(val: any, el: string) {
+    let v = Number(val.target.value);
+
+    switch (el) {
+      case CashStepInputLabel.INSURANCE_AMOUNT:
+        this.currentData.insurance_amount = !Number.isNaN(v) ? v : this.currentData.insurance_amount;
+        break;
+      case CashStepInputLabel.AMOUNT_RECEIVED:
+        this.currentData.amount_received = !Number.isNaN(v) ? v : this.currentData.amount_received;
+        this.currentData.amount_due = this.currentData.patient_due - this.currentData.amount_received;
+        break;
+      case CashStepInputLabel.AMOUNT_DUE:
+        // this.currentData.amount_due = !Number.isNaN(v) ? v : this.currentData.amount_due;
+        break;
+      case CashStepInputLabel.AMOUNT_TO_REFUND:
+        this.currentData.amount_to_refund = !Number.isNaN(v) ? v : this.currentData.amount_to_refund;
+        break;
+      default: break;
+    }
+
+    this.shareCashSubscriptionService.changeCurrent(this.currentData);
+    this.setupCashData();
+    this.setupFormGroupData();
   }
 
   getServiceAndServiceProviders(data: Array<Record<string, IPrestataire>>) {

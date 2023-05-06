@@ -9,6 +9,7 @@ import { IAssurance } from 'src/app/core/_interfaces/iassurance';
 import { IPat } from 'src/app/core/_interfaces/ipat';
 import { Subscription } from 'rxjs';
 import { SharePatDataSubscriptionService } from 'src/app/core/_subscriptions/share-pat-data-subscription.service';
+import { ShareCashDataSubscriptionService } from 'src/app/core/_subscriptions/share-cash-data-subscription.service';
 
 @Component({
   selector: 'app-home',
@@ -27,19 +28,25 @@ export class HomeComponent implements OnInit, OnDestroy {
   change!: string;
   personChange!: IPat;
   userDataSubscription!: Subscription;
+  shareCashSubscription!: Subscription;
 
   constructor(
     private databaseService: DatabaseService,
     private sharePatSubscriptionService: SharePatDataSubscriptionService,
+    private shareCashSubscriptionService: ShareCashDataSubscriptionService,
   ) { }
 
   ngOnDestroy(): void {
     this.userDataSubscription.unsubscribe();
+    this.shareCashSubscription.unsubscribe();
   }
 
   ngOnInit(): void {
     this.setupData();
     this.sharePatSubscriptionService.init();
+    this.shareCashSubscriptionService.init();
+
+    this.shareCashSubscription = this.shareCashSubscriptionService.getCurrent().subscribe(() => { });
   }
 
   setupData() {
