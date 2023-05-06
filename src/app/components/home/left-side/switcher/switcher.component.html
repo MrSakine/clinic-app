@@ -23,7 +23,8 @@
         (itemAction)="handleServiceStepActionItemEvent($event)"
         (formComplete)="handleServiceStepFormCompleteEvent($event)"></app-service-step>
     <app-insurance-step *ngIf="switcher.current === 'insurance'" [insurances]="insurances"
-        @fadeSlideInOut></app-insurance-step>
+        [insuranceStepChange]="insuranceStepChange"
+        (insuranceStepFormComplete)="handleInsuranceStepFormComplete($event)" @fadeSlideInOut></app-insurance-step>
     <app-person-step *ngIf="switcher.current === 'person'" [personStepChange]="personStepChange"
         (shareFormData)="handlePersonStepFormEvent($event)" @fadeSlideInOut
         (personStepFormComplete)="handlePersonStepFormCompleteEvent($event)"></app-person-step>

@@ -4,6 +4,9 @@
         <mat-icon color="primary" matTooltip="Ajouter une prestation" matTooltipShowDelay="200" mat-ripple
             [matRippleCentered]="true" (click)="openChooseServiceDialog()">add_box</mat-icon>
     </div>
+    <p class="text-warning" *ngIf="showWarning">
+        <span>Veuillez ajouter au moins une prestation</span>
+    </p>
     <div class="prest-body" *ngIf="currentSSPs.length > 0">
         <div *ngFor="let c of currentSSPs" class="prest-item">
             <div class="prest-item-left">

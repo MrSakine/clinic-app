@@ -32,6 +32,7 @@ export class ServiceStepComponent implements OnInit, OnChanges {
   ssp!: ISsp;
   hasInsurance: boolean = false;
   currentCashier?: ICashier;
+  showWarning: boolean = false;
 
   constructor(
     private matDialog: MatDialog,
@@ -55,10 +56,9 @@ export class ServiceStepComponent implements OnInit, OnChanges {
       if (this.serviceStepFormGroup.controls['cashier'].invalid) {
         this.serviceStepFormGroup.controls['cashier'].markAsTouched({ onlySelf: true });
         this.formComplete.emit(false);
-        return;
-      } else if (this.currentSSPs.length < 0) {
+      } else if (this.currentSSPs.length <= 0) {
+        this.showWarning = true;
         this.formComplete.emit(false);
-        return;
       } else {
         this.formComplete.emit(true);
       }
@@ -192,6 +192,7 @@ export class ServiceStepComponent implements OnInit, OnChanges {
 
       this.setupData();
       this.itemAction.emit(true);
+      this.showWarning = false;
     }
   }
 

@@ -51,7 +51,9 @@ export class DatabaseService {
             "hasInsurance": false,
             "cashier": {},
           },
-          "ins": [],
+          "ins": {
+            "insurance": []
+          },
           "pat": [],
           "cash": []
         }
