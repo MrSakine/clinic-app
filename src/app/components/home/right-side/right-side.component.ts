@@ -30,6 +30,8 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
   @Input() personChange?: IPat;
 
   userDataSubscription!: Subscription;
+  insurance_amount_text: string = 'Montant assurance';
+  insurance_amount_due_text: string = 'Rester à payer par le tiers payant';
 
   constructor(
     private databaseService: DatabaseService,

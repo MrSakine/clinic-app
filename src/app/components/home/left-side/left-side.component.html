@@ -1,10 +1,11 @@
 <div id="app-left-side">
     <div class="app-left-side-container">
         <app-switcher *ngIf="showSwitcher" [services]="services" [serviceProviders]="serviceProviders"
-            [serviceStepChange]="serviceStepChange" [cashiers]="cashiers" [switcher]="switcher"
-            [insurances]="insurances" (itemAction)="onSwitcherServiceStepEvent($event)"
+            [serviceStepChange]="serviceStepChange" [personStepChange]="personStepChange" [cashiers]="cashiers"
+            [switcher]="switcher" [insurances]="insurances" (itemAction)="onSwitcherServiceStepEvent($event)"
             (shareFormDataFromPersonStep)="onShareFormDataFromPersonStepEvent($event)"
-            (serviceStepFormComplete)="onServiceStepFormCompleteEvent($event)"></app-switcher>
+            (serviceStepFormComplete)="onServiceStepFormCompleteEvent($event)"
+            (personStepFormComplete)="onPersonStepFormCompleteEvent($event)"></app-switcher>
         <app-startup-step *ngIf="!showSwitcher" (buttonClick)="startupMenuEvent($event)" (startUse)="handleSwitcher()"
             [services]="services" [serviceProviders]="serviceProviders" [cashiers]="cashiers"></app-startup-step>
     </div>
