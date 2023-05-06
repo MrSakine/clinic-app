@@ -16,7 +16,7 @@ export class CustomCurrencyPipe implements PipeTransform {
 
     }
 
-    return n;
+    return copy + ' ' + this.CURRENCY;
   }
 
 }

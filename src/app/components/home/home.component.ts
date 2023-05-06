@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDrawer, MatDrawerMode } from '@angular/material/sidenav';
 import { DatabaseService } from '../../core/_services/database.service';
 import { IPrestataire } from 'src/app/core/_interfaces/iprestataire';
@@ -7,6 +7,8 @@ import { ICashier } from 'src/app/core/_interfaces/icashier';
 import { IBase } from 'src/app/core/_interfaces/ibase';
 import { IAssurance } from 'src/app/core/_interfaces/iassurance';
 import { IPat } from 'src/app/core/_interfaces/ipat';
+import { Subscription } from 'rxjs';
+import { SharePatDataSubscriptionService } from 'src/app/core/_subscriptions/share-pat-data-subscription.service';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +16,7 @@ import { IPat } from 'src/app/core/_interfaces/ipat';
   styleUrls: ['./home.component.scss']
 })
 
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
   mode: MatDrawerMode = "over";
   hasBackDrop: boolean = true;
@@ -24,13 +26,20 @@ export class HomeComponent implements OnInit {
   cashiers!: ICashier[];
   change!: string;
   personChange!: IPat;
+  userDataSubscription!: Subscription;
 
   constructor(
     private databaseService: DatabaseService,
+    private sharePatSubscriptionService: SharePatDataSubscriptionService,
   ) { }
+
+  ngOnDestroy(): void {
+    this.userDataSubscription.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.setupData();
+    this.sharePatSubscriptionService.init();
   }
 
   setupData() {
