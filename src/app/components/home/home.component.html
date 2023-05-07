@@ -8,6 +8,7 @@
                 <app-navbar (menuClicked)="handleMenuClickEvent($event)"></app-navbar>
             </div>
             <div class="app-container">
+                <app-loading *ngIf="showLoading"></app-loading>
                 <div class="app-container-left">
                     <app-left-side (showMenu)="handleMenuClickEvent($event)" [services]="services"
                         [serviceProviders]="serviceProviders" [cashiers]="cashiers" [insurances]="insurances"
@@ -17,7 +18,7 @@
                 </div>
                 <div class="app-container-right">
                     <app-right-side [services]="services" [change]="change" [personChange]="personChange"
-                        [cashStepChange]="cashStepChange"></app-right-side>
+                        [cashStepChange]="cashStepChange" (hideLoading)="handleHideLoading($event)"></app-right-side>
                 </div>
             </div>
         </div>

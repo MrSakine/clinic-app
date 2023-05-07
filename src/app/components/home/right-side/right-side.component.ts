@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { jsPDF } from 'jspdf';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
@@ -39,6 +39,7 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
   @Input() change?: string;
   @Input() personChange?: IPat;
   @Input() cashStepChange?: string;
+  @Output() hideLoading: EventEmitter<any> = new EventEmitter();
 
   userDataSubscription!: Subscription;
   cashDataSubscription!: Subscription;
@@ -228,7 +229,10 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
       windowWidth: 1000,
       margin: [0, 5, 0, 5],
       autoPaging: true,
-    });
+    })
+      .finally(() => {
+        this.hideLoading.emit(true);
+      });
   }
 
 }

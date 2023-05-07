@@ -9,6 +9,7 @@ import { RightSideModule } from './right-side/right-side.module';
 import { EndSheetModule } from './end-sheet/end-sheet.module';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NgxPrintModule } from 'ngx-print';
+import { LoadingModule } from '../loading/loading.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { NgxPrintModule } from 'ngx-print';
     RightSideModule,
     EndSheetModule,
     NgxPrintModule,
+    LoadingModule,
   ],
   exports: [HomeComponent]
 })

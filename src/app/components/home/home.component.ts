@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
   mode: MatDrawerMode = "over";
   hasBackDrop: boolean = true;
+  showLoading: boolean = false;
   services!: IPrestation[];
   serviceProviders!: IPrestataire[];
   insurances!: IAssurance[];
@@ -98,7 +99,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (val) {
       setTimeout(() => {
         this.cashStepChange = this.makeChangeToRightSide(20);
+        this.showLoading = true;
       }, 100);
+    }
+  }
+
+  handleHideLoading(val: any) {
+    if (val) {
+      this.showLoading = !val;
     }
   }
 }
