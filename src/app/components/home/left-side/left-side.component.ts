@@ -25,6 +25,7 @@ export class LeftSideComponent implements OnInit, OnChanges {
   @Output() showMenu: EventEmitter<any> = new EventEmitter();
   @Output() switcherServiceStepEmitter: EventEmitter<any> = new EventEmitter();
   @Output() switcherPersonStepEmitter: EventEmitter<IPat> = new EventEmitter();
+  @Output() switcherCashStepEmitter: EventEmitter<any> = new EventEmitter();
 
   switcher: SwitcherAction;
   steps: string[] = [];
@@ -149,8 +150,12 @@ export class LeftSideComponent implements OnInit, OnChanges {
 
   onSwitcherServiceStepEvent(val: any) {
     if (val) {
-      this.switcherServiceStepEmitter.emit(true);
+      this.switcherServiceStepEmitter.emit(val);
     }
+  }
+
+  onSwitcherCashStepEvent(val: any) {
+    this.switcherCashStepEmitter.emit(val);
   }
 
   onShareFormDataFromPersonStepEvent(val: IPat) {

@@ -8,6 +8,7 @@ import { LeftSideModule } from './left-side/left-side.module';
 import { RightSideModule } from './right-side/right-side.module';
 import { EndSheetModule } from './end-sheet/end-sheet.module';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { NgxPrintModule } from 'ngx-print';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     LeftSideModule,
     RightSideModule,
     EndSheetModule,
+    NgxPrintModule,
   ],
   exports: [HomeComponent]
 })

@@ -39,6 +39,7 @@ export class SwitcherComponent implements OnInit, OnChanges {
   @Output() serviceStepFormComplete: EventEmitter<any> = new EventEmitter();
   @Output() personStepFormComplete: EventEmitter<any> = new EventEmitter();
   @Output() insuranceStepFormComplete: EventEmitter<any> = new EventEmitter();
+  @Output() cashStepFormComplete: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 
@@ -72,5 +73,9 @@ export class SwitcherComponent implements OnInit, OnChanges {
 
   handleInsuranceStepFormComplete(val: any) {
     this.insuranceStepFormComplete.emit(val);
+  }
+
+  handleCashStepFormComplete(val: any) {
+    this.cashStepFormComplete.emit(val);
   }
 }

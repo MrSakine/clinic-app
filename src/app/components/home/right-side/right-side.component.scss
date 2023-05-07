@@ -15,6 +15,10 @@ div {
     -webkit-box-shadow: 0px 0px 7px 4px rgba(0, 0, 0, 0.75);
 }
 
+.app-right-side-wrapper {
+    background: none;
+}
+
 div.app-right-side-body {
     width: 100%;
     height: auto;
@@ -126,6 +130,16 @@ div.app-right-side-body {
             }
         }
     }
+
+    div.app-made-container {
+        background: none;
+        display: flex;
+        flex-direction: row-reverse;
+
+        p {
+            font-size: 1.3em;
+        }
+    }
 }
 
 div.app-right-side-footer {
@@ -145,4 +159,8 @@ div.app-right-side-footer {
             font-weight: bold;
         }
     }
+}
+
+button {
+    display: none;
 }

@@ -7,7 +7,8 @@
             (shareFormDataFromPersonStep)="onShareFormDataFromPersonStepEvent($event)"
             (serviceStepFormComplete)="onServiceStepFormCompleteEvent($event)"
             (personStepFormComplete)="onPersonStepFormCompleteEvent($event)"
-            (insuranceStepFormComplete)="onInsuranceStepFormComplete($event)"></app-switcher>
+            (insuranceStepFormComplete)="onInsuranceStepFormComplete($event)"
+            (cashStepFormComplete)="onSwitcherCashStepEvent($event)"></app-switcher>
         <app-startup-step *ngIf="!showSwitcher" (buttonClick)="startupMenuEvent($event)" (startUse)="handleSwitcher()"
             [services]="services" [serviceProviders]="serviceProviders" [cashiers]="cashiers"></app-startup-step>
     </div>
