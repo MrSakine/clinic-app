@@ -10,6 +10,7 @@ import { IPat } from 'src/app/core/_interfaces/ipat';
 import { Subscription } from 'rxjs';
 import { SharePatDataSubscriptionService } from 'src/app/core/_subscriptions/share-pat-data-subscription.service';
 import { ShareCashDataSubscriptionService } from 'src/app/core/_subscriptions/share-cash-data-subscription.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-home',
@@ -21,12 +22,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
   mode: MatDrawerMode = "over";
   hasBackDrop: boolean = true;
+  showLoading: boolean = false;
   services!: IPrestation[];
   serviceProviders!: IPrestataire[];
   insurances!: IAssurance[];
   cashiers!: ICashier[];
   change!: string;
   personChange!: IPat;
+  cashStepChange!: string;
   userDataSubscription!: Subscription;
   shareCashSubscription!: Subscription;
 
@@ -74,8 +77,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  makeChangeToRightSide() {
-    let p = new Date().getTime();
+  makeChangeToRightSide(day: number) {
+    let p = moment().add(day, 'days').valueOf();
     let sp = String(p);
     let sps = sp.slice(6);
 
@@ -84,11 +87,26 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   handleLeftSideEvent(val: any) {
     if (val) {
-      this.change = this.makeChangeToRightSide();
+      this.change = this.makeChangeToRightSide(10);
     }
   }
 
   onSwitcherPersonStepEmitter(val: IPat) {
     this.personChange = val;
+  }
+
+  onSwitcherCashStepEmitter(val: any) {
+    if (val) {
+      setTimeout(() => {
+        this.cashStepChange = this.makeChangeToRightSide(20);
+        this.showLoading = true;
+      }, 100);
+    }
+  }
+
+  handleHideLoading(val: any) {
+    if (val) {
+      this.showLoading = !val;
+    }
   }
 }

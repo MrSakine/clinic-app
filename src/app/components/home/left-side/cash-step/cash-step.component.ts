@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CashStepInputLabel } from 'src/app/core/_enums/cash-step-input-label';
@@ -22,6 +22,7 @@ import { ShareCashDataSubscriptionService } from 'src/app/core/_subscriptions/sh
 export class CashStepComponent implements OnInit, OnChanges, OnDestroy {
   @Input() services!: IPrestation[];
   @Input() cashStepChange?: string;
+  @Output() cashStepFormComplete: EventEmitter<any> = new EventEmitter();
 
   cashStepFormGroup!: FormGroup;
   currentData!: ICash;
@@ -52,16 +53,16 @@ export class CashStepComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['cashStepChange']) {
-
+    if (changes['cashStepChange'] && changes['cashStepChange'].previousValue) {
+      if (this.cashStepFormGroup.valid) {
+        this.cashStepFormComplete.emit(true);
+      }
     }
 
     this.setupData();
   }
 
   ngOnInit(): void {
-    this.shareCashSubscriptionService.init();
-
     this.cashStepFormGroup = this.formBuilder.group(
       {
         total: [null, [Validators.required]],

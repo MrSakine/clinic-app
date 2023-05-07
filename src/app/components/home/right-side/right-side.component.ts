@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { jsPDF } from 'jspdf';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
 import { CustomSSP } from 'src/app/core/_interfaces/custom-ssp';
@@ -29,12 +30,16 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
   currentCashier?: ICashier;
   currentInsurance?: IAssurance;
   isCashier: boolean = false;
+  showLoading: boolean = false;
   currentPat!: IPat;
   currentCash!: ICash;
+  datetime!: string;
 
   @Input() services!: IPrestation[];
   @Input() change?: string;
   @Input() personChange?: IPat;
+  @Input() cashStepChange?: string;
+  @Output() hideLoading: EventEmitter<any> = new EventEmitter();
 
   userDataSubscription!: Subscription;
   cashDataSubscription!: Subscription;
@@ -60,6 +65,14 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['change'] || changes['personChange']) {
       this.setupData();
+    } else {
+      if (changes['cashStepChange']) {
+        this.setupDateTime();
+
+        setTimeout(() => {
+          this.print();
+        }, 100);
+      }
     }
   }
 
@@ -182,6 +195,44 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     return tmp;
+  }
+
+  setupDateTime() {
+    moment.locale("fr");
+
+    let t = moment();
+    this.datetime = t.format('DD/MM/YYYY HH:mm');
+  }
+
+  setupPrinter() {
+    return document.querySelector('.print-button') as HTMLElement;
+  }
+
+  print() {
+    // let s = this.setupPrinter();
+    // s.click();
+
+    let NAME = "clinic-ticket-" + this.randomTicketID;
+    let s = document.querySelector('.app-right-side-wrapper') as HTMLElement;
+    let doc = new jsPDF();
+    doc.html(s, {
+      callback: function (doc) {
+        let tmp = null;
+        for (let i = doc.getNumberOfPages(); i > 1; i--) {
+          let page = doc.getPageInfo(i);
+          tmp = doc.deletePage(page.pageNumber);
+        }
+
+        tmp?.save(NAME);
+      },
+      width: 200,
+      windowWidth: 1000,
+      margin: [0, 5, 0, 5],
+      autoPaging: true,
+    })
+      .finally(() => {
+        this.hideLoading.emit(true);
+      });
   }
 
 }

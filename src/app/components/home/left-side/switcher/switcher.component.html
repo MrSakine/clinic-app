@@ -29,5 +29,5 @@
         (shareFormData)="handlePersonStepFormEvent($event)" @fadeSlideInOut
         (personStepFormComplete)="handlePersonStepFormCompleteEvent($event)"></app-person-step>
     <app-cash-step *ngIf="switcher.current === 'cash'" [cashStepChange]="cashStepChange" [services]="services"
-        @fadeSlideInOut></app-cash-step>
+        (cashStepFormComplete)="handleCashStepFormComplete($event)" @fadeSlideInOut></app-cash-step>
 </ng-container>
