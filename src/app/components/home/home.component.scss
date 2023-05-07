@@ -4,3 +4,21 @@ mat-drawer {
     height: 100%;
     background-color: #F5F5F5;
 }
+
+@media print {
+
+    .app-navbar {
+        display: none;
+        border: none;
+    }
+
+    app-left-side,
+    app-navbar,
+    app-end-sheet {
+        display: none;
+    }
+
+    app-right-side {
+        display: block;
+    }
+}

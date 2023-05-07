@@ -7,6 +7,9 @@ const routes: Routes = [
   },
   {
     path: 'welcome', loadChildren: () => import('./components/home/home.module').then(m => m.HomeModule)
+  },
+  {
+    path: 'print', loadChildren: () => import('./components/printer/printer.module').then(m => m.PrinterModule)
   }
 ];
 
