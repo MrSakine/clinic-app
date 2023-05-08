@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { Cash } from 'src/app/core/_classes/cash';
 import { CashStepInputLabel } from 'src/app/core/_enums/cash-step-input-label';
 import { CustomSSP } from 'src/app/core/_interfaces/custom-ssp';
 import { IAssurance } from 'src/app/core/_interfaces/iassurance';
@@ -55,7 +56,19 @@ export class CashStepComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['cashStepChange'] && changes['cashStepChange'].previousValue) {
       if (this.cashStepFormGroup.valid) {
-        this.cashStepFormComplete.emit(true);
+        let cash = new Cash();
+        cash.total = this.currentData.total;
+        cash.insurance_amount = this.currentData.insurance_amount;
+        cash.insurance_due = this.currentData.insurance_due;
+        cash.patient_due = this.currentData.patient_due;
+        cash.amount_received = this.currentData.amount_received;
+        cash.amount_due = this.currentData.amount_due;
+        cash.amount_to_refund = this.currentData.amount_to_refund;
+        this.databaseService.createCash(cash);
+
+        setTimeout(() => {
+          this.cashStepFormComplete.emit(true);
+        }, 100);
       }
     }
 

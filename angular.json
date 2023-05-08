@@ -39,7 +39,10 @@
                             "spark-md5",
                             "vuvuzela",
                             "lodash",
-                            "moment"
+                            "moment",
+                            "core-js",
+                            "raf",
+                            "rgbcolor"
                         ]
                     },
                     "configurations": {

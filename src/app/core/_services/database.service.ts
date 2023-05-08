@@ -359,5 +359,15 @@ export class DatabaseService {
 
     return id;
   }
+
+  deleteDocument(value: string) {
+    this.database.get(value)
+      .then(
+        (doc) => {
+          this.database.remove(doc);
+        }
+      )
+      .catch(err => console.error(err));
+  }
 }
 

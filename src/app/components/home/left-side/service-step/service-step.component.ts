@@ -52,7 +52,7 @@ export class ServiceStepComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['formChange'].previousValue) {
+    if (changes['formChange'] && changes['formChange'].previousValue) {
       if (this.serviceStepFormGroup.controls['cashier'].invalid) {
         this.serviceStepFormGroup.controls['cashier'].markAsTouched({ onlySelf: true });
         this.formComplete.emit(false);
