@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { SharePatDataSubscriptionService } from 'src/app/core/_subscriptions/share-pat-data-subscription.service';
 import { ShareCashDataSubscriptionService } from 'src/app/core/_subscriptions/share-cash-data-subscription.service';
 import moment from 'moment';
+import { ITicket } from 'src/app/core/_interfaces/iticket';
 
 @Component({
   selector: 'app-home',
@@ -32,6 +33,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   cashStepChange!: string;
   userDataSubscription!: Subscription;
   shareCashSubscription!: Subscription;
+  ticketExist: boolean = false;
+  canDeleteTicket: boolean = false;
 
   constructor(
     private databaseService: DatabaseService,
@@ -46,10 +49,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setupData();
-    this.sharePatSubscriptionService.init();
-    this.shareCashSubscriptionService.init();
 
-    this.shareCashSubscription = this.shareCashSubscriptionService.getCurrent().subscribe(() => { });
+    setTimeout(() => {
+      this.sharePatSubscriptionService.init();
+      this.shareCashSubscriptionService.init();
+
+      this.shareCashSubscription = this.shareCashSubscriptionService.getCurrent().subscribe(() => { });
+    }, 100);
   }
 
   setupData() {
@@ -108,5 +114,45 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (val) {
       this.showLoading = !val;
     }
+  }
+
+  checkTicketExistence() {
+    this.databaseService.getTicketDocument()
+      .then(
+        (doc: ITicket) => {
+          if (doc.ssp.data.length > 0) {
+            this.ticketExist = true;
+            let s = confirm("Vous avez déjà un ticket en cours, voulez-vous continuer ?");
+
+            if (!s) {
+              this.canDeleteTicket = true;
+            } else {
+              this.canDeleteTicket = false;
+            }
+          } else {
+            this.ticketExist = false;
+          }
+        }
+      )
+      .catch();
+  }
+
+  deleteDocument() {
+    setTimeout(() => {
+      if (this.ticketExist && this.canDeleteTicket) {
+        this.databaseService.deleteDocument("ticket");
+      }
+    }, 100);
+  }
+
+  fetchData() {
+    this.setupData();
+
+    setTimeout(() => {
+      this.sharePatSubscriptionService.init();
+      this.shareCashSubscriptionService.init();
+
+      this.shareCashSubscription = this.shareCashSubscriptionService.getCurrent().subscribe(() => { });
+    }, 100);
   }
 }

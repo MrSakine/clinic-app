@@ -232,7 +232,14 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
     })
       .finally(() => {
         this.hideLoading.emit(true);
+        // this.deleteTicket();
       });
+  }
+
+  deleteTicket() {
+    this.databaseService.deleteDocument('ticket');
+
+    setTimeout(() => { window.location.reload() }, 500);
   }
 
 }

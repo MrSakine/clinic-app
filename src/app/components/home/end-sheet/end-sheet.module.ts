@@ -13,6 +13,7 @@ import { InsuranceDialogModule } from './insurance-dialog/insurance-dialog.modul
 import { ServiceListViewModule } from '../../service-list-view/service-list-view.module';
 import { DeleteItemBottomSheetModule } from './delete-item-bottom-sheet/delete-item-bottom-sheet.module';
 import { CashierDialogModule } from './cashier-dialog/cashier-dialog.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [EndSheetComponent],
@@ -22,6 +23,7 @@ import { CashierDialogModule } from './cashier-dialog/cashier-dialog.module';
     MatDialogModule,
     MatTabsModule,
     MatBottomSheetModule,
+    MatTooltipModule,
     NoElementModule,
     ServiceDialogModule,
     ServiceProviderDialogModule,
