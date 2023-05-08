@@ -209,31 +209,34 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   print() {
-    // let s = this.setupPrinter();
-    // s.click();
+    let canDelete = confirm("Ce ticket sera supprimé après l'enregistrement, veuillez vérifier vos informations avant de continuer !");
 
-    let NAME = "clinic-ticket-" + this.randomTicketID;
-    let s = document.querySelector('.app-right-side-wrapper') as HTMLElement;
-    let doc = new jsPDF();
-    doc.html(s, {
-      callback: function (doc) {
-        let tmp = null;
-        for (let i = doc.getNumberOfPages(); i > 1; i--) {
-          let page = doc.getPageInfo(i);
-          tmp = doc.deletePage(page.pageNumber);
-        }
+    if (canDelete) {
+      let NAME = "clinic-ticket-" + this.randomTicketID;
+      let s = document.querySelector('.app-right-side-wrapper') as HTMLElement;
+      let doc = new jsPDF();
+      doc.html(s, {
+        callback: function (doc) {
+          let tmp = null;
+          for (let i = doc.getNumberOfPages(); i > 1; i--) {
+            let page = doc.getPageInfo(i);
+            tmp = doc.deletePage(page.pageNumber);
+          }
 
-        tmp?.save(NAME);
-      },
-      width: 200,
-      windowWidth: 1000,
-      margin: [0, 5, 0, 5],
-      autoPaging: true,
-    })
-      .finally(() => {
-        this.hideLoading.emit(true);
-        // this.deleteTicket();
-      });
+          tmp?.save(NAME);
+        },
+        width: 200,
+        windowWidth: 1000,
+        margin: [0, 5, 0, 5],
+        autoPaging: true,
+      })
+        .finally(() => {
+          this.hideLoading.emit(true);
+          this.deleteTicket();
+        });
+    } else {
+      this.hideLoading.emit(true);
+    }
   }
 
   deleteTicket() {

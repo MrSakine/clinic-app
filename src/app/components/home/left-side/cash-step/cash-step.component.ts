@@ -138,8 +138,8 @@ export class CashStepComponent implements OnInit, OnChanges, OnDestroy {
       let z = this.currentData.total * y;
       j = this.currentData.total - z;
 
-      this.currentData.insurance_due = j;
-      this.currentData.patient_due = this.currentData.total - j;
+      this.currentData.patient_due = j;
+      this.currentData.insurance_due = this.currentData.total - j;
     } else {
       this.currentData.insurance_due = 0;
       this.currentData.patient_due = this.currentData.total;
