@@ -10,6 +10,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ServiceDialogComponent } from './service-dialog.component';
 import { LoaderModule } from 'src/app/components/loader/loader.module';
+import { NgxCleaveDirectiveModule } from 'ngx-cleave-directive';
 
 @NgModule({
   declarations: [ServiceDialogComponent],
@@ -24,6 +25,7 @@ import { LoaderModule } from 'src/app/components/loader/loader.module';
     MatInputModule,
     MatSnackBarModule,
     LoaderModule,
+    NgxCleaveDirectiveModule,
   ],
   exports: [ServiceDialogComponent]
 })

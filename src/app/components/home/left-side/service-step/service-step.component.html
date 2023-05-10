@@ -10,8 +10,12 @@
     <div class="prest-body" *ngIf="currentSSPs.length > 0">
         <div *ngFor="let c of currentSSPs" class="prest-item">
             <div class="prest-item-left">
-                <p>{{c.service.type + ' - ' + c.service.price + ' ' + 'XOF'}}<span
-                        class="badge bg-secondary">Prestation</span></p>
+                <p>
+                    <span>{{c.service.type}}</span>
+                    <span>-</span>
+                    <span>{{c.service.price | currency}}</span>
+                    <span class="badge bg-secondary">Prestation</span>
+                </p>
                 <p>{{c.serviceProvider.surname + ' ' + c.serviceProvider.name}}<span
                         class="badge bg-secondary">Prestataire</span></p>
             </div>

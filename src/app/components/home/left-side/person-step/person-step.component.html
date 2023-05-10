@@ -20,7 +20,8 @@
                     <mat-form-field appearance="fill" class="full-width">
                         <mat-label>Num&eacute;ro de t&eacute;l&eacute;phone</mat-label>
                         <input type="text" name="phoneNumber" id="phoneNumber" matInput
-                            (input)="onValueChange($event, 'phone')" required formControlName="phoneNumber" />
+                            (input)="onValueChange($event, 'phone')" [cleave]="{blocks: [2, 2, 2, 2], delimiter: ''}"
+                            required formControlName="phoneNumber" />
                         <mat-hint>Exemple: 94865291</mat-hint>
                         <mat-icon matPrefix>call</mat-icon>
                     </mat-form-field>

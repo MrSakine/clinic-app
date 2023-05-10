@@ -17,9 +17,9 @@
             </mat-form-field>
             <mat-form-field appearance="fill" class="full-width">
                 <mat-label>Prix de la prestation</mat-label>
-                <input matInput type="number" minlength="1" maxlength="6" name="price" id="price" required
-                    formControlName="price" />
-                <mat-hint *ngIf="!showPriceError">Exemple: 45000 xof</mat-hint>
+                <input matInput type="text" minlength="1" maxlength="20" name="price" id="price" required
+                    formControlName="price" [cleave]="{numeral: true, delimiter: ' '}" />
+                <mat-hint *ngIf="!showPriceError">Exemple: 45 000 FCFA</mat-hint>
                 <mat-hint *ngIf="showPriceError" class="alert alert-danger">
                     <span>Veuillez entrer un prix valide</span>
                 </mat-hint>
