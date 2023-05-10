@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { jsPDF } from 'jspdf';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
@@ -6,7 +6,6 @@ import { CustomSSP } from 'src/app/core/_interfaces/custom-ssp';
 import { IAssurance } from 'src/app/core/_interfaces/iassurance';
 import { ICash } from 'src/app/core/_interfaces/icash';
 import { ICashier } from 'src/app/core/_interfaces/icashier';
-import { IIns } from 'src/app/core/_interfaces/iins';
 import { IPat } from 'src/app/core/_interfaces/ipat';
 import { IPrestataire } from 'src/app/core/_interfaces/iprestataire';
 import { IPrestation } from 'src/app/core/_interfaces/iprestation';
@@ -82,6 +81,7 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
     this.setupData();
     this.setupPatData();
     this.setupCashData();
+    this.setupDate();
   }
 
   generatePatientID() {
@@ -204,6 +204,13 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
     this.datetime = t.format('DD/MM/YYYY HH:mm');
   }
 
+  setupDate() {
+    moment.locale("fr");
+
+    let t = moment();
+    this.datetime = t.format('DD/MM/YYYY');
+  }
+
   setupPrinter() {
     return document.querySelector('.print-button') as HTMLElement;
   }
@@ -227,12 +234,11 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
         },
         width: 200,
         windowWidth: 1000,
-        margin: [0, 5, 0, 5],
         autoPaging: true,
       })
         .finally(() => {
           this.hideLoading.emit(true);
-          this.deleteTicket();
+          // this.deleteTicket();
         });
     } else {
       this.hideLoading.emit(true);

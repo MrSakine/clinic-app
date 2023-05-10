@@ -118,7 +118,7 @@ export class ServiceStepComponent implements OnInit, OnChanges {
   openChooseServiceDialog() {
     if (this.currentSSPs.length >= 3) {
       let config = this.prepareSnackBarData();
-      this.matSnackbar.open("Le nombre maximum de prestations a été atteinte", undefined, config);
+      this.matSnackbar.open("Le nombre maximum de prestations est atteint", undefined, config);
       return;
     }
 

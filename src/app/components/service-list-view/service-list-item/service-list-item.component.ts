@@ -18,6 +18,9 @@ export class ServiceListItemComponent implements OnInit, OnChanges {
   @Output() event: EventEmitter<ExistElementEvent> = new EventEmitter<ExistElementEvent>();
 
   currentItem!: any;
+  currentServices!: IPrestation[];
+  currentFormattedServices?: string;
+  currentNonFormattedService!: string;
 
   constructor() { }
 
@@ -46,6 +49,8 @@ export class ServiceListItemComponent implements OnInit, OnChanges {
         break;
       case EndSheetLabel.SERVICE_PROVIDER:
         this.currentItem = this.currentItem as IPrestataire;
+        this.currentServices = this.currentItem.service;
+        this.formatServiceProvider(this.currentServices);
         break;
       case EndSheetLabel.INSURANCE:
         this.currentItem = this.currentItem as IAssurance;
@@ -59,5 +64,18 @@ export class ServiceListItemComponent implements OnInit, OnChanges {
 
   handleClick(label: string, action: string) {
     this.event.emit({ label: label, action: action, item: this.currentItem });
+  }
+
+  formatServiceProvider(services: IPrestation[]) {
+    let tmp = "";
+
+    services.forEach(service => {
+      tmp += service.type + ', ';
+    });
+
+    tmp = tmp.slice(0, tmp.length - 2);
+    this.currentNonFormattedService = tmp;
+    tmp = services.length > 2 ? `${services[0].type} (+${services.length - 1} autres)` : tmp;
+    this.currentFormattedServices = tmp;
   }
 }

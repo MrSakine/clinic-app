@@ -40,11 +40,13 @@ export class ServiceProviderDialogComponent implements OnInit {
       );
     } else {
       let data = this.currentData as ServiceProviderDialogData;
+      let tmp = data.currentServiceProvider?.service.map(a => a.type);
+
       this.serviceProviderFormGroup = formBuilder.group(
         {
           name: new FormControl(data.currentServiceProvider?.name, [Validators.required]),
           surname: new FormControl(data.currentServiceProvider?.surname, [Validators.required]),
-          service: new FormControl(data.currentServiceProvider?.service, [Validators.required])
+          service: new FormControl(tmp, [Validators.required])
         }
       );
     }
@@ -88,7 +90,7 @@ export class ServiceProviderDialogComponent implements OnInit {
     serviceProvider.id = (this.currentData as ServiceProviderDialogData).currentServiceProvider?.id;
     serviceProvider.firstname = this.serviceProviderFormGroup.controls['surname'].value;
     serviceProvider.lastname = this.serviceProviderFormGroup.controls['name'].value;
-    serviceProvider.service = this.serviceProviderFormGroup.controls['service'].value;
+    serviceProvider.service = this.getSelectedServices(this.serviceProviderFormGroup.controls['service'].value);
 
     return serviceProvider;
   }
@@ -110,6 +112,20 @@ export class ServiceProviderDialogComponent implements OnInit {
         }
       )
       .catch(err => console.error(err));
+  }
+
+  getSelectedServices(data: string[]): IPrestation[] {
+    let tmp: IPrestation[] = [];
+
+    data.forEach(d => {
+      let a = this.services?.find(v => v.type === d);
+
+      if (a) {
+        tmp.push(a);
+      }
+    });
+
+    return tmp;
   }
 
 }
