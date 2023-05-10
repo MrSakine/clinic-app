@@ -76,15 +76,7 @@ export class ServiceDialogComponent implements OnInit {
   }
 
   handleUserInput(val: any, mode: string | undefined | null) {
-    if (mode === "number") {
-      if (typeof val !== "number") {
-        this.showPriceError = true;
-      } else {
-        this.showPriceError = false;
-      }
-    } else {
-      this.checkExistence(val);
-    }
+    this.checkExistence(val);
   }
 
   getData(): Service {
@@ -92,7 +84,7 @@ export class ServiceDialogComponent implements OnInit {
 
     service.id = (this.currentData as ServiceDialogData).currentService?.id;
     service.type = this.serviceFormGroup.controls['type'].value;
-    service.price = Number(this.serviceFormGroup.controls['price'].value);
+    service.price = Number(this.serviceFormGroup.controls['price'].value.split(' ').join(''));
 
     return service;
   }

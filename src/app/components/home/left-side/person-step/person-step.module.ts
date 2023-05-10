@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { NgxCleaveDirectiveModule } from 'ngx-cleave-directive';
 
 @NgModule({
   declarations: [PersonStepComponent],
@@ -15,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
+    NgxCleaveDirectiveModule,
   ],
   exports: [PersonStepComponent]
 })

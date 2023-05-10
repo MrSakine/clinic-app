@@ -1,5 +1,5 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA, DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
@@ -14,6 +14,9 @@ import { ServiceListViewModule } from '../../service-list-view/service-list-view
 import { DeleteItemBottomSheetModule } from './delete-item-bottom-sheet/delete-item-bottom-sheet.module';
 import { CashierDialogModule } from './cashier-dialog/cashier-dialog.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import localeFr from '@angular/common/locales/fr';
+
+registerLocaleData(localeFr);
 
 @NgModule({
   declarations: [EndSheetComponent],
@@ -33,7 +36,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     DeleteItemBottomSheetModule,
   ],
   exports: [EndSheetComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers: [
+    {
+      provide: DEFAULT_CURRENCY_CODE, useValue: 'XOF',
+    },
+    {
+      provide: LOCALE_ID, useValue: 'fr-FR'
+    }
+  ]
 })
 
 export class EndSheetModule { }

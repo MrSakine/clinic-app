@@ -52,17 +52,19 @@ export class ChooseServiceDialogComponent implements OnInit {
   }
 
   onServiceChange(value: any) {
-    let tmp = this.currentData.serviceProviders
-      .filter(v => v.service.toLowerCase() === String(value).toLowerCase());
+    let tmp = this.currentData.serviceProviders;
+    let tmp2: IPrestataire[] = [];
 
-    if (tmp.length > 0) {
-      this.addProvider = false;
-      this.filteredProviders = this.currentData.serviceProviders
-        .filter(v => v.service.toLowerCase() === String(value).toLowerCase());;
-    } else {
-      this.addProvider = true;
-      this.filteredProviders = [];
-    }
+    tmp.forEach(t => {
+      t.service.forEach(d => {
+        if (d.type === value) {
+          tmp2.push(t);
+        }
+      });
+    });
+
+    this.filteredProviders = tmp2.length > 0 ? tmp2 : [];
+    this.addProvider = this.filteredProviders.length < 0 ? true : false;
   }
 
   onSubmit() {

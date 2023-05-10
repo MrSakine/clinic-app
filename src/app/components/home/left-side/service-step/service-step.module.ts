@@ -1,5 +1,6 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA, DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
+import { CommonModule, registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
 
 import { ServiceStepComponent } from './service-step.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,6 +14,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ChooseServiceDialogModule } from './choose-service-dialog/choose-service-dialog.module';
+
+registerLocaleData(localeFr);
 
 @NgModule({
   declarations: [ServiceStepComponent],
@@ -33,6 +36,14 @@ import { ChooseServiceDialogModule } from './choose-service-dialog/choose-servic
   ],
   exports: [ServiceStepComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers: [
+    {
+      provide: DEFAULT_CURRENCY_CODE, useValue: 'XOF',
+    },
+    {
+      provide: LOCALE_ID, useValue: 'fr-FR'
+    }
+  ]
 })
 
 export class ServiceStepModule { }

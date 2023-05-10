@@ -90,8 +90,8 @@
                         <tr *ngFor="let p of currentSSPs" class="s-item">
                             <td>{{p.service.type}}</td>
                             <td>{{p.serviceProvider.surname + ' ' + p.serviceProvider.name}}</td>
-                            <td>0</td>
-                            <td>{{p.service.price + ' ' + 'FCFA'}}</td>
+                            <td>1</td>
+                            <td>{{p.service.price | currency}}</td>
                             <td>0</td>
                         </tr>
                         <tr>
@@ -100,9 +100,7 @@
                             <td></td>
                             <td class="fw-bold">Total</td>
                             <td>
-                                <span>{{currentCash ? currentCash.total : 0}}</span>
-                                <span>&nbsp;</span>
-                                <span>FCFA</span>
+                                <span>{{currentCash.total | currency}}</span>
                             </td>
                         </tr>
                         <tr>
@@ -111,9 +109,7 @@
                             <td></td>
                             <td class="fw-bold">{{insurance_amount_text}}</td>
                             <td>
-                                <span>{{currentCash ? currentCash.insurance_amount : 0}}</span>
-                                <span>&nbsp;</span>
-                                <span>FCFA</span>
+                                <span>{{currentCash.insurance_amount | currency}}</span>
                             </td>
                         </tr>
                         <tr>
@@ -124,9 +120,7 @@
                                 <span>{{insurance_amount_due_text}}</span>
                             </td>
                             <td>
-                                <span>{{currentCash ? currentCash.insurance_due : 0}}</span>
-                                <span>&nbsp;</span>
-                                <span>FCFA</span>
+                                <span>{{currentCash.insurance_due | currency}}</span>
                             </td>
                         </tr>
                         <tr>
@@ -135,9 +129,7 @@
                             <td></td>
                             <td class="fw-bold">Total &agrave; payer par le patient</td>
                             <td>
-                                <span>{{currentCash ? currentCash.patient_due : 0}}</span>
-                                <span>&nbsp;</span>
-                                <span>FCFA</span>
+                                <span>{{currentCash.patient_due | currency}}</span>
                             </td>
                         </tr>
                         <tr>
@@ -146,9 +138,7 @@
                             <td></td>
                             <td class="fw-bold">Montant Du</td>
                             <td>
-                                <span>{{currentCash ? currentCash.amount_due : 0}}</span>
-                                <span>&nbsp;</span>
-                                <span>FCFA</span>
+                                <span>{{currentCash.amount_due | currency}}</span>
                             </td>
                         </tr>
                         <tr>
@@ -157,9 +147,7 @@
                             <td></td>
                             <td class="fw-bold">Montant Re&ccedil;u</td>
                             <td>
-                                <span>{{currentCash ? currentCash.amount_received : 0}}</span>
-                                <span>&nbsp;</span>
-                                <span>FCFA</span>
+                                <span>{{currentCash.amount_received | currency}}</span>
                             </td>
                         </tr>
                         <tr>
@@ -168,9 +156,7 @@
                             <td></td>
                             <td class="fw-bold">Montant &agrave; retourner</td>
                             <td>
-                                <span>{{currentCash ? currentCash.amount_to_refund : 0}}</span>
-                                <span>&nbsp;</span>
-                                <span>FCFA</span>
+                                <span>{{currentCash.amount_to_refund | currency}}</span>
                             </td>
                         </tr>
                     </tbody>
@@ -188,6 +174,3 @@
         </div>
     </div>
 </div>
-<button [useExistingCss]="true" printSectionId="app-right-side" class="print-button" ngxPrint>
-    <span>Print</span>
-</button>
