@@ -106,7 +106,7 @@ export class PersonStepComponent implements OnInit, OnDestroy, OnChanges {
         this.currentPat.address = v;
         break;
       case PersonStepInputLabel.PN:
-        this.currentPat.phone_number = v === "" ? 0 : !Number.isNaN(Number(v)) ? v : this.currentPat.phone_number;
+        this.currentPat.phone_number = v;
         break;
       case PersonStepInputLabel.DOB:
         this.currentPat.dob = v === 0 || v === "" ? 0 : !Number.isNaN(Number(v)) ? Number(v) : this.currentPat.dob;
