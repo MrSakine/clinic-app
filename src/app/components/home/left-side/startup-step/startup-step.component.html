@@ -1,0 +1,20 @@
+<div id="app-startup-step">
+    <img src="../../../../../assets/svg/info-circle-svgrepo-com.svg" alt="Info">
+    <h1>Information avant utilisation</h1>
+    <div class="ass-body">
+        <p>Avant de commencer &agrave; utiliser ce syst&egrave;me,&nbsp;</p>
+        <p>veuillez ajouter au moins une <span
+                [ngClass]="{'st': services !== undefined && services.length > 0}">prestation</span>, un
+            <span [ngClass]="{'st': serviceProviders !== undefined && serviceProviders.length > 0}">prestatire</span> et
+            un
+            <span [ngClass]="{'st': cashiers !== undefined && cashiers.length > 0}">caissier</span>
+        </p>
+    </div>
+    <div class="ass-body" *ngIf="
+    (services !== undefined && services.length > 0) &&
+    (serviceProviders !== undefined && serviceProviders.length > 0) &&
+    (cashiers !== undefined && cashiers.length > 0)">
+        <p>Merci d'avoir mis en place le minimum pour l'utilisation de ce syst&egrave;me</p>
+    </div>
+    <button type="button" class="btn btn-secondary btn-lg" (click)="onButtonClick()">Commencer</button>
+</div>

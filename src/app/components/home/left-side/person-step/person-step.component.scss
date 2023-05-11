@@ -1,0 +1,28 @@
+#app-person-step {
+    width: 100%;
+    height: auto;
+}
+
+mat-icon {
+    margin-right: .5em;
+}
+
+.app-person-step-df {
+    display: flex;
+    gap: 2em;
+    width: 100%;
+    height: auto;
+
+    .app-person-step-df-left,
+    .app-person-step-df-right {
+        width: 49%;
+    }
+}
+
+.app-person-step-age-wrapper {
+    width: 2em;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

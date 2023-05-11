@@ -1,0 +1,22 @@
+@use '../../../../lib/button/variable.scss';
+
+.switcher-page {
+    display: flex;
+    gap: 2em;
+    font-size: 1.5em;
+}
+
+.switcher-page span {
+    width: 2em;
+    height: 2em;
+    border: 1px solid variable.$primary-color;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.switcher-page span.active {
+    background-color: variable.$primary-color;
+    color: white;
+}

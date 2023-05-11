@@ -1,0 +1,35 @@
+<ng-container *ngIf="currentData.add || currentData.edit">
+    <div class="modal-header">
+        <h2 *ngIf="currentData.add" mat-dialog-title>Ajouter une prestation</h2>
+        <h2 *ngIf="currentData.edit" mat-dialog-title>Modifier une prestation</h2>
+        <button mat-button mat-dialog-close>X</button>
+    </div>
+    <hr>
+    <form action="#" method="POST" class="modal-form" [formGroup]="serviceFormGroup" (ngSubmit)="saveData()">
+        <mat-dialog-content class="modal-body">
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Type de la prestation</mat-label>
+                <input type="text" name="type" id="type" matInput required formControlName="type" />
+                <mat-hint *ngIf="!showTypeError">Exemple: Radio</mat-hint>
+                <mat-hint *ngIf="showTypeError" class="text-danger">
+                    <span>Vous avez d&eacute;j&agrave; une prestation de ce genre</span>
+                </mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Prix de la prestation</mat-label>
+                <input matInput type="text" minlength="1" maxlength="20" name="price" id="price" required
+                    formControlName="price" [cleave]="{numeral: true, delimiter: ' '}" />
+                <mat-hint *ngIf="!showPriceError">Exemple: 45 000 FCFA</mat-hint>
+                <mat-hint *ngIf="showPriceError" class="alert alert-danger">
+                    <span>Veuillez entrer un prix valide</span>
+                </mat-hint>
+            </mat-form-field>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+            <button type="submit" class="button-base primary-w">
+                <app-loader [showSpinnerProgress]="showSpinnerProgress"></app-loader>
+                <span>Valider</span>
+            </button>
+        </mat-dialog-actions>
+    </form>
+</ng-container>

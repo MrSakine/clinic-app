@@ -1,0 +1,52 @@
+<ng-container>
+    <div class="prest-header">
+        <p class="prest-title">Les prestations</p>
+        <mat-icon color="primary" matTooltip="Ajouter une prestation" matTooltipShowDelay="200" mat-ripple
+            [matRippleCentered]="true" (click)="openChooseServiceDialog()">add_box</mat-icon>
+    </div>
+    <p class="text-warning" *ngIf="showWarning">
+        <span>Veuillez ajouter au moins une prestation</span>
+    </p>
+    <div class="prest-body" *ngIf="currentSSPs.length > 0">
+        <div *ngFor="let c of currentSSPs" class="prest-item">
+            <div class="prest-item-left">
+                <p>
+                    <span>{{c.service.type}}</span>
+                    <span>-</span>
+                    <span>{{c.service.price | currency}}</span>
+                    <span class="badge bg-secondary">Prestation</span>
+                </p>
+                <p>{{c.serviceProvider.surname + ' ' + c.serviceProvider.name}}<span
+                        class="badge bg-secondary">Prestataire</span></p>
+            </div>
+            <div class="prest-item-right">
+                <mat-icon matTooltip="Modifier" matTooltipShowDelay="200" matRipple
+                    (click)="openEditServiceDialog(c)">edit</mat-icon>
+                <mat-icon matTooltip="Supprimer" matTooltipShowDelay="200" matRipple
+                    (click)="openDeleteServiceDialog(c)">delete</mat-icon>
+            </div>
+        </div>
+    </div>
+    <form action="#" [formGroup]="serviceStepFormGroup">
+        <div class="prest-footer">
+            <div class="prest-footer-insurance">
+                <label for="insurance" class="form-label">Assurance</label>
+                <mat-checkbox color="primary" formControlName="hasInsurance" (ngModelChange)="onCheckboxClick()">
+                    <span class="checkbox-text">La personne est-elle assur&eacute;&eacute; ?</span>
+                </mat-checkbox>
+            </div>
+            <div class="prest-footer-cashier">
+                <mat-form-field appearance="fill" class="col-md-12">
+                    <mat-label for="cashier" class="form-label">Caissier</mat-label>
+                    <mat-select required="" name="cashier-select" formControlName="cashier"
+                        (valueChange)="onCashierChange($event)">
+                        <mat-option [value]="">Aucune s&eacute;lection</mat-option>
+                        <mat-option *ngFor="let cashier of cashiers" [value]="cashier.firstname">
+                            <span>{{cashier.firstname + ' ' + cashier.lastname}}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</ng-container>

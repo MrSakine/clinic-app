@@ -1,0 +1,33 @@
+<ng-container>
+    <div class="mb-4">
+        <div class="d-flex">
+            <div class="flex-grow-1">
+                <h1 class="fs-4 fw-bold">
+                    {{
+                    switcher.current === 'service' ? 'Prestation'
+                    : switcher.current === 'insurance' ? 'Assurance'
+                    : switcher.current === 'person' ? 'Patient' : 'Facturation'
+                    }}
+                </h1>
+            </div>
+            <div class="switcher-page">
+                <span [ngClass]="{'active': switcher.current === 'service'}">1</span>
+                <span [ngClass]="{'active': switcher.current === 'insurance'}">2</span>
+                <span [ngClass]="{'active': switcher.current === 'person'}">3</span>
+                <span [ngClass]="{'active': switcher.current === 'cash'}">4</span>
+            </div>
+        </div>
+    </div>
+    <app-service-step [services]="services" [serviceProviders]="serviceProviders" *ngIf="switcher.current === 'service'"
+        [cashiers]="cashiers" @fadeSlideInOut [formChange]="serviceStepChange"
+        (itemAction)="handleServiceStepActionItemEvent($event)"
+        (formComplete)="handleServiceStepFormCompleteEvent($event)"></app-service-step>
+    <app-insurance-step *ngIf="switcher.current === 'insurance'" [insurances]="insurances"
+        [insuranceStepChange]="insuranceStepChange"
+        (insuranceStepFormComplete)="handleInsuranceStepFormComplete($event)" @fadeSlideInOut></app-insurance-step>
+    <app-person-step *ngIf="switcher.current === 'person'" [personStepChange]="personStepChange"
+        (shareFormData)="handlePersonStepFormEvent($event)" @fadeSlideInOut
+        (personStepFormComplete)="handlePersonStepFormCompleteEvent($event)"></app-person-step>
+    <app-cash-step *ngIf="switcher.current === 'cash'" [cashStepChange]="cashStepChange" [services]="services"
+        (cashStepFormComplete)="handleCashStepFormComplete($event)" @fadeSlideInOut></app-cash-step>
+</ng-container>

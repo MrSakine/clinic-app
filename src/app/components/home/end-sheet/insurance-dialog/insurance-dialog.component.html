@@ -1,0 +1,32 @@
+<ng-container>
+    <div class="modal-header">
+        <h2 mat-dialog-title>Ajouter une assurance</h2>
+        <button mat-button mat-dialog-close>X</button>
+    </div>
+    <hr>
+    <form action="#" method="POST" class="modal-form" [formGroup]="insuranceFormGroup" (ngSubmit)="onSubmit($event)">
+        <mat-dialog-content class="modal-body">
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Nom de l'assurance</mat-label>
+                <input type="text" name="name" id="name" matInput required formControlName="name" />
+                <mat-hint *ngIf="!showNameError">Exemple: AMO</mat-hint>
+                <mat-hint *ngIf="showNameError" class="text-danger">
+                    <span>Vous avez d&eacute;j&agrave; une assurance de ce nom</span>
+                </mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Pourcentage couverte par l'assurance</mat-label>
+                <input type="number" min="1" maxlength="99" name="percentage" id="percentage" matInput required formControlName="percentage" />
+                <mat-hint *ngIf="!showPercentageError">Exemple: 25%</mat-hint>
+                <mat-hint *ngIf="showPercentageError" class="alert alert-danger">
+                    <span>Veuillez entrer un pourcentage valide</span>
+                </mat-hint>
+            </mat-form-field>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+            <button type="submit" class="button-base primary-w">
+                <span>Valider</span>
+            </button>
+        </mat-dialog-actions>
+    </form>
+</ng-container>

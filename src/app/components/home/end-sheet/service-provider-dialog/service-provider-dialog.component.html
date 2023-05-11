@@ -1,0 +1,52 @@
+<ng-container>
+    <div class="modal-header">
+        <h2 mat-dialog-title>Ajouter un(e) prestataire</h2>
+        <button mat-button mat-dialog-close>X</button>
+    </div>
+    <hr>
+    <form action="#" method="POST" class="modal-form" [formGroup]="serviceProviderFormGroup" (ngSubmit)="onSubmit()">
+        <mat-dialog-content class="modal-body">
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Nom de la personne</mat-label>
+                <input type="text" name="name" id="name" matInput required formControlName="name" />
+                <mat-hint>Exemple: Sakine</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Pr&eacute;nom de la personne</mat-label>
+                <input type="text" name="given-name" id="given-name" matInput required formControlName="surname" />
+                <mat-hint>Exemple: Fily Mohamed</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Type de la prestation</mat-label>
+                <mat-select name="service-type" required formControlName="service" multiple
+                    [matTooltip]="serviceProviderFormGroup.controls['service'].value ? serviceProviderFormGroup.controls['service'].value.join(', ') : ''"
+                    matTooltipPosition="above" matTooltipShowDelay="200" matTooltipHideDelay="200">
+                    <mat-select-trigger>
+                        <span>{{serviceProviderFormGroup.controls['service'].value?.[0] || ''}}</span>
+                        <span *ngIf="serviceProviderFormGroup.controls['service'].value?.[1]">&#44;</span>
+                        <span>{{serviceProviderFormGroup.controls['service'].value?.[1] || ''}}</span>
+                        <span *ngIf="(serviceProviderFormGroup.controls['service'].value?.length || 0) > 2">
+                            <span> (+{{(serviceProviderFormGroup.controls['service'].value?.length || 0) - 2}}</span>
+                            <span>{{serviceProviderFormGroup.controls['service'].value?.length === 2 ? ' autres': '
+                                autre'}})</span>
+                        </span>
+                    </mat-select-trigger>
+                    <mat-option *ngFor="let d of services" [value]="d.type">
+                        <span>{{d.type}}</span>
+                    </mat-option>
+                </mat-select>
+                <mat-hint>Exemple: Radio</mat-hint>
+            </mat-form-field>
+        </mat-dialog-content>
+        <mat-dialog-actions align="start" *ngIf="showExistError">
+            <span class="alert alert-danger">Cette personne a d&eacute;j&agrave; &eacute;t&eacute;
+                enregistr&eacute;</span>
+        </mat-dialog-actions>
+        <mat-dialog-actions align="end">
+            <button type="submit" class="button-base primary-w">
+                <app-loader [showSpinnerProgress]="showSpinnerProgress"></app-loader>
+                <span>Valider</span>
+            </button>
+        </mat-dialog-actions>
+    </form>
+</ng-container>

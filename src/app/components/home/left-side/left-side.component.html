@@ -1,0 +1,26 @@
+<div id="app-left-side">
+    <div class="app-left-side-container">
+        <app-switcher *ngIf="showSwitcher" [services]="services" [serviceProviders]="serviceProviders"
+            [serviceStepChange]="serviceStepChange" [personStepChange]="personStepChange"
+            [insuranceStepChange]="insuranceStepChange" [cashStepChange]="cashStepChange" [cashiers]="cashiers"
+            [switcher]="switcher" [insurances]="insurances" (itemAction)="onSwitcherServiceStepEvent($event)"
+            (shareFormDataFromPersonStep)="onShareFormDataFromPersonStepEvent($event)"
+            (serviceStepFormComplete)="onServiceStepFormCompleteEvent($event)"
+            (personStepFormComplete)="onPersonStepFormCompleteEvent($event)"
+            (insuranceStepFormComplete)="onInsuranceStepFormComplete($event)"
+            (cashStepFormComplete)="onSwitcherCashStepEvent($event)"></app-switcher>
+        <app-startup-step *ngIf="!showSwitcher" (buttonClick)="startupMenuEvent($event)" (startUse)="handleSwitcher()"
+            [services]="services" [serviceProviders]="serviceProviders" [cashiers]="cashiers"></app-startup-step>
+    </div>
+    <div class="app-left-side-footer" *ngIf="showSwitcher">
+        <div class="flex-wrapper">
+            <app-secondary-button [text]="'Précedent'"
+                *ngIf="switcher.previous !== null && switcher.current !== 'service'"
+                (click)="moveSwitcherBackward()"></app-secondary-button>
+            <app-primary-button text="Suivant" type="text" (click)="moveSwitcherForward()"
+                *ngIf="switcher.current !== 'cash'"></app-primary-button>
+            <app-primary-button text="Enregistrer" type="text" (click)="moveSwitcherForward()"
+                *ngIf="switcher.current === 'cash'"></app-primary-button>
+        </div>
+    </div>
+</div>

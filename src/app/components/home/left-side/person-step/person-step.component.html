@@ -1,0 +1,45 @@
+<ng-container>
+    <div id="app-person-step">
+        <form action="#" method="POST" [formGroup]="personStepFormGroup">
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Nom complet</mat-label>
+                <input type="text" name="fullname" id="fullname" (input)="onValueChange($event, 'fullname')" matInput
+                    required formControlName="fullname" />
+                <mat-hint>Exemple: Fily M Sakine</mat-hint>
+                <mat-icon matPrefix>person</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Adresse</mat-label>
+                <input type="text" name="address" id="address" matInput (input)="onValueChange($event, 'address')"
+                    required formControlName="address" />
+                <mat-hint>Exemple: Baco djicoroni</mat-hint>
+                <mat-icon matPrefix>home</mat-icon>
+            </mat-form-field>
+            <div class="app-person-step-df">
+                <div class="app-person-step-df-left">
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Num&eacute;ro de t&eacute;l&eacute;phone</mat-label>
+                        <input type="text" name="phoneNumber" id="phoneNumber" matInput
+                            (input)="onValueChange($event, 'phone')"
+                            [cleave]="{blocks: [2, 2, 2, 2], delimiters: [' ', ' ', ' ', ' ']}" required
+                            formControlName="phoneNumber" />
+                        <mat-hint>Exemple: 94 86 52 91</mat-hint>
+                        <mat-icon matPrefix>call</mat-icon>
+                    </mat-form-field>
+                </div>
+                <div class="app-person-step-df-right">
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>&Acirc;ge</mat-label>
+                        <input type="text" name="dob" id="dob" (input)="onValueChange($event, 'dob')" matInput required
+                            formControlName="dob" />
+                        <mat-hint>Exemple: 23 ans</mat-hint>
+                        <mat-icon matPrefix>calendar_today</mat-icon>
+                        <div class="app-person-step-age-wrapper" matSuffix>
+                            <span>ANS</span>
+                        </div>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-container>

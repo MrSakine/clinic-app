@@ -1,0 +1,36 @@
+mat-icon {
+    width: 1em;
+    height: 1em;
+    font-size: 1.8em;
+}
+
+.flex-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    justify-content: center;
+}
+
+.flex-wrapper h1 {
+    position: absolute;
+    left: 0;
+}
+
+.flex-wrapper div {
+    position: absolute;
+    right: 0;
+    font-size: 2em;
+    margin: .1em .2em 0 0;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+#app-right-sheet {
+    width: auto;
+}
+
+.app-right-sheet-header {
+    width: 100%;
+    height: 5em;
+}

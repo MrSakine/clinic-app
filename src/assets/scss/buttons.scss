@@ -1,0 +1,26 @@
+@use '../../app/lib/button/variable.scss';
+@import '../../app/lib/button/base.scss';
+.primary-w {
+    text-transform: none;
+    width: fit-content;
+    height: 3em;
+    padding: .5em .8em;
+    background-color: variable.$primary-color-2;
+    border: 1px solid variable.$primary-color-2;
+    color: white;
+    font-weight: 500;
+    font-size: 1.1em;
+    border-radius: .3em;
+    transition: .3s;
+}
+
+.primary-w:hover {
+    background-color: variable.$primary-color-2-hover;
+    border: 1px solid variable.$primary-color-2-hover;
+    transition: .3s;
+}
+
+.primary-w:hover span {
+    color: black;
+    transition: .3s;
+}

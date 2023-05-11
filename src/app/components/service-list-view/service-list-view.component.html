@@ -1,0 +1,8 @@
+<div class="app-service-listview">
+    <button class="button-base btn-p" (click)="add()">
+        <span>Ajouter</span>
+    </button>
+    <div class="wrapper" *ngFor="let d of currentItems">
+        <app-service-list-item [label]="label" [obj]="d" (event)="handleEvent($event)"></app-service-list-item>
+    </div>
+</div>

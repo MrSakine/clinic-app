@@ -1,0 +1,181 @@
+<div id="app-right-side">
+    <div class="app-right-side-wrapper">
+        <div class="app-right-side-body">
+            <div class="app-page-number">
+                <span>1&#47;1</span>
+            </div>
+            <div class="app-logo">
+                <div class="app-logo-wrapper">
+                    <img src="../../../../assets/images/logo.png" alt="Logo">
+                </div>
+                <div class="app-logo-text">
+                    <p>Clinique m&eacute;dicale M&egrave;re-Odiou</p>
+                    <p>Kati koko Plateau</p>
+                    <p>Tel: (00223) 75 06 50 87 / 65 06 50 87</p>
+                </div>
+            </div>
+            <div class="app-main-title">
+                <p>Ticket de prestation</p>
+            </div>
+            <div class="app-patient-info">
+                <div class="app-patient-info-item">
+                    <div class="app-patient-info-wrapper">
+                        <div class="app-patient-info-wrapper-key">
+                            <span>ID Patient&#58;</span>
+                            <span>&nbsp;</span>
+                            <span>{{randomPatientID}}</span>
+                        </div>
+                        <div class="app-patient-info-wrapper-value">
+                            <span>ID Ticket&#58;</span>
+                            <span>&nbsp;</span>
+                            <span>{{randomTicketID}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-patient-info-item">
+                    <div class="app-patient-info-wrapper">
+                        <div class="app-patient-info-wrapper-key">
+                            <span>Nom complet&#58;</span>
+                            <span>&nbsp;</span>
+                            <span>{{currentPat.fullname === undefined || currentPat.fullname === '' ? 'N/A' :
+                                currentPat.fullname}}</span>
+                        </div>
+                        <div class="app-patient-info-wrapper-value">
+                            <span>&Acirc;ge&#58;</span>
+                            <span>&nbsp;</span>
+                            <span>{{currentPat.dob === 0 ? 'N/A' : currentPat.dob + ' ' + 'ans'}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-patient-info-item">
+                    <div class="app-patient-info-wrapper">
+                        <div class="app-patient-info-wrapper-key">
+                            <span>Adresse&#58;</span>
+                            <span>&nbsp;</span>
+                            <span>{{currentPat.address === undefined || currentPat.address === '' ? 'N/A' :
+                                currentPat.address}}</span>
+                        </div>
+                        <div class="app-patient-info-wrapper-value">
+                            <span>T&eacute;l&eacute;phone&#58;</span>
+                            <span>&nbsp;</span>
+                            <span>{{currentPat.phone_number === undefined || currentPat.phone_number === '' ? 'N/A' :
+                                currentPat.phone_number}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-patient-info-item">
+                    <div class="app-patient-info-wrapper">
+                        <div class="app-patient-info-wrapper-key">
+                            <span>Type d&apos;assurance&#58;</span>
+                            <span>&nbsp;</span>
+                            <span>{{currentData !== undefined && !currentData.ssp.hasInsurance ? 'N/A' :
+                                currentInsurance?.name}}</span>
+                        </div>
+                        <div class="app-patient-info-wrapper-value">
+                            <span>Cassier&#58;</span>
+                            <span>&nbsp;</span>
+                            <span>{{!isCashier ? 'N/A' : currentCashier?.firstname + ' ' +
+                                currentCashier?.lastname}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="app-table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Prestation</th>
+                            <th>Prestataire</th>
+                            <th>Quantit&eacute;</th>
+                            <th>Prix unitaire</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let p of currentSSPs" class="s-item">
+                            <td>{{p.service.type}}</td>
+                            <td>{{p.serviceProvider.surname + ' ' + p.serviceProvider.name}}</td>
+                            <td>1</td>
+                            <td>{{p.service.price | currency}}</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="fw-bold">Total</td>
+                            <td>
+                                <span>{{currentCash.total | currency}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="fw-bold">{{insurance_amount_text}}</td>
+                            <td>
+                                <span>{{currentCash.insurance_amount | currency}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="fw-bold">
+                                <span>{{insurance_amount_due_text}}</span>
+                            </td>
+                            <td>
+                                <span>{{currentCash.insurance_due | currency}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="fw-bold">Total &agrave; payer par le patient</td>
+                            <td>
+                                <span>{{currentCash.patient_due | currency}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="fw-bold">Montant Du</td>
+                            <td>
+                                <span>{{currentCash.amount_due | currency}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="fw-bold">Montant Re&ccedil;u</td>
+                            <td>
+                                <span>{{currentCash.amount_received | currency}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="fw-bold">Montant &agrave; retourner</td>
+                            <td>
+                                <span>{{currentCash.amount_to_refund | currency}}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="app-made-container">
+                <p>Fait le {{datetime}}</p>
+            </div>
+            <div class="app-ticket-container"></div>
+        </div>
+        <div class="app-right-side-footer">
+            <div class="app-footer-info">
+                <p>Ce ticket est valable pour 7 jours</p>
+            </div>
+        </div>
+    </div>
+</div>

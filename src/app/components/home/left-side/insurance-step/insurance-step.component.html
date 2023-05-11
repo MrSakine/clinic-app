@@ -1,0 +1,30 @@
+<ng-container>
+    <form action="#" method="POST" [formGroup]="insuranceStepFormGroup">
+        <mat-form-field appearance="fill" class="col-md-12">
+            <mat-label for="insurance" class="form-label">Assurance</mat-label>
+            <mat-select required="" name="insurance-select" formControlName="ins"
+                (valueChange)="onInsuranceSelectChange($event)">
+                <mat-option [value]="">Aucune s&eacute;lection</mat-option>
+                <mat-option *ngFor="let ins of insurances" [value]="ins.name">
+                    <span>{{ins.name + ' ' + '(' + ins.percentage + '%' + ')'}}</span>
+                </mat-option>
+            </mat-select>
+            <mat-hint *ngIf="showWarning" class="text-warning">
+                <span>Veuillez ajouter au moins une assurance</span>
+            </mat-hint>
+        </mat-form-field>
+    </form>
+    <div class="ins-item">
+        <p>
+            <span>Nom de l'assurance:</span>
+            <span>&nbsp;</span>
+            <span>{{currentInsurance?.name ? currentInsurance?.name : 'N/A'}}</span>
+        </p>
+        <p>
+            <span>Pourcentage couverte par l'assurance:</span>
+            <span>&nbsp;</span>
+            <span>{{currentInsurance?.percentage ? currentInsurance?.percentage !== 0 ? currentInsurance?.percentage + '%'
+                : 0 : 'N/A'}}</span>
+        </p>
+    </div>
+</ng-container>

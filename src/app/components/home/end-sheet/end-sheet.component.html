@@ -1,0 +1,53 @@
+<div id="app-right-sheet" #ersh>
+    <div class="app-right-sheet-header">
+        <div class="flex-wrapper">
+            <h1>Gestionnaire de donn&eacute;es</h1>
+            <div>
+                <mat-icon class="cur">help</mat-icon>
+                <mat-icon class="cur" matTooltip="Importer des données" matTooltipShowDelay="200">upload</mat-icon>
+                <mat-icon class="cur" matTooltip="Exporter vos données" matTooltipShowDelay="200">download</mat-icon>
+            </div>
+        </div>
+    </div>
+    <div class="app-right-sheet-body">
+        <mat-tab-group>
+            <mat-tab label="Prestations">
+                <app-no-element *ngIf="services === undefined || services !== undefined && services.length <= 0"
+                    (addEvent)="onNoElementComponentAddClickEvent($event)" label="pres" mode="show"
+                    [icon]="prestationHelp.icon" [title]="prestationHelp.title" [content]="prestationHelp.content"
+                    [button]="prestationHelp.button"></app-no-element>
+                <app-service-list-view *ngIf="services !== undefined && services.length > 0" [data]="services"
+                    label="pres" (addEvent)="onNoElementComponentAddClickEvent($event)"
+                    (event)="onListViewEvent($event)"></app-service-list-view>
+            </mat-tab>
+            <mat-tab label="Prestataires">
+                <app-no-element
+                    *ngIf="serviceProviders === undefined || serviceProviders !== undefined && serviceProviders.length <= 0"
+                    (addEvent)="onNoElementComponentAddClickEvent($event)" label="prest" mode="show"
+                    [icon]="prestataireHelp.icon" [title]="prestataireHelp.title" [content]="prestataireHelp.content"
+                    [button]="prestataireHelp.button"></app-no-element>
+                <app-service-list-view *ngIf="serviceProviders !== undefined && serviceProviders.length > 0"
+                    (addEvent)="onNoElementComponentAddClickEvent($event)" label="prest" [data]="serviceProviders"
+                    (event)="onListViewEvent($event)"></app-service-list-view>
+            </mat-tab>
+            <mat-tab label="Assurances">
+                <app-no-element *ngIf="insurances === undefined || insurances !== undefined && insurances.length <= 0"
+                    (addEvent)="onNoElementComponentAddClickEvent($event)" label="ins" mode="show"
+                    [icon]="insuranceHelp.icon" [title]="insuranceHelp.title" [content]="insuranceHelp.content"
+                    [button]="insuranceHelp.button"></app-no-element>
+                <app-service-list-view *ngIf="insurances !== undefined && insurances.length > 0"
+                    (addEvent)="onNoElementComponentAddClickEvent($event)" label="ins" [data]="insurances"
+                    (event)="onListViewEvent($event)"></app-service-list-view>
+            </mat-tab>
+            <mat-tab label="Caissiers">
+                <app-no-element *ngIf="cashiers === undefined || cashiers !== undefined && cashiers.length <= 0"
+                    (addEvent)="onNoElementComponentAddClickEvent($event)" label="cashier" mode="show"
+                    [icon]="cashierHelp.icon" [title]="cashierHelp.title" [content]="cashierHelp.content"
+                    [button]="cashierHelp.button"></app-no-element>
+                <app-service-list-view *ngIf="cashiers !== undefined && cashiers.length > 0"
+                    (addEvent)="onNoElementComponentAddClickEvent($event)" label="cashier" [data]="cashiers"
+                    (event)="onListViewEvent($event)"></app-service-list-view>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+<ng-container>
+    <div class="app-service-list-item-left">
+        <div *ngIf="label === 'pres'">
+            <div class="d-flex">
+                <span>{{currentItem.type}}</span><span class="badge bg-secondary">Type de la prestation</span>
+            </div>
+            <div class="d-flex">
+                <span>{{currentItem.price | currency}}</span><span class="badge bg-secondary">Prix de la
+                    prestation</span>
+            </div>
+        </div>
+        <div *ngIf="label === 'prest'">
+            <div class="d-flex">
+                <span>{{currentItem.surname + ' ' + currentItem.name}}&nbsp;</span><span class="badge bg-secondary">Nom
+                    complet
+                    du prestataire</span>
+            </div>
+            <div class="d-flex cur">
+                <span [matTooltip]="currentNonFormattedService" matTooltipShowDelay="200"
+                    matTooltipHideDelay="200">{{currentFormattedServices}}&nbsp;</span><span
+                    class="badge bg-secondary">Service du
+                    prestataire</span>
+            </div>
+        </div>
+        <div *ngIf="label === 'ins'">
+            <div class="d-flex">
+                <span>{{currentItem.name}}&nbsp;</span><span class="badge bg-secondary">Nom de l'assurance</span>
+            </div>
+            <div class="d-flex">
+                <span>{{currentItem.percentage}}&nbsp;&#37;&nbsp;</span><span class="badge bg-secondary">Pourcentage
+                    couverte par l'assurance</span>
+            </div>
+        </div>
+        <div *ngIf="label === 'cashier'">
+            <div class="d-flex">
+                <span>{{currentItem.firstname}}</span><span class="badge bg-secondary">Pr&eacute;nom de la
+                    personne</span>
+            </div>
+            <div class="d-flex">
+                <span>{{currentItem.lastname}}</span><span class="badge bg-secondary">Nom de la personne</span>
+            </div>
+        </div>
+    </div>
+    <div class="app-service-list-item-right">
+        <mat-icon matTooltip="Modifier" matTooltipShowDelay="200" matRipple
+            (click)="handleClick(label, 'edit')">edit</mat-icon>
+        <mat-icon matTooltip="Supprimer" matTooltipShowDelay="200" matRipple
+            (click)="handleClick(label, 'delete')">delete</mat-icon>
+    </div>
+</ng-container>
