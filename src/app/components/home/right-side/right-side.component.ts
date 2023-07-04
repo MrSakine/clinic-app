@@ -221,7 +221,7 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
     if (canDelete) {
       let NAME = "clinic-ticket-" + this.randomTicketID;
       let s = document.querySelector('.app-right-side-wrapper') as HTMLElement;
-      let doc = new jsPDF();
+      let doc = new jsPDF("p", "in", [5.8, 8.3], true);
       doc.html(s, {
         callback: function (doc) {
           let tmp = null;
@@ -232,13 +232,13 @@ export class RightSideComponent implements OnInit, OnChanges, OnDestroy {
 
           tmp?.save(NAME);
         },
-        width: 200,
-        windowWidth: 1000,
+        // width: 200,
+        // windowWidth: 1000,
         autoPaging: true,
       })
         .finally(() => {
           this.hideLoading.emit(true);
-          this.deleteTicket();
+          // this.deleteTicket();
         });
     } else {
       this.hideLoading.emit(true);
